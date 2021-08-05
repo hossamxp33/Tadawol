@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "158235713274",
+    "project_id": "tadawol-3243b",
+    "storage_bucket": "tadawol-3243b.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:158235713274:android:39f74fc0ebc927c2b17343",
+        "android_client_info": {
+          "package_name": "com.example.tadawol"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "158235713274-la6m65ko9ea9pjnjpmtnmu0o6aj6s3i2.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyADdFusStvrNZwYonbUdXjK1g3hYEWuZek"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "158235713274-la6m65ko9ea9pjnjpmtnmu0o6aj6s3i2.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
