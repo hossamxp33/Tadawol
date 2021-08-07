@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/layout">
+    <data>
+        <variable
+                name="Context"
+                type="com.example.tadawol.app.MainActivity"/>
+        <variable
+                name="listener"
+                type="com.example.tadawol.app.presentation.ClickHandler"/>
+       <!-- <variable
+                name="data"
+                type="com.example.tadawol.presentaion.CompanyDatum"/>
+    -->
+
+    </data>
+    <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#070d2d">
+
+        <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guide1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintGuide_percent="0.08" />
+
+        <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guide2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintGuide_percent="0.28" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/img"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/fonts"
+                android:scaleType="fitXY"
+                android:src="@drawable/logo"
+                android:textColor="#FFFFFF"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/guide1" />
+
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/tab_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/colorPrimaryDark"
+            app:layout_constraintTop_toTopOf="@+id/guide2"
+            app:tabMaxWidth="0dp"
+            app:tabTextAppearance="@style/TabLayoutTextStyle"
+            app:textAllCaps="false" />
+
+
+        <androidx.viewpager2.widget.ViewPager2
+            android:id="@+id/tabs_viewpager"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tab_layout" />
+
+        <!-- android:theme="@style/etTheme" -->
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
