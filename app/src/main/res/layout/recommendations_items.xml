@@ -5,22 +5,22 @@
     android:id="@+id/layout">
     <data>
         <variable
-                name="Context"
-                type="com.example.tadawol.app.MainActivity"/>
+            name="Context"
+            type="com.example.tadawol.app.MainActivity"/>
         <variable
-                name="listener"
-                type="com.example.tadawol.app.presentation.ClickHandler"/>
-      <variable
-                name="data"
-                type="com.example.tadawol.app.models.Trade"/>
+            name="listener"
+            type="com.example.tadawol.app.presentation.ClickHandler"/>
+        <variable
+            name="data"
+            type="com.example.tadawol.app.models.Trade"/>
 
         <import type="android.text.Html"/>
 
 
     </data>
     <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -58,123 +58,123 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 app:layout_constraintGuide_percent="0.6" />
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            app:layout_constraintTop_toTopOf="@+id/guide2"
-            app:layout_constraintBottom_toBottomOf="@+id/guide3">
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                app:layout_constraintTop_toTopOf="@+id/guide2"
+                app:layout_constraintBottom_toBottomOf="@+id/guide3">
 
-            <androidx.constraintlayout.widget.Guideline
-                android:id="@+id/guide5"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                app:layout_constraintGuide_percent="0.23" />
-            <ImageView
-                android:layout_width="60dp"
-                android:layout_height="wrap_content"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintRight_toLeftOf="@id/guide5"
-                android:src="@drawable/line_chart"
-                />
+                <androidx.constraintlayout.widget.Guideline
+                    android:id="@+id/guide5"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    app:layout_constraintGuide_percent="0.23" />
+                <ImageView
+                    android:layout_width="60dp"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintRight_toLeftOf="@id/guide5"
+                    android:src="@drawable/line_chart"
+                    />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
-                android:fontFamily="@font/kokn"
-                android:text="1812.00"
-                android:textColor="@color/lightgreen"
-                android:textSize="16dp"
-                android:textStyle="bold"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintRight_toRightOf="@id/guide5" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="16dp"
+                    android:fontFamily="@font/kokn"
+                    android:text="@{data.enter + ``}"
+                    android:textColor="@color/lightgreen"
+                    android:textSize="16dp"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintRight_toRightOf="@id/guide5" />
 
 
-            <androidx.constraintlayout.widget.Guideline
-                android:id="@+id/guide4"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                app:layout_constraintGuide_percent="0.35" />
-            <TextView
-                android:id="@+id/tb"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="TP"
-                android:fontFamily="@font/kokn"
-                android:textColor="@color/lightgreen"
-                android:textSize="16dp"
-                app:layout_constraintLeft_toLeftOf="@id/guide4"
-                app:layout_constraintTop_toTopOf="parent"/>
+                <androidx.constraintlayout.widget.Guideline
+                    android:id="@+id/guide4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    app:layout_constraintGuide_percent="0.35" />
+                <TextView
+                    android:id="@+id/tb"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="TP"
+                    android:fontFamily="@font/kokn"
+                    android:textColor="@color/lightgreen"
+                    android:textSize="16dp"
+                    app:layout_constraintLeft_toLeftOf="@id/guide4"
+                    app:layout_constraintTop_toTopOf="parent"/>
 
-            <TextView
-                android:id="@+id/tb_enter"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="16dp"
-                android:fontFamily="@font/kokn"
-                android:text="@{String.valueOf(data.enter)}"
-                android:textColor="@color/darkgreen"
-                android:textSize="16dp"
-                android:textStyle="bold"
-                app:layout_constraintLeft_toRightOf="@id/tb"
-                app:layout_constraintTop_toTopOf="parent" />
+                <TextView
+                    android:id="@+id/tb_enter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="16dp"
+                    android:fontFamily="@font/kokn"
+                    android:text="@{String.valueOf(data.stop_profit)}"
+                    android:textColor="@color/darkgreen"
+                    android:textSize="16dp"
+                    android:textStyle="bold"
+                    app:layout_constraintLeft_toRightOf="@id/tb"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-            <TextView
-                android:id="@+id/sl"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/kokn"
-                android:text="SL"
-                android:textColor="@color/lightgreen"
-                android:textSize="16dp"
-                android:textStyle="bold"
-                app:layout_constraintLeft_toLeftOf="@id/guide4"
-                app:layout_constraintTop_toBottomOf="@+id/tb" />
+                <TextView
+                    android:id="@+id/sl"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/kokn"
+                    android:text="SL"
+                    android:textColor="@color/lightgreen"
+                    android:textSize="16dp"
+                    android:textStyle="bold"
+                    app:layout_constraintLeft_toLeftOf="@id/guide4"
+                    app:layout_constraintTop_toBottomOf="@+id/tb" />
 
-            <TextView
-                android:id="@+id/sl_exitt"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="16dp"
-                android:fontFamily="@font/kokn"
-                android:text="@{String.valueOf(data.exitt)}"
-                android:textColor="@color/red"
-                android:textSize="16dp"
-                android:textStyle="bold"
-                app:layout_constraintLeft_toRightOf="@id/sl"
-                app:layout_constraintTop_toBottomOf="@+id/tb" />
+                <TextView
+                    android:id="@+id/sl_exitt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="16dp"
+                    android:fontFamily="@font/kokn"
+                    android:text="@{String.valueOf(data.stop_loss)}"
+                    android:textColor="@color/red"
+                    android:textSize="16dp"
+                    android:textStyle="bold"
+                    app:layout_constraintLeft_toRightOf="@id/sl"
+                    app:layout_constraintTop_toBottomOf="@+id/tb" />
 
-            <androidx.constraintlayout.widget.Guideline
-                android:id="@+id/guide6"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                app:layout_constraintGuide_percent="0.75" />
+                <androidx.constraintlayout.widget.Guideline
+                    android:id="@+id/guide6"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    app:layout_constraintGuide_percent="0.75" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="+50 PIPS"
-                android:textColor="@color/lightgreen"
-                android:textSize="16dp"
-                android:textStyle="bold"
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text='@{data.trade_status > 0.0 ? (`+ `+ data.trade_status +` PIPS`) :  data.trade_status  &lt; 0.0 ? (`- `+ data.trade_status + ` PIPS`) : data.trade_status == 0.0 ?  (data.trade_status + ` PIPS`) : (data.trade_status + `PIPS`)  }'
+                    android:textColor="@color/lightgreen"
+                    android:textSize="16dp"
+                    android:textStyle="bold"
 
-                app:layout_constraintLeft_toRightOf="@+id/guide6"
-                app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintLeft_toRightOf="@+id/guide6"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="16dp"
-                android:layout_marginBottom="16dp"
-                android:src="@drawable/vip_arrow"
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginBottom="16dp"
+                    android:src="@drawable/vip_arrow"
 
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintLeft_toRightOf="@id/guide6" />
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintLeft_toRightOf="@id/guide6" />
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
 
 
@@ -211,7 +211,7 @@
                     android:textColor="@color/white"
                     app:layout_constraintTop_toBottomOf="@+id/textView"
                     app:layout_constraintRight_toRightOf="parent"
-                     app:layout_constraintLeft_toLeftOf="parent"/>
+                    app:layout_constraintLeft_toLeftOf="parent"/>
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -3,9 +3,12 @@ package com.example.tadawol.app.models
 data class Trade(
     var created: String,
     var currency: Currency,
-    var currency_id: Int,
-    var enter: Int,
-    var exitt: Int,
+    var currency_id: Double,
+    var enter: Float,
+    var stop_profit: Double,
+    var stop_loss: Double,
+    var trade_status: Double,
+
     var id: Int,
     var modified: String,
     var notes: String,
