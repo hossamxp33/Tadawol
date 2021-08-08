@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+
+        tools:showIn="nav_view">
+
+    <group android:checkableBehavior="single"
+            >
+        <item
+                android:id="@+id/home"
+                android:icon="@drawable/main"
+                android:title="الرئيسية" />
+
+        <item
+
+                android:id="@+id/reports"
+                android:icon="@drawable/company"
+                android:title="مؤشر التداول" />
+
+        <item
+
+                android:id="@+id/recommendations"
+                android:icon="@drawable/deal"
+                android:title="التوصيات" />
+
+    </group>
+
+    <item android:title="Communicate">
+
+
+
+        <item
+                android:id="@+id/more"
+                android:icon="@drawable/deal"
+                android:title="تسجيل الخروج" />
+
+    </item>
+</menu>
