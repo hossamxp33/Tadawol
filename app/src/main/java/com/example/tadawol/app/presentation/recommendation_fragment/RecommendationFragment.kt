@@ -13,6 +13,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.tadawol.R
 import com.example.tadawol.app.presentation.viewmodel.MainViewModel
 import com.example.tadawol.databinding.RecommendationsFragmentBinding
+import kotlinx.android.synthetic.main.recommendations_fragment.*
+import kotlinx.android.synthetic.main.recommendations_items.*
 
 
 class RecommendationFragment : Fragment(){
@@ -34,10 +36,23 @@ class RecommendationFragment : Fragment(){
             MainAdapter = Recommendations_Adapter( viewModel,context, it)
             view.recyler.layoutManager = LinearLayoutManager(context)
             view.recyler.adapter = MainAdapter;
-
+            stoploading()
         })
 
     return view.root
     }
+    override fun onResume() {
+        super.onResume()
+         shimmer_view_container.startShimmerAnimation()
+    }
 
+    override fun onPause() {
+        shimmer_view_container.stopShimmerAnimation()
+        super.onPause()
+    }
+    fun stoploading() {
+        shimmer_view_container?.setVisibility(View.GONE)
+        shimmer_view_container?.stopShimmerAnimation()
+
+    }
 }

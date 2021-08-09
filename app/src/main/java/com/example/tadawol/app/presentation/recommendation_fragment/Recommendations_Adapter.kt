@@ -1,8 +1,8 @@
 package com.example.tadawol.app.presentation.recommendation_fragment
 
 import android.content.Context
-import android.graphics.Typeface
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
@@ -13,6 +13,7 @@ import com.example.tadawol.app.presentation.ClickHandler
 import com.example.tadawol.app.presentation.viewmodel.MainViewModel
 import com.example.tadawol.databinding.RecommendationsItemsBinding
 
+
 class Recommendations_Adapter (var viewModel: MainViewModel, var context : Context?, var data:List<Trade>) : RecyclerView.Adapter<CustomViewHolder>() {
     override fun getItemCount(): Int {
 
@@ -21,6 +22,17 @@ class Recommendations_Adapter (var viewModel: MainViewModel, var context : Conte
 
     override fun onBindViewHolder(p0: CustomViewHolder, p1: Int) {
         p0.bind(viewModel,context,data.get(p1))
+        if (data.get(p1).vips == "1"){
+
+           p0.binding.blurLayout.startBlur()
+            p0. binding.blurLayout.pauseBlur()
+
+            p0.binding.blurLayout.visibility = View.VISIBLE
+
+        }else{
+            p0.binding.blurLayout.visibility = View.GONE
+
+        }
 
     }
 
@@ -34,8 +46,10 @@ class Recommendations_Adapter (var viewModel: MainViewModel, var context : Conte
 
 
 }
+
+
 class CustomViewHolder (
-    private val binding:RecommendationsItemsBinding
+    public val binding:RecommendationsItemsBinding
 ) : RecyclerView.ViewHolder(binding.root){
 
     fun bind(viewModel: MainViewModel, context: Context?, data:Trade) {
@@ -43,6 +57,8 @@ class CustomViewHolder (
         binding.listener = ClickHandler()
         binding.data = data
         binding.context = context as MainActivity?
+        binding.viewmodel = viewModel
     }
+
 
 }

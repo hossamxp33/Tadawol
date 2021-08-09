@@ -7,8 +7,7 @@ data class Trade(
     var enter: Float,
     var stop_profit: Double,
     var stop_loss: Double,
-    var trade_status: Double,
-
+    var trade_status: Int,
     var id: Int,
     var modified: String,
     var notes: String,

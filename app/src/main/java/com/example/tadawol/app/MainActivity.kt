@@ -23,6 +23,8 @@ import com.example.tadawol.databinding.ActivityMainBinding
 import com.google.android.material.navigation.NavigationView
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
+import   android.graphics.Bitmap
+
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener  {
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
@@ -109,4 +111,9 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             drawerLayout.openDrawer(GravityCompat.START)
         }
     }
+
+
+
+
+
 }
