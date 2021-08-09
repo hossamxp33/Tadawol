@@ -29,20 +29,21 @@ fun setImageResourcee(imageView: AppCompatImageView, resource: String?) {
 @BindingAdapter("text_color")
 /////// set Stock image statue /////
  fun setTextColor(text: TextView, color: Int?) {
-    when (color){
-        -1 ->
-            text.setTextColor(Color.parseColor("#ef1919"))
+    if (color!! < 0) {
 
+        text.setTextColor(Color.parseColor("#ef1919"))
+    } else if (color > 0){
 
-        1 ->  text.setTextColor(Color.parseColor("#008577"))
+        text.setTextColor(Color.parseColor("#008577"))
 
-        else -> { // Note the block
+    }
+        else { // Note the block
             // Display an image on image view from drawable
             text.setTextColor(Color.parseColor("#9C9898"))
         }
     }
 
-}
+
 
 
 @BindingAdapter("formattedText")
