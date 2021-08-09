@@ -19,6 +19,11 @@ class Recommendations_Adapter (var viewModel: MainViewModel, var context : Conte
 
         return  data.size
     }
+    companion object
+    {
+        private const val VIEW_TYPE_DATA = 0;
+        private const val VIEW_TYPE_PROGRESS = 1;
+    }
 
     override fun onBindViewHolder(p0: CustomViewHolder, p1: Int) {
         p0.bind(viewModel,context,data.get(p1))
@@ -40,7 +45,7 @@ class Recommendations_Adapter (var viewModel: MainViewModel, var context : Conte
         val  binding: RecommendationsItemsBinding = DataBindingUtil.inflate (LayoutInflater.from(p0.context),
             R.layout.recommendations_items,p0,false)
 
-        return  CustomViewHolder(binding)
+        return   CustomViewHolder(binding)
 
     }
 
