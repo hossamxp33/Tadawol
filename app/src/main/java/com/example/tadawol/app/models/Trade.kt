@@ -11,5 +11,7 @@ data class Trade(
     var id: Int,
     var modified: String,
     var notes: String,
-    var vips: String
+    var vips: String,
+    var close_date: String
+
 )
