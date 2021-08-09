@@ -77,8 +77,8 @@ class MainViewModel : ViewModel() {
 
 
 
-    fun  GetTradesData(){
-        DateRepoCompnay.GetTradesData(TradesResponseLD)
+    fun  GetTradesData(page:Int){
+        DateRepoCompnay.GetTradesData(page,TradesResponseLD)
     }
 
     fun updateActionBarTitle(title: String){

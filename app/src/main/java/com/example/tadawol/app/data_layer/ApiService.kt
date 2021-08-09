@@ -11,7 +11,7 @@ import retrofit2.http.*
 interface APIServices {
 
     @GET("trades.json")
-     fun MyTrades(): Observable<MainTrades>
+     fun MyTrades(@Query("page") page: Int): Observable<MainTrades>
 
 
 

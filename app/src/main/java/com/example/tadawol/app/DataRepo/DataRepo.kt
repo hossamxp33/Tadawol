@@ -24,8 +24,8 @@ class  DataRepo {
 ///// Get Tadawol  Page Data
 //////////////GetTrancsactionReportChartForOffice
 @SuppressLint("CheckResult")
-fun GetTradesData(livedata: MutableLiveData<List<Trade>>?) {
-    getServergetway().MyTrades()
+fun GetTradesData(page:Int, livedata: MutableLiveData<List<Trade>>?) {
+    getServergetway().MyTrades(page)
         .subscribeOn(Schedulers.io())
         .observeOn(AndroidSchedulers.mainThread())
         .map { data -> data }
