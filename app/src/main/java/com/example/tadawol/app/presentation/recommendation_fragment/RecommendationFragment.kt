@@ -12,6 +12,7 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.tadawol.R
+import com.example.tadawol.app.Publicusecase.showToastBasedOnThrowable
 import com.example.tadawol.app.models.Trade
 import com.example.tadawol.app.presentation.viewmodel.MainViewModel
 import com.example.tadawol.databinding.RecommendationsFragmentBinding
@@ -62,13 +63,21 @@ class RecommendationFragment : Fragment(){
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        viewModel.errorLivedat.observe(this, Observer {
+            if (page==1)
+                showToastBasedOnThrowable(context, it)
+        })
         viewModel.GetTradesData(page)
+
+
+        viewModel.loadingLivedat.observe(this,
+            Observer { loading -> progress.setVisibility(if (loading!!) View.VISIBLE else View.GONE) })
 
         viewModel.TradesResponseLD?.observe(this , Observer { it ->
             if (page == 1) {
                 list = ArrayList(it)
                 if (list.size>0) {
-                    MainAdapter = Recommendations_Adapter( viewModel,context, it)
+                    MainAdapter =    it?.let { it1 -> Recommendations_Adapter(viewModel,activity!!, list) }!!
                     recyler.layoutManager = LinearLayoutManager(context)
                     recyler.adapter = MainAdapter;
                     stoploading()

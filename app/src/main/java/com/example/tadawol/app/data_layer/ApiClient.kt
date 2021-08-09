@@ -24,6 +24,7 @@ object ApiClient {
             .addInterceptor { chain: Interceptor.Chain ->
                 val originalRequest = chain.request()
                 val builder = originalRequest.newBuilder()
+                builder.addHeader("Authorization", "Bearer " + "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjEwODUsImV4cCI6MTYzNDQ4MjExNn0.t_3cUEkpQvge0MmyIGtZ05gT1JdCajVcC_ULBCZrrUY")
                 builder.addHeader("Accept", "application/json")
                 builder.addHeader("Content-Type", "application/json")
                 val newRequest = builder.build()

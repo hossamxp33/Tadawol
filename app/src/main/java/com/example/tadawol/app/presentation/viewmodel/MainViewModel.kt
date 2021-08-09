@@ -63,8 +63,9 @@ class MainViewModel : ViewModel() {
 
     var DateRepoCompnay: DataRepo = DataRepo()
      var mCompositeDisposable = CompositeDisposable()
+    var errorLivedat: MutableLiveData<Throwable> = MutableLiveData()
 
-
+    var loadingLivedat: MutableLiveData<Boolean> = MutableLiveData()
     var TradesResponseLD : MutableLiveData<List<Trade>>? = null
      var main_title = MutableLiveData<String>()
 
@@ -72,13 +73,17 @@ class MainViewModel : ViewModel() {
     init {
 
         TradesResponseLD = MutableLiveData()
+        errorLivedat= MutableLiveData()
+        loadingLivedat= MutableLiveData()
         main_title = MutableLiveData()
+
     }
 
 
 
     fun  GetTradesData(page:Int){
-        DateRepoCompnay.GetTradesData(page,TradesResponseLD)
+        loadingLivedat.postValue(true)
+        DateRepoCompnay.GetTradesData(page,TradesResponseLD,errorLivedat,loadingLivedat)
     }
 
     fun updateActionBarTitle(title: String){
