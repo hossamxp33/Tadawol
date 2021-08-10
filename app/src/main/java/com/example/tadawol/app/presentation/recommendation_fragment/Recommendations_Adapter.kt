@@ -29,10 +29,11 @@ class Recommendations_Adapter (var viewModel: MainViewModel, var context : Conte
             p0. binding.blurLayout.pauseBlur()
 
             p0.binding.blurLayout.visibility = View.VISIBLE
+            p0.binding.vip.visibility = View.VISIBLE
 
         }else{
             p0.binding.blurLayout.visibility = View.GONE
-
+            p0.binding.vip.visibility = View.GONE
         }
 
     }

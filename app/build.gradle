@@ -21,8 +21,8 @@ android {
         dataBinding {
             enabled = true
         }
-        renderscriptTargetApi 28 //must match target sdk and build tools
-        renderscriptSupportModeEnabled true
+//        renderscriptTargetApi 28 //must match target sdk and build tools
+//        renderscriptSupportModeEnabled true
     }
     buildTypes {
         release {

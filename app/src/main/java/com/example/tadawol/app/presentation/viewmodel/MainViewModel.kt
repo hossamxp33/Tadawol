@@ -11,6 +11,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.bumptech.glide.Glide
 import com.example.tadawol.app.DataRepo.DataRepo
+import com.example.tadawol.app.models.Data
 import com.example.tadawol.app.models.Trade
 import io.reactivex.disposables.CompositeDisposable
 import java.text.SimpleDateFormat
@@ -67,6 +68,9 @@ class MainViewModel : ViewModel() {
 
     var loadingLivedat: MutableLiveData<Boolean> = MutableLiveData()
     var TradesResponseLD : MutableLiveData<List<Trade>>? = null
+    var AddTradesResponseLD : MutableLiveData<Trade>? = null
+    var CurrenciesResponseLD : MutableLiveData<List<Data>>? = null
+
      var main_title = MutableLiveData<String>()
 
 
@@ -75,6 +79,8 @@ class MainViewModel : ViewModel() {
         TradesResponseLD = MutableLiveData()
         errorLivedat= MutableLiveData()
         loadingLivedat= MutableLiveData()
+        AddTradesResponseLD = MutableLiveData()
+        CurrenciesResponseLD = MutableLiveData()
         main_title = MutableLiveData()
 
     }
@@ -84,6 +90,18 @@ class MainViewModel : ViewModel() {
     fun  GetTradesData(page:Int){
         loadingLivedat.postValue(true)
         DateRepoCompnay.GetTradesData(page,TradesResponseLD,errorLivedat,loadingLivedat)
+    }
+    /// Get Currencies
+    fun  GetCurrenciesData(){
+        loadingLivedat.postValue(true)
+        DateRepoCompnay.GetCurrenciesData(CurrenciesResponseLD,errorLivedat,loadingLivedat)
+    }
+
+    /// Add Trades
+    fun Add_Trades(currency_id:Int,enter : Float,stop_profit: Double, stop_loss:Double ,trade_status : Int,notes: String,vips:String)
+    {
+        DateRepoCompnay.Add(currency_id,enter,stop_profit,stop_loss,trade_status,notes,vips,AddTradesResponseLD,errorLivedat,loadingLivedat)
+
     }
 
     fun updateActionBarTitle(title: String){

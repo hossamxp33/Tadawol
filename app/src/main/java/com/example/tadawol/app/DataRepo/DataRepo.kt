@@ -7,6 +7,7 @@ import androidx.lifecycle.Observer
 
 import com.example.tadawol.app.data_layer.APIServices
 import com.example.tadawol.app.data_layer.ApiClient
+import com.example.tadawol.app.models.Data
 import com.example.tadawol.app.models.MainTrades
 import com.example.tadawol.app.models.Trade
 
@@ -42,6 +43,45 @@ fun GetTradesData(page:Int, livedata: MutableLiveData<List<Trade>>?,errorLiveDat
         )
 }
 
+
+    ////Currencies
+    @SuppressLint("CheckResult")
+    fun GetCurrenciesData(livedata: MutableLiveData<List<Data>>?,errorLiveData: MutableLiveData<Throwable>, loadingLivedata: MutableLiveData<Boolean>) {
+        getServergetway().Currencies()
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .map { data -> data }
+            .subscribe(
+                { books ->
+
+                    livedata?.postValue(books.data)
+                    loadingLivedata.postValue(false)
+
+                },
+                {
+                    errorLiveData.postValue(it);loadingLivedata.postValue(false)
+                }
+            )
+    }
+
+
+    //////Add
+    fun Add(currency_id:Int,enter : Float,stop_profit: Double, stop_loss:Double ,trade_status : Int,notes: String,vips:String,livedata: MutableLiveData<Trade>?,errorLiveData: MutableLiveData<Throwable>, loadingLivedata: MutableLiveData<Boolean>) {
+
+        getServergetway().Add_Trades(currency_id,enter,stop_profit,stop_loss,trade_status,notes,vips)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .map { data -> data }
+            .subscribe(
+                { books ->
+                    livedata?.postValue(books)
+                    loadingLivedata.postValue(false)
+                },
+                {
+                    errorLiveData.postValue(it);loadingLivedata.postValue(false)
+                }
+            )
+    }
 
 
 
