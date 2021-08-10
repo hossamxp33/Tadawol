@@ -13,9 +13,9 @@
 
         <item
 
-                android:id="@+id/reports"
+                android:id="@+id/add_trades"
                 android:icon="@drawable/company"
-                android:title="مؤشر التداول" />
+                android:title=" اضافة  " />
 
         <item
 

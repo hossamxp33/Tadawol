@@ -76,7 +76,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 //
 
             }
-            R.id.reports -> {
+            R.id.add_trades -> {
              val   addFragment = add_trades_fragment()
                 supportFragmentManager.beginTransaction().setCustomAnimations(R.anim.ttb, 0, 0,0)
                     .replace(R.id.main_frame, addFragment)
