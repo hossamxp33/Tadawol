@@ -14,13 +14,13 @@ import androidx.lifecycle.ViewModelProviders
 import com.example.tadawol.R
 import com.example.tadawol.app.helper.PreferenceHelper
 import com.example.tadawol.app.presentation.ClickHandler
+import com.example.tadawol.app.presentation.add_edit_trades.AddTradesfragment
 import com.example.tadawol.app.presentation.recommendation_fragment.RecommendationFragment
 import com.example.tadawol.app.presentation.viewmodel.MainViewModel
 import com.example.tadawol.databinding.ActivityMainBinding
 import com.google.android.material.navigation.NavigationView
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
-import com.example.tadawol.app.presentation.add_edit_trades.Add_Trades_fragment
 
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener  {
@@ -73,7 +73,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
             }
             R.id.add_trades -> {
-             val   addFragment = Add_Trades_fragment()
+             val   addFragment = AddTradesfragment()
                 supportFragmentManager.beginTransaction().setCustomAnimations(R.anim.ttb, 0, 0,0)
                     .replace(R.id.main_frame, addFragment)
                     .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)

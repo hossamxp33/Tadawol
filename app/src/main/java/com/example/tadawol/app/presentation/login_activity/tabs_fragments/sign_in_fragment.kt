@@ -38,9 +38,9 @@ class sign_in_fragment : Fragment(){
         //// Should be requireActivity() Be Cause this is Fragment
         viewModel.LoginResponseLD?.observe(requireActivity(), Observer {
             if (it.token != null) {
-                PreferenceHelper.setUserId(it.userid)
-                PreferenceHelper.setToken(it.token,activity)
-                PreferenceHelper.setUserGroupId(it.groupid)
+                PreferenceHelper.setUserId(it!!.userid!!)
+                PreferenceHelper.setToken(it!!.token,activity)
+                PreferenceHelper.setUserGroupId(it!!.groupid!!)
 
                 if (!(view.etUsername.text.isEmpty() || view.etUsername.text.isEmpty()))
                 {
