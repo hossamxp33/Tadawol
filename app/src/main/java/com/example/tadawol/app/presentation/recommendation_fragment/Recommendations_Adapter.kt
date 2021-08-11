@@ -30,10 +30,11 @@ class Recommendations_Adapter (var viewModel: MainViewModel, var context : Conte
         p0.bind(viewModel,context,data.get(p1))
         if (data.get(p1).vips == "1"){
 
-p0.binding.blurview.visibility = View.VISIBLE
-
+p0.binding.blurviewlayout.visibility = View.VISIBLE
+p0.binding.vipicon.visibility = View.VISIBLE
         }else{
-            p0.binding.blurview.visibility = View.GONE
+            p0.binding.blurviewlayout.visibility = View.GONE
+            p0.binding.vipicon.visibility = View.GONE
 
         }
 
