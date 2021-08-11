@@ -64,8 +64,8 @@ class RecommendationFragment : Fragment(){
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewModel.errorLivedat.observe(this, Observer {
-            if (page==1)
-                showToastBasedOnThrowable(context, it)
+            if ( page == 1 )
+                showToastBasedOnThrowable(context,Throwable())
         })
         viewModel.GetTradesData(page)
 
@@ -75,7 +75,7 @@ class RecommendationFragment : Fragment(){
 
         viewModel.TradesResponseLD?.observe(this , Observer { it ->
             if (page == 1) {
-                list = ArrayList(it)
+                list = ArrayList(it.trades)
                 if (list.size>0) {
                     MainAdapter =    it?.let { it1 -> Recommendations_Adapter(viewModel,activity!!, list) }!!
                     recyler.layoutManager = LinearLayoutManager(context)
@@ -84,7 +84,7 @@ class RecommendationFragment : Fragment(){
 
                 }
             } else{
-                list.addAll(it!!)
+                list.addAll(it.trades)
                 MainAdapter.notifyDataSetChanged()
                 recyler.scrollToPosition(MainAdapter.getItemCount() - 9)
                 stoploading()

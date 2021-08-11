@@ -1,31 +1,65 @@
 package com.example.tadawol.app.DataRepo
 
 import android.annotation.SuppressLint
-import android.util.Log
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Observer
 
 import com.example.tadawol.app.data_layer.APIServices
 import com.example.tadawol.app.data_layer.ApiClient
-import com.example.tadawol.app.models.Data
-import com.example.tadawol.app.models.MainTrades
-import com.example.tadawol.app.models.Trade
+import com.example.tadawol.app.models.*
 
 
 import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.disposables.Disposable
-import io.reactivex.functions.Function
 import io.reactivex.schedulers.Schedulers
-import java.util.function.BiFunction
 
 
 class  DataRepo {
 
-///// Get Tadawol  Page Data
-//////////////GetTrancsactionReportChartForOffice
+
+
+    ////////////Login
+    @SuppressLint("CheckResult")
+    fun userlogin(username:String, password:String, livedata: MutableLiveData<LoginData>?, errorLiveData: MutableLiveData<String>, loadingLivedata: MutableLiveData<Boolean>) {
+        getServergetway().userlogin(username,password)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .map { data -> data }
+            .subscribe(
+                { books ->
+
+                    livedata?.postValue(books.data)
+                    loadingLivedata.postValue(false)
+
+                },
+                {
+                    errorLiveData.postValue(it.toString());loadingLivedata.postValue(false)
+                }
+            )
+    }
+
+    ///userRegister
+    @SuppressLint("CheckResult")
+    fun userRegister(username:String, password:String, livedata: MutableLiveData<RegisterData>?, errorLiveData: MutableLiveData<String>, loadingLivedata: MutableLiveData<Boolean>) {
+        getServergetway().userRegister(username,password)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .map { data -> data }
+            .subscribe(
+                { books ->
+
+                    livedata?.postValue(books.data)
+                    loadingLivedata.postValue(false)
+
+                },
+                {
+                    errorLiveData.postValue(it.toString());loadingLivedata.postValue(false)
+                }
+            )
+    }
+
+
+    ///// Get Tadawol  Page Data
 @SuppressLint("CheckResult")
-fun GetTradesData(page:Int, livedata: MutableLiveData<List<Trade>>?,errorLiveData: MutableLiveData<Throwable>, loadingLivedata: MutableLiveData<Boolean>) {
+fun GetTradesData(page:Int, livedata: MutableLiveData<MainTrades>?,errorLiveData: MutableLiveData<String>, loadingLivedata: MutableLiveData<Boolean>) {
     getServergetway().MyTrades(page)
         .subscribeOn(Schedulers.io())
         .observeOn(AndroidSchedulers.mainThread())
@@ -33,12 +67,12 @@ fun GetTradesData(page:Int, livedata: MutableLiveData<List<Trade>>?,errorLiveDat
         .subscribe(
             { books ->
 
-                livedata?.postValue(books.trades)
+                livedata?.postValue(books)
                 loadingLivedata.postValue(false)
 
             },
             {
-                errorLiveData.postValue(it);loadingLivedata.postValue(false)
+                errorLiveData.postValue(it.toString());loadingLivedata.postValue(false)
             }
         )
 }
@@ -46,7 +80,7 @@ fun GetTradesData(page:Int, livedata: MutableLiveData<List<Trade>>?,errorLiveDat
 
     ////Currencies
     @SuppressLint("CheckResult")
-    fun GetCurrenciesData(livedata: MutableLiveData<List<Data>>?,errorLiveData: MutableLiveData<Throwable>, loadingLivedata: MutableLiveData<Boolean>) {
+    fun GetCurrenciesData(livedata: MutableLiveData<List<Data>>?,errorLiveData: MutableLiveData<String>, loadingLivedata: MutableLiveData<Boolean>) {
         getServergetway().Currencies()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
@@ -59,15 +93,15 @@ fun GetTradesData(page:Int, livedata: MutableLiveData<List<Trade>>?,errorLiveDat
 
                 },
                 {
-                    errorLiveData.postValue(it);loadingLivedata.postValue(false)
+                    errorLiveData.postValue(it.toString());loadingLivedata.postValue(false)
                 }
             )
     }
 
 
     //////Add
-    fun Add(currency_id:Int,enter : Float,stop_profit: Double, stop_loss:Double ,trade_status : Int,notes: String,vips:String,livedata: MutableLiveData<Trade>?,errorLiveData: MutableLiveData<Throwable>, loadingLivedata: MutableLiveData<Boolean>) {
-
+    @SuppressLint("CheckResult")
+    fun Add(currency_id:Int, enter : Float, stop_profit: Double, stop_loss:Double, trade_status : Int, notes: String, vips:String, livedata: MutableLiveData<Trade>?, errorLiveData: MutableLiveData<String>, loadingLivedata: MutableLiveData<Boolean>) {
         getServergetway().Add_Trades(currency_id,enter,stop_profit,stop_loss,trade_status,notes,vips)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
@@ -78,12 +112,40 @@ fun GetTradesData(page:Int, livedata: MutableLiveData<List<Trade>>?,errorLiveDat
                     loadingLivedata.postValue(false)
                 },
                 {
-                    errorLiveData.postValue(it);loadingLivedata.postValue(false)
+                    errorLiveData.postValue(it.toString());loadingLivedata.postValue(false)
                 }
             )
     }
 
 
+
+    ////Edit_Trades
+    @SuppressLint("CheckResult")
+    fun Edit_Trades(
+        id:Int,
+        currency_id:Int,
+        enter: Float,
+        stop_profit: Double, stop_loss:Double,
+        trade_status: Int,
+        notes: String,
+        vips:String,
+        livedata: MutableLiveData<Trade>?,
+        errorLiveData: MutableLiveData<String>, loadingLivedata: MutableLiveData<Boolean>) {
+
+        getServergetway().Edit_Trades(id,currency_id,enter,stop_profit,stop_loss,trade_status,notes,vips)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .map { data -> data }
+            .subscribe(
+                { books ->
+                    livedata?.postValue(books)
+                    loadingLivedata.postValue(false)
+                },
+                {
+                    errorLiveData.postValue(it.toString());loadingLivedata.postValue(false)
+                }
+            )
+    }
 
     }
     fun getServergetway () : APIServices

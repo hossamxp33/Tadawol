@@ -1,21 +1,18 @@
 package com.example.tadawol.app
 
-import android.content.Intent
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.system.Os.close
 import android.view.MenuItem
 import android.view.View
-import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.core.view.GravityCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.FragmentTransaction
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.example.tadawol.R
+import com.example.tadawol.app.helper.PreferenceHelper
 import com.example.tadawol.app.presentation.ClickHandler
 import com.example.tadawol.app.presentation.recommendation_fragment.RecommendationFragment
 import com.example.tadawol.app.presentation.viewmodel.MainViewModel
@@ -23,8 +20,7 @@ import com.example.tadawol.databinding.ActivityMainBinding
 import com.google.android.material.navigation.NavigationView
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
-import   android.graphics.Bitmap
-import com.example.tadawol.app.presentation.add_edit_trades.add_trades_fragment
+import com.example.tadawol.app.presentation.add_edit_trades.Add_Trades_fragment
 
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener  {
@@ -43,7 +39,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         viewModel.main_title.observe(this, androidx.lifecycle.Observer {
           binding.title.text = it
         })
-
+      //  PreferenceHelper.getToken()
         binding.context = this
         binding.listener = ClickHandler()
         binding!!.btnMenu.setOnClickListener{ v ->
@@ -77,7 +73,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
             }
             R.id.add_trades -> {
-             val   addFragment = add_trades_fragment()
+             val   addFragment = Add_Trades_fragment()
                 supportFragmentManager.beginTransaction().setCustomAnimations(R.anim.ttb, 0, 0,0)
                     .replace(R.id.main_frame, addFragment)
                     .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)

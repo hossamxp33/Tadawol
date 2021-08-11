@@ -19,7 +19,7 @@ import com.example.tadawol.databinding.AddTradesFragmentBinding
 import com.example.tadawol.databinding.RegisterFragmentBinding
 import com.example.tadawol.databinding.SignInFragmentBinding
 
-class add_trades_fragment : Fragment(){
+class Add_Trades_fragment : Fragment(){
     val viewModel: MainViewModel by lazy {
         ViewModelProviders.of(this).get(MainViewModel::class.java)
     }

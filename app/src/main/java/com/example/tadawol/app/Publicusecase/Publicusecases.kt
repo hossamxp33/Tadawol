@@ -18,6 +18,7 @@ import android.widget.Toast
 import com.bumptech.glide.Glide
 import com.example.tadawol.R
 import com.example.tadawol.app.data_layer.ApiClient
+import com.example.tadawol.app.helper.PreferenceHelper
 
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -134,15 +135,15 @@ fun setupviewPager(viewPager: ViewPager) {
     return null
 }
 
-// fun checkUserLogin(context: Context): Boolean {
-//     if (PreferenceHelper.getUserId()>0)
-//    return true
-//     else
-//     {
-//         Toast.makeText(context,"يجب تسجيل الدخول اولا ",Toast.LENGTH_SHORT).show()
-//         return  false
-//     }
-//}
+ fun checkUserLogin(context: Context): Boolean {
+     if (PreferenceHelper.getUserId()>0)
+    return true
+     else
+     {
+         Toast.makeText(context,"يجب تسجيل الدخول اولا ",Toast.LENGTH_SHORT).show()
+         return  false
+     }
+}
 
 fun openWhatsApp(smsNumber: String, context: Context) {
 

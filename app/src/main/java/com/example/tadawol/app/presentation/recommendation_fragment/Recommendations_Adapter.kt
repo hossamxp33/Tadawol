@@ -5,6 +5,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.RecyclerView
 import com.example.tadawol.R
 import com.example.tadawol.app.MainActivity
@@ -15,6 +17,9 @@ import com.example.tadawol.databinding.RecommendationsItemsBinding
 
 
 class Recommendations_Adapter (var viewModel: MainViewModel, var context : Context?, var data:List<Trade>) : RecyclerView.Adapter<CustomViewHolder>() {
+    var isactive : Boolean ? = null
+
+
     override fun getItemCount(): Int {
 
         return  data.size
@@ -23,20 +28,32 @@ class Recommendations_Adapter (var viewModel: MainViewModel, var context : Conte
 
     override fun onBindViewHolder(p0: CustomViewHolder, p1: Int) {
         p0.bind(viewModel,context,data.get(p1))
-        if (data.get(p1).vips == "1"){
 
-           p0.binding.blurLayout.startBlur()
-            p0. binding.blurLayout.pauseBlur()
 
-            p0.binding.blurLayout.visibility = View.VISIBLE
-            p0.binding.vip.visibility = View.VISIBLE
 
-        }else{
-            p0.binding.blurLayout.visibility = View.GONE
-            p0.binding.vip.visibility = View.GONE
-        }
 
+
+        viewModel.TradesResponseLD?.observe(p0.binding.constraintLayout.context as LifecycleOwner, Observer {
+            isactive = it.isactive
+        })
+
+        if (isactive == true){
+    if (data.get(p1).vips == "1"){
+
+        p0.binding.blurLayout.startBlur()
+        p0.binding.blurLayout.pauseBlur()
+        p0.binding.blurLayout.visibility = View.VISIBLE
+        p0.binding.vip.visibility = View.VISIBLE
+
+    }else{
+        p0.binding.blurLayout.visibility = View.GONE
+        p0.binding.vip.visibility = View.GONE
     }
+     }else{
+    p0.binding.blurLayout.visibility = View.GONE
+}
+    }
+
 
     override fun onCreateViewHolder(p0: ViewGroup, p1: Int): CustomViewHolder {
         val  binding: RecommendationsItemsBinding = DataBindingUtil.inflate (LayoutInflater.from(p0.context),
