@@ -25,15 +25,25 @@ interface APIServices {
         @Field("password") password: String
     ): Observable<RegisterModel>
 
+
+    ///// Get Trades
     @GET("trades.json")
      fun MyTrades(@Query("page") page: Int): Observable<MainTrades>
 
+    ///// Get News
+    @GET("news.json")
+    fun MyNews(): Observable<NewsData>
 
+     ////// Currencies
     @GET("Currencies.json")
     fun Currencies(): Observable<Currencies>
 
+    ////// Currencies
+    @GET("Trades/price.json")
+    fun GetStockPrice(): Observable<StockPrices>
 
-//// Add
+
+    //// Add
     @FormUrlEncoded
     @POST("trades/add.json")
     abstract fun Add_Trades(

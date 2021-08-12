@@ -97,7 +97,46 @@ fun GetTradesData(page:Int, livedata: MutableLiveData<MainTrades>?,errorLiveData
                 }
             )
     }
+/////GetStockPrice
+@SuppressLint("CheckResult")
+fun GetStockPrice(livedata: MutableLiveData<List<Price>>?,errorLiveData: MutableLiveData<String>, loadingLivedata: MutableLiveData<Boolean>) {
+    getServergetway().GetStockPrice()
+        .subscribeOn(Schedulers.io())
+        .observeOn(AndroidSchedulers.mainThread())
+        .map { data -> data }
+        .subscribe(
+            { books ->
 
+                livedata?.postValue(books.obj.prices)
+
+                loadingLivedata.postValue(false)
+
+            },
+            {
+                errorLiveData.postValue(it.toString());loadingLivedata.postValue(false)
+            }
+        )
+}
+
+    ////MyNews
+@SuppressLint("CheckResult")
+fun GetMyNewsData(livedata: MutableLiveData<List<New>>?,errorLiveData: MutableLiveData<String>, loadingLivedata: MutableLiveData<Boolean>) {
+    getServergetway().MyNews()
+        .subscribeOn(Schedulers.io())
+        .observeOn(AndroidSchedulers.mainThread())
+        .map { data -> data }
+        .subscribe(
+            { books ->
+
+                livedata?.postValue(books.news)
+                loadingLivedata.postValue(false)
+
+            },
+            {
+                errorLiveData.postValue(it.toString());loadingLivedata.postValue(false)
+            }
+        )
+}
 
     //////Add
     @SuppressLint("CheckResult")

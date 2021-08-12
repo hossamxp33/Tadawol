@@ -19,10 +19,6 @@ import java.util.*
 fun setImageResource(imageView: AppCompatImageView, resource: String?) {
     Glide.with(imageView.context).load(resource).into(imageView)
 }
-@BindingAdapter("app:imageResourcee")
-fun setImageResourcee(imageView: AppCompatImageView, resource: String?) {
-    Glide.with(imageView.context).load(resource).into(imageView)
-}
 
 @BindingAdapter("text_color")
 /////// set Stock image statue /////
@@ -66,12 +62,11 @@ class MainViewModel : ViewModel() {
     var loadingLivedat: MutableLiveData<Boolean> = MutableLiveData()
     var LoginResponseLD : MutableLiveData<LoginData>? = null
     var  RegisterResponseLD : MutableLiveData<RegisterData>? = null
-
-
-
     var TradesResponseLD : MutableLiveData<MainTrades>? = null
     var AddTradesResponseLD : MutableLiveData<Trade>? = null
     var CurrenciesResponseLD : MutableLiveData<List<Data>>? = null
+    var NewsResponseLD : MutableLiveData<List<New>>? = null
+    var StockPricesResponseLD : MutableLiveData<List<Price>>? = null
 
      var main_title = MutableLiveData<String>()
 
@@ -83,6 +78,8 @@ class MainViewModel : ViewModel() {
         TradesResponseLD = MutableLiveData()
         AddTradesResponseLD = MutableLiveData()
         CurrenciesResponseLD = MutableLiveData()
+        NewsResponseLD = MutableLiveData()
+        StockPricesResponseLD= MutableLiveData()
         main_title = MutableLiveData()
 
     }
@@ -90,7 +87,10 @@ class MainViewModel : ViewModel() {
 ///userlogin
 fun  Login(username:String,password:String){
     loadingLivedat.postValue(true)
+
     DateRepoCompnay.userlogin(username,password,LoginResponseLD,errorLivedat,loadingLivedat)
+
+
 }
     ///userRegister
     fun  userRegister(username:String,password:String){
@@ -107,6 +107,16 @@ fun  Login(username:String,password:String){
         DateRepoCompnay.GetCurrenciesData(CurrenciesResponseLD,errorLivedat,loadingLivedat)
     }
 
+    ////GetStockPrice
+    fun  GetStockPrice(){
+        loadingLivedat.postValue(true)
+        DateRepoCompnay.GetStockPrice(StockPricesResponseLD,errorLivedat,loadingLivedat)
+    }
+    /// Get News
+    fun  GetNewsData(){
+        loadingLivedat.postValue(true)
+        DateRepoCompnay.GetMyNewsData(NewsResponseLD,errorLivedat,loadingLivedat)
+    }
     /// Add Trades
     fun Add_Trades(currency_id:Int,enter : Float,stop_profit: Double, stop_loss:Double ,trade_status : Int,notes: String,vips:String)
     {
@@ -117,8 +127,7 @@ fun  Login(username:String,password:String){
 
 ///Edit_Trades
 fun Edit_Trades(id:Int,currency_id:Int,enter : Float,stop_profit: Double, stop_loss:Double ,trade_status : Int,notes: String,vips:String)
-{ if (validate(
-            Trade(currency_id,enter,stop_profit,stop_loss, trade_status, notes, vips))) {
+{ if (validate(Trade(currency_id,enter,stop_profit,stop_loss, trade_status, notes, vips))) {
         DateRepoCompnay.Edit_Trades(
             id,
             currency_id,
@@ -134,6 +143,7 @@ fun Edit_Trades(id:Int,currency_id:Int,enter : Float,stop_profit: Double, stop_l
         )
     }
 }
+
     private fun validate(data: Trade): Boolean {
         if (data.enter.toString().trim() == "" ||
             data.stop_profit.toString().trim() == ""||
@@ -144,6 +154,8 @@ fun Edit_Trades(id:Int,currency_id:Int,enter : Float,stop_profit: Double, stop_l
         } else
             return true
     }
+
+
     fun updateActionBarTitle(title: String){
         main_title.postValue(title)
     }

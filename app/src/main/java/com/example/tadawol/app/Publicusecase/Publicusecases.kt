@@ -136,7 +136,7 @@ fun setupviewPager(viewPager: ViewPager) {
 }
 
  fun checkUserLogin(context: Context): Boolean {
-     if (PreferenceHelper.getUserId()>0)
+     if (!PreferenceHelper.getToken().isNullOrEmpty())
     return true
      else
      {
@@ -144,7 +144,7 @@ fun setupviewPager(viewPager: ViewPager) {
          return  false
      }
 }
-
+/// open whats app
 fun openWhatsApp(smsNumber: String, context: Context) {
 
     val sendIntent = Intent(Intent.ACTION_SEND)
@@ -158,6 +158,8 @@ fun openWhatsApp(smsNumber: String, context: Context) {
     }
     context.startActivity(sendIntent)
 }
+
+//open  Facebook
 fun openFacebook(context: Context) {
 
     val openURL = Intent(android.content.Intent.ACTION_VIEW)

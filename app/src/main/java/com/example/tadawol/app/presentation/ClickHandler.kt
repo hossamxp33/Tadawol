@@ -7,7 +7,9 @@ import com.example.tadawol.R
 import com.example.tadawol.app.MainActivity
 import com.example.tadawol.app.models.Trade
 import com.example.tadawol.app.presentation.add_edit_trades.Edit_Trades_fragment
+import com.example.tadawol.app.presentation.newsfragment.NewsFragment
 import com.example.tadawol.app.presentation.recommendation_fragment.RecommendationFragment
+import com.example.tadawol.app.presentation.stock_price.StockPriceFragment
 
 class ClickHandler {
 
@@ -17,6 +19,26 @@ class ClickHandler {
         val recommendation_fragment = RecommendationFragment()
         ( context as MainActivity). supportFragmentManager.beginTransaction()
             .replace(R.id.main_frame, recommendation_fragment).addToBackStack(null)
+            .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+            .commit()
+
+
+    }
+    fun SwitchToNews( context: Context) {
+
+        val news_fragment = NewsFragment()
+        ( context as MainActivity). supportFragmentManager.beginTransaction()
+            .replace(R.id.main_frame, news_fragment).addToBackStack(null)
+            .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+            .commit()
+
+
+    }
+    fun SwitchToStockPriceFragment( context: Context) {
+
+        val stockPrices_fragment = StockPriceFragment()
+        ( context as MainActivity). supportFragmentManager.beginTransaction()
+            .replace(R.id.main_frame, stockPrices_fragment).addToBackStack(null)
             .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
             .commit()
 

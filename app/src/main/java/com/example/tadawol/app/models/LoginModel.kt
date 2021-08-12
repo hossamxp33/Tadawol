@@ -6,11 +6,12 @@ data class LoginModel(
 )
 
 data class LoginData(
-    var email: String,
-    var groupid: Int,
-    var mobile: String,
-    var roomid: Any,
-    var token: String,
-    var userid: Int,
-    var username: String
+    var email: String?=null,
+    var pass: String?=null,
+    var groupid: Int?=null,
+    var mobile: String?=null,
+    var roomid: Any?=null,
+    var token: String?=null,
+    var userid: Int?=null,
+    var username: String?=null
 )

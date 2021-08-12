@@ -1,4 +1,4 @@
-package com.example.tadawol.app.presentation.recommendation_fragment
+package com.example.tadawol.app.presentation.newsfragment
 
 import android.os.Bundle
 import android.os.Handler
@@ -12,52 +12,58 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.tadawol.R
+import com.example.tadawol.app.MainActivity
 import com.example.tadawol.app.Publicusecase.showToastBasedOnThrowable
+import com.example.tadawol.app.models.New
 import com.example.tadawol.app.models.Trade
 import com.example.tadawol.app.presentation.viewmodel.MainViewModel
-import com.example.tadawol.databinding.RecommendationsFragmentBinding
-import com.example.tadawol.databinding.RecommendationsFragmentBindingImpl
+import com.example.tadawol.databinding.NewsFragmentBinding
 import kotlinx.android.synthetic.main.recommendations_fragment.*
 import java.util.*
 import kotlin.collections.ArrayList
 
 
-class RecommendationFragment : Fragment(){
+class NewsFragment : Fragment(){
     val viewModel: MainViewModel by lazy {
         ViewModelProviders.of(requireActivity()).get(MainViewModel::class.java)
     }
-    lateinit var MainAdapter: Recommendations_Adapter
+    lateinit var MainAdapter: News_Adapter
 
-    lateinit var list : ArrayList<Trade>
+    lateinit var list : ArrayList<New>
+     var data : New ? = null
+
+
     internal var page = 1
 
 
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
-        var view: RecommendationsFragmentBinding =
+        var view:NewsFragmentBinding =
             DataBindingUtil.inflate(inflater,
-              R.layout.recommendations_fragment, container,false)
+              R.layout.news_fragment, container,false)
            page = 1
 
-        viewModel.updateActionBarTitle("التوصيات")
+        viewModel.updateActionBarTitle("أخبار الاقتصاد العالمي والمحلي")
+        viewModel.GetNewsData()
+
+        view.context = context as MainActivity
         //attaches LinearLayoutManager with RecyclerView
-        viewModel.GetTradesData(page)
 
-
-        view. recyler.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                super.onScrolled(recyclerView, dx, dy)
-                val lastVisibleItem =
-                    (Objects.requireNonNull(recyclerView.layoutManager) as LinearLayoutManager).findLastCompletelyVisibleItemPosition()
-                if (lastVisibleItem == MainAdapter.getItemCount() -1) {
-                    page++
-                    viewModel.GetTradesData(page)
-
-                }
-            }
-        })
-
+//////////////////// Paging
+//        view.recyler.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+//            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+//                super.onScrolled(recyclerView, dx, dy)
+//                val lastVisibleItem =
+//                    (Objects.requireNonNull(recyclerView.layoutManager) as LinearLayoutManager).findLastCompletelyVisibleItemPosition()
+//                if (lastVisibleItem == MainAdapter.getItemCount() -1) {
+//                    page++
+//                    viewModel.GetNewsData()
+//
+//                }
+//            }
+//        })
+//
 
     return view.root
     }
@@ -68,24 +74,26 @@ class RecommendationFragment : Fragment(){
             if ( page == 1 )
                 showToastBasedOnThrowable(context,Throwable())
         })
-        viewModel.GetTradesData(page)
+
+
+        viewModel.GetNewsData()
 
 
         viewModel.loadingLivedat.observe(this,
             Observer { loading -> progress.setVisibility(if (loading!!) View.VISIBLE else View.GONE) })
 
-        viewModel.TradesResponseLD?.observe(this , Observer { it ->
+        viewModel.NewsResponseLD?.observe(this , Observer { it ->
             if (page == 1) {
-                list = ArrayList(it.trades)
+                list = ArrayList(it)
                 if (list.size>0) {
-                    MainAdapter =    it?.let { it1 -> Recommendations_Adapter(viewModel,activity!!, list) }!!
+                    MainAdapter =    it?.let { it1 -> News_Adapter(viewModel,activity!!, list) }!!
                     recyler.layoutManager = LinearLayoutManager(context)
                     recyler.adapter = MainAdapter;
                     stoploading()
 
                 }
             } else{
-                list.addAll(it.trades)
+                list.addAll(it)
                 MainAdapter.notifyDataSetChanged()
                 recyler.scrollToPosition(MainAdapter.getItemCount() - 9)
                 stoploading()

@@ -14,9 +14,7 @@ data class Trade(
     var trade_status: Int ?=null,
     var vips: String ?=null,
     var notes: String ?=null,
-
     var id: Int ?=null,
-
     var created: String ?=null,
     var currency: Currency ?=null,
     var modified: String ?=null,

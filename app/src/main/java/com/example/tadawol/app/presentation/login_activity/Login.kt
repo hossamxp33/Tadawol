@@ -23,8 +23,10 @@ class Login : AppCompatActivity()  {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
         PreferenceHelper(this)
-        if (checkUserLogin(this))
-        //    startActivity(Intent(this  , MainActivity::class.java))
+        if (checkUserLogin(this)){
+         startActivity(Intent(this  , MainActivity::class.java))
+        }
+
         // Tabs Customization
         tab_layout.setSelectedTabIndicatorColor(getColor(R.color.white))
         tab_layout.setBackgroundColor(ContextCompat.getColor(this, R.color.signinpurple))
