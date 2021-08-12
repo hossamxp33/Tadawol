@@ -78,7 +78,7 @@ class RecommendationFragment : Fragment(){
             if (page == 1) {
                 list = ArrayList(it.trades)
                 if (list.size>0) {
-                    MainAdapter =    it?.let { it1 -> Recommendations_Adapter(viewModel,activity!!, list) }!!
+                    MainAdapter =    it?.let { it1 -> Recommendations_Adapter(viewModel,requireActivity(), list) }!!
                     recyler.layoutManager = LinearLayoutManager(context)
                     recyler.adapter = MainAdapter;
                     stoploading()

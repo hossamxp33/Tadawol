@@ -1,12 +1,10 @@
 package com.example.tadawol.app
 
-import android.content.Intent
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
-import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.core.view.GravityCompat
@@ -14,46 +12,34 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.FragmentTransaction
 import androidx.lifecycle.ViewModelProviders
 import com.example.tadawol.R
-import com.example.tadawol.app.Publicusecase.checkUserLogin
 import com.example.tadawol.app.helper.PreferenceHelper
 import com.example.tadawol.app.presentation.ClickHandler
+import com.example.tadawol.app.presentation.add_edit_trades.AddTradesfragment
 import com.example.tadawol.app.presentation.recommendation_fragment.RecommendationFragment
 import com.example.tadawol.app.presentation.viewmodel.MainViewModel
 import com.example.tadawol.databinding.ActivityMainBinding
 import com.google.android.material.navigation.NavigationView
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
-import com.example.tadawol.app.presentation.add_edit_trades.Add_Trades_fragment
-import com.example.tadawol.app.presentation.login_activity.Login
-import java.lang.Exception
 
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener  {
-    val viewModel: MainViewModel by lazy {
-        ViewModelProviders.of(this).get(MainViewModel::class.java)
-    }
-    var title : String ? = null
+    @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
+    private lateinit var viewModel: MainViewModel
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         val binding =
             DataBindingUtil.setContentView<ActivityMainBinding>(this, R.layout.activity_main)
+        viewModel = ViewModelProviders.of(this).get(MainViewModel::class.java)
+        viewModel.updateActionBarTitle("الرئيسية")
 
 
         viewModel.main_title.observe(this, androidx.lifecycle.Observer {
-            title = it
-
-            val value = it ?: return@Observer
-            binding.title.text = value
-
+          binding.title.text = it
         })
-        try {
-         binding.title.text = title
-
-        }catch (e : Exception){
-
-        }
-        //  PreferenceHelper.getToken()
+      //  PreferenceHelper.getToken()
         binding.context = this
         binding.listener = ClickHandler()
         binding!!.btnMenu.setOnClickListener{ v ->
@@ -87,7 +73,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
             }
             R.id.add_trades -> {
-             val   addFragment = Add_Trades_fragment()
+             val   addFragment = AddTradesfragment()
                 supportFragmentManager.beginTransaction().setCustomAnimations(R.anim.ttb, 0, 0,0)
                     .replace(R.id.main_frame, addFragment)
                     .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
@@ -99,12 +85,13 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 //                startActivity(homeIntent)
             }
             R.id.more -> {
-
-                    PreferenceHelper.setToken(null,this)
-                    val homeIntent = Intent(this, Login::class.java)
-                    Toast.makeText(this, "تم تسجيل خروجك", Toast.LENGTH_SHORT).show()
-                    startActivity(homeIntent)
-
+//                if (checkUserLogin(this)) {
+//                    PreferenceHelper.setAuthId("0",this)
+//                    Toast.makeText(this, "تم تسجيل خروجك", Toast.LENGTH_SHORT).show()
+//
+//                    val homeIntent = Intent(this, LoginActivity::class.java)
+//                    startActivity(homeIntent)
+//                }
             }
 
 

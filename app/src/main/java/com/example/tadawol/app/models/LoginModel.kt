@@ -7,7 +7,6 @@ data class LoginModel(
 
 data class LoginData(
     var email: String?=null,
-    var pass: String?=null,
     var groupid: Int?=null,
     var mobile: String?=null,
     var roomid: Any?=null,

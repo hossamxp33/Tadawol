@@ -112,7 +112,7 @@ dependencies {
 
 
     //    compile 'jp.wasabeef:blurry:4.0.0'
-    implementation 'io.alterac.blurkit:blurkit:1.1.0'
+    implementation 'com.github.mmin18:realtimeblurview:1.2.1'
 
 
 }

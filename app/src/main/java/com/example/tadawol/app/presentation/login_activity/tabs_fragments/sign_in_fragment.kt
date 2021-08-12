@@ -30,28 +30,17 @@ class sign_in_fragment : Fragment(){
         var view: SignInFragmentBinding =
             DataBindingUtil.inflate(inflater,
                 R.layout.sign_in_fragment, container,false)
-           view.btnLogin.setOnClickListener {
-            try {
-                viewModel.Login(view.etUsername.text.toString(), view.etPassword.text.toString())
-            }catch (e :Exception){
-                Toast.makeText(context, "أكمل البيانات", Toast.LENGTH_SHORT).show()
+        view.btnLogin.setOnClickListener {
+            viewModel.Login(view.etUsername.text.toString(), view.etPassword.text.toString())
 
-            }
         }
 
         //// Should be requireActivity() Be Cause this is Fragment
         viewModel.LoginResponseLD?.observe(requireActivity(), Observer {
             if (it.token != null) {
-
-                try {
-                    PreferenceHelper.setUserId(it.userid!!)
-                    PreferenceHelper.setToken(it.token,activity)
-                    PreferenceHelper.setUserGroupId(it.groupid!!)
-                }catch (e : Exception){
-                    Toast.makeText(context, "خطأ ", Toast.LENGTH_SHORT).show()
-
-                }
-
+                PreferenceHelper.setUserId(it!!.userid!!)
+                PreferenceHelper.setToken(it!!.token,activity)
+                PreferenceHelper.setUserGroupId(it!!.groupid!!)
 
                 if (!(view.etUsername.text.isEmpty() || view.etUsername.text.isEmpty()))
                 {

@@ -159,7 +159,7 @@
                     android:layout_marginLeft="16dp"
                     android:fontFamily="@font/kokn"
                     android:text="@{String.valueOf(data.stop_loss)}"
-                    android:textSize="16dp"
+                    android:textSize="20dp"
                     android:textStyle="bold"
                     app:layout_constraintLeft_toRightOf="@id/sl"
                     app:layout_constraintTop_toBottomOf="@+id/tb" />
@@ -180,12 +180,12 @@
                     app:text_color="@{data.trade_status}"
 
                     android:textColor="@color/lightgreen"
-                    android:textSize="16dp"
+                    android:textSize="20dp"
                     android:textStyle="bold"
                     app:layout_constraintLeft_toRightOf="@+id/guide6"
                     app:layout_constraintTop_toTopOf="parent" />
+
                 <ImageView
-                    android:id="@+id/right_side"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="16dp"
@@ -193,20 +193,6 @@
                     android:src="@drawable/vip_arrow"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintLeft_toRightOf="@id/guide6" />
-                <TextView
-                    android:id="@+id/vip"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="24dp"
-                    android:background="@drawable/yellwo_reduisbackground"
-                    android:fontFamily="@font/kokn"
-                    android:text="VIP"
-                    android:textSize="10dp"
-                    android:textColor="@color/black"
-                    app:layout_constraintBottom_toTopOf="@+id/right_side"
-                    app:layout_constraintRight_toRightOf="@+id/right_side"
-                    app:layout_constraintTop_toTopOf="parent" />
-
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -238,38 +224,59 @@
                     android:background="@drawable/note_redius_bg"
                     app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
-
                 <TextView
-                    android:layout_width="0dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="8dp"
-                    android:layout_marginRight="8dp"
-                    android:gravity="center"
                     android:text="@{Html.fromHtml(String.format(data.notes))}"
                     android:textColor="@color/white"
-                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textView"
                     app:layout_constraintRight_toRightOf="parent"
-                     app:layout_constraintWidth_percent="0.8"
-                    app:layout_constraintTop_toBottomOf="@+id/textView" />
+                    app:layout_constraintLeft_toLeftOf="parent"/>
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
+        <androidx.cardview.widget.CardView
+            android:id="@+id/blurviewlayout"
 
-        <io.alterac.blurkit.BlurLayout
-            android:id="@+id/blurLayout"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_marginLeft="24dp"
-            android:layout_marginTop="24dp"
-            android:layout_marginBottom="24dp"
-            app:blk_blurRadius="2"
-            app:blk_downscaleFactor="0.12"
-            app:blk_fps="30"
+            android:layout_width="match_parent"
+            android:layout_height="180dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+app:cardBackgroundColor="@color/trans_success_stroke_color"
             app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintWidth_percent="0.7" />
+            app:cardCornerRadius="25dp"
+            >
+        <com.github.mmin18.widget.RealtimeBlurView
+            android:id="@+id/blurview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:realtimeBlurRadius="10dp"
+            app:realtimeOverlayColor="#8000"
+
+            >
+
+
+        </com.github.mmin18.widget.RealtimeBlurView>
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/vipicon"
+                android:layout_width="150dp"
+                android:layout_height="150dp"
+                app:srcCompat="@drawable/vip"
+               android:layout_gravity="center"
+                >
+
+            </androidx.appcompat.widget.AppCompatImageView>
+        </androidx.cardview.widget.CardView>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
