@@ -1,14 +1,20 @@
 package com.example.tadawol.app.presentation
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
 import androidx.appcompat.widget.AppCompatImageView
+import androidx.core.content.ContextCompat.startActivity
 import androidx.fragment.app.FragmentTransaction
 import com.example.tadawol.R
 import com.example.tadawol.app.MainActivity
+import com.example.tadawol.app.Publicusecase.checkUserLogin
+import com.example.tadawol.app.helper.PreferenceHelper
 import com.example.tadawol.app.models.Trade
 import com.example.tadawol.app.presentation.add_edit_trades.Edit_Trades_fragment
+import com.example.tadawol.app.presentation.login_activity.Login
 import com.example.tadawol.app.presentation.newsfragment.NewsFragment
 import com.example.tadawol.app.presentation.recommendation_fragment.RecommendationFragment
 import com.example.tadawol.app.presentation.stock_price.StockPriceFragment
@@ -28,6 +34,16 @@ class ClickHandler {
         SetDefaultColor(context)
         SelectedItemColor(context.binding!!.deal)
     }
+    fun SwitchToLogin( context: Context) {
+
+                if (checkUserLogin  (context)) {
+                    PreferenceHelper.setToken(null,  (context))
+                    val homeIntent = Intent(context, Login::class.java)
+                    context.startActivity(homeIntent)
+                    Toast.makeText(  ( context as MainActivity), "تم تسجيل خروجك", Toast.LENGTH_SHORT).show()
+
+                }
+                }
 
 
     fun SwitchToNews( context: Context) {

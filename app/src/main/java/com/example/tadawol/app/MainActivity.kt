@@ -1,12 +1,10 @@
 package com.example.tadawol.app
 
-import android.content.Intent
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
-import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.core.view.GravityCompat
@@ -14,13 +12,11 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.FragmentTransaction
 import androidx.lifecycle.ViewModelProviders
 import com.example.tadawol.R
-import com.example.tadawol.app.Publicusecase.checkUserLogin
-import com.example.tadawol.app.helper.PreferenceHelper
 import com.example.tadawol.app.presentation.ClickHandler
 import com.example.tadawol.app.presentation.ProfitFragment
 import com.example.tadawol.app.presentation.add_edit_trades.AddTradesfragment
-import com.example.tadawol.app.presentation.login_activity.Login
 import com.example.tadawol.app.presentation.recommendation_fragment.RecommendationFragment
+import com.example.tadawol.app.presentation.user_setting.Setting_Fragment
 import com.example.tadawol.app.presentation.viewmodel.MainViewModel
 import com.example.tadawol.databinding.ActivityMainBinding
 import com.google.android.material.navigation.NavigationView
@@ -98,13 +94,13 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 //                startActivity(homeIntent)
             }
             R.id.more -> {
-                if (checkUserLogin(this)) {
-                    PreferenceHelper.setToken(null,this)
-                    Toast.makeText(this, "تم تسجيل خروجك", Toast.LENGTH_SHORT).show()
 
-                    val homeIntent = Intent(this, Login::class.java)
-                    startActivity(homeIntent)
-                }
+                val   setting_fragment = Setting_Fragment()
+                supportFragmentManager.beginTransaction().setCustomAnimations(R.anim.ttb, 0, 0,0)
+                    .replace(R.id.main_frame, setting_fragment)
+                    .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+                    .commit()
+
             }
 
 
