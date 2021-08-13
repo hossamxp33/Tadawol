@@ -15,6 +15,8 @@ data class ProfitElement (
     val modified: String? = null,
     val vips: String? = null,
     val stopLoss: Long? = null,
-    val tradeStatus: Long? = null,
-    val profit: Long? = null
+    val tradeStatus: Float? = null,
+    val profit: Float? = null,
+    val month: Int? = null
+
 )

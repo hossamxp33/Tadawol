@@ -31,55 +31,53 @@ class ProfitFragment : Fragment() {
             DataBindingUtil.inflate(inflater,
                 R.layout.profit_fragment, container,false)
 
-
-
-        val aaChartModel: AAChartModel = AAChartModel()
-            .chartType(AAChartType.Line)
-            .title("الارباح")
-            .axesTextColor("#FFFFFF")
-            .titleStyle(AAStyle.style("#FFFFFF", 20f))
-            .backgroundColor("#070D2D")
-
-            .categories(
-                arrayOf(
-                        "Jan", "Feb", "Mar", "Apr", "May", "Jun",
-                        "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
-                    )
-            )
-            .dataLabelsEnabled(false)
-            .yAxisGridLineWidth(0f)
-            .series(
-                arrayOf<AASeriesElement>(
-                    AASeriesElement()
-                        .name("Profit")
-
-                        .data(
-                            arrayOf<Any>(
-                                7.0,
-                                6.9,
-                                9.5,
-                                14.5,
-                                18.2,
-                                21.5,
-                                25.2,
-                                26.5,
-                                23.3,
-                                18.3,
-                                13.9,
-                                9.6
-                            )
-                        ).color("rgba(51, 216, 197,1)")
-
-                )
-            )
-
-        view.aachartview.aa_drawChartWithChartModel(aaChartModel)
-
-
         viewModel.updateActionBarTitle("الارباح")
         //attaches LinearLayoutManager with RecyclerView
         viewModel.GetProfitData()
 viewModel.ProfitResponseLd?.observe(this,Observer { it ->
+
+view.profittext.text =  "   مجموع الارباح" +  it.profittotal!!.first().profit!!.toString()
+
+var data = arrayListOf<Float>()
+   var monthes = arrayOf(
+        "Jan", "Feb", "Mar", "Apr", "May", "Jun",
+        "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
+    )
+    var values = arrayOf(
+        0.0,    0.0,   0.0,    0.0,    0.0,    0.0,
+        0.0,    0.0,    0.0,    0.0,    0.0,    0.0
+    )
+    it.profit!!.forEachIndexed { index, element ->
+        var i = index
+        values.set(element.month!!.toInt() - 1,element.profit!!.toDouble())
+    }
+    val aaChartModel: AAChartModel = AAChartModel()
+        .chartType(AAChartType.Line)
+        .title("الارباح")
+        .axesTextColor("#FFFFFF")
+        .titleStyle(AAStyle.style("#FFFFFF", 20f))
+        .backgroundColor("#070D2D")
+
+        .categories(
+            monthes
+        )
+        .dataLabelsEnabled(false)
+        .yAxisGridLineWidth(0f)
+        .series(
+            arrayOf<AASeriesElement>(
+                AASeriesElement()
+                    .name("Profit")
+
+                    .data(
+                        values
+                    )
+
+                    .color("rgba(51, 216, 197,1)")
+
+            )
+        )
+
+    view.aachartview.aa_drawChartWithChartModel(aaChartModel)
 
 
 })

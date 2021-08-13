@@ -30,7 +30,7 @@ interface APIServices {
     @GET("trades.json")
      fun MyTrades(@Query("page") page: Int): Observable<MainTrades>
 
-    @GET("trades.json")
+    @GET("Trades/getprofitforuser.json")
     fun MyProfit(): Observable<Profit>
 
     ///// Get News

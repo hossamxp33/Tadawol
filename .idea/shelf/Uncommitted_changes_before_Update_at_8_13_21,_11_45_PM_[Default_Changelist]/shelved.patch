@@ -1,0 +1,177 @@
+Index: app/src/main/res/layout/profit_fragment.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"utf-8\"?>\n<layout xmlns:android=\"http://schemas.android.com/apk/res/android\"\n    xmlns:app=\"http://schemas.android.com/apk/res-auto\"\n    xmlns:tools=\"http://schemas.android.com/tools\"\n    android:id=\"@+id/layout\">\n    <data>\n        <variable\n            name=\"Context\"\n            type=\"com.example.tadawol.app.MainActivity\"/>\n        <variable\n            name=\"listener\"\n            type=\"com.example.tadawol.app.presentation.ClickHandler\"/>\n        <!-- <variable\n                 name=\"data\"\n                 type=\"com.example.tadawol.presentaion.CompanyDatum\"/>\n     -->\n\n    </data>\n    <androidx.constraintlayout.widget.ConstraintLayout\n        android:layout_width=\"match_parent\"\n        android:layout_height=\"match_parent\"\n        android:background=\"#070d2d\">\n<com.example.tadawol.app.presentation.aachartcorelib.aachartcreator.AAChartView\n        android:id=\"@+id/aachartview\"\n        android:layout_width=\"match_parent\"\n        android:layout_height=\"250dp\"\n        app:layout_constraintBottom_toBottomOf=\"parent\"\n        app:layout_constraintEnd_toEndOf=\"parent\"\n        app:layout_constraintStart_toStartOf=\"parent\"\napp:layout_constraintTop_toTopOf=\"parent\"\n        >\n\n</com.example.tadawol.app.presentation.aachartcorelib.aachartcreator.AAChartView>\n\n</androidx.constraintlayout.widget.ConstraintLayout>\n</layout>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/res/layout/profit_fragment.xml	(revision ecd9a9f05dd7296f16e10a4b52589021dabe4100)
++++ app/src/main/res/layout/profit_fragment.xml	(date 1628817486000)
+@@ -20,6 +20,20 @@
+         android:layout_width="match_parent"
+         android:layout_height="match_parent"
+         android:background="#070d2d">
++
++        <androidx.appcompat.widget.AppCompatTextView
++            android:id="@+id/profittext"
++            android:layout_width="wrap_content"
++            android:layout_height="wrap_content"
++            android:layout_marginBottom="50dp"
++            android:text="مجموع الارباح"
++            android:textColor="#33D8C5"
++            android:textSize="30sp"
++            app:layout_constraintBottom_toTopOf="@id/aachartview"
++            app:layout_constraintEnd_toEndOf="parent"
++            app:layout_constraintStart_toStartOf="parent">
++
++        </androidx.appcompat.widget.AppCompatTextView>
+ <com.example.tadawol.app.presentation.aachartcorelib.aachartcreator.AAChartView
+         android:id="@+id/aachartview"
+         android:layout_width="match_parent"
+Index: app/src/main/java/com/example/tadawol/app/models/Profitmodel.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.tadawol.app.models\n\ndata class Profit (\n    val profittotal: List<ProfitElement>? = null,\n    val profit: List<ProfitElement>? = null\n)\n\ndata class ProfitElement (\n    val id: Long? = null,\n    val currencyID: Long? = null,\n    val enter: Long? = null,\n    val stopProfit: Double? = null,\n    val notes: String? = null,\n    val created: String? = null,\n    val modified: String? = null,\n    val vips: String? = null,\n    val stopLoss: Long? = null,\n    val tradeStatus: Long? = null,\n    val profit: Long? = null\n)\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/example/tadawol/app/models/Profitmodel.kt	(revision ecd9a9f05dd7296f16e10a4b52589021dabe4100)
++++ app/src/main/java/com/example/tadawol/app/models/Profitmodel.kt	(date 1628823749000)
+@@ -15,6 +15,8 @@
+     val modified: String? = null,
+     val vips: String? = null,
+     val stopLoss: Long? = null,
+-    val tradeStatus: Long? = null,
+-    val profit: Long? = null
++    val tradeStatus: Float? = null,
++    val profit: Float? = null,
++    val month: Int? = null
++
+ )
+Index: app/src/main/java/com/example/tadawol/app/presentation/ProfitFragment.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.tadawol.app.presentation\n\nimport android.os.Bundle\nimport android.view.LayoutInflater\nimport android.view.View\nimport android.view.ViewGroup\nimport androidx.databinding.DataBindingUtil\nimport androidx.databinding.Observable\nimport androidx.fragment.app.Fragment\nimport androidx.lifecycle.Observer\nimport androidx.lifecycle.ViewModelProviders\nimport com.example.tadawol.R\nimport com.example.tadawol.app.presentation.aachartcorelib.aachartcreator.AAChartModel\nimport com.example.tadawol.app.presentation.aachartcorelib.aachartcreator.AASeriesElement\nimport com.example.tadawol.app.presentation.aachartcorelib.aachartenum.AAChartType\nimport com.example.tadawol.app.presentation.aachartcorelib.aaoptionsmodel.AAStyle\nimport com.example.tadawol.app.presentation.viewmodel.MainViewModel\nimport com.example.tadawol.databinding.ProfitFragmentBinding\n\nclass ProfitFragment : Fragment() {\n    val viewModel: MainViewModel by lazy {\n        ViewModelProviders.of(requireActivity()).get(MainViewModel::class.java)\n    }\n\n    override fun onCreateView(\n        inflater: LayoutInflater,\n        container: ViewGroup?,\n        savedInstanceState: Bundle?\n    ): View? {\n        var view: ProfitFragmentBinding =\n            DataBindingUtil.inflate(inflater,\n                R.layout.profit_fragment, container,false)\n\n\n\n        val aaChartModel: AAChartModel = AAChartModel()\n            .chartType(AAChartType.Line)\n            .title(\"الارباح\")\n            .axesTextColor(\"#FFFFFF\")\n            .titleStyle(AAStyle.style(\"#FFFFFF\", 20f))\n\n            .backgroundColor(\"#070D2D\")\n\n            .categories(\n                arrayOf(\n                        \"Jan\", \"Feb\", \"Mar\", \"Apr\", \"May\", \"Jun\",\n                        \"Jul\", \"Aug\", \"Sep\", \"Oct\", \"Nov\", \"Dec\"\n                    )\n            )\n            .dataLabelsEnabled(false)\n            .yAxisGridLineWidth(0f)\n            .series(\n                arrayOf<AASeriesElement>(\n                    AASeriesElement()\n                        .name(\"Profit\")\n\n                        .data(\n                            arrayOf<Any>(\n                                7.0,\n                                6.9,\n                                9.5,\n                                14.5,\n                                18.2,\n                                21.5,\n                                25.2,\n                                26.5,\n                                23.3,\n                                18.3,\n                                13.9,\n                                9.6\n                            )\n                        ).color(\"rgba(51, 216, 197,1)\")\n\n                )\n            )\n\n        view.aachartview.aa_drawChartWithChartModel(aaChartModel)\n\n\n        viewModel.updateActionBarTitle(\"الارباح\")\n        //attaches LinearLayoutManager with RecyclerView\n        viewModel.GetProfitData()\nviewModel.ProfitResponseLd?.observe(this,Observer { it ->\n\n\n})\n        return view.root\n    }\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/example/tadawol/app/presentation/ProfitFragment.kt	(revision ecd9a9f05dd7296f16e10a4b52589021dabe4100)
++++ app/src/main/java/com/example/tadawol/app/presentation/ProfitFragment.kt	(date 1628890416000)
+@@ -31,58 +31,56 @@
+             DataBindingUtil.inflate(inflater,
+                 R.layout.profit_fragment, container,false)
+ 
++        viewModel.updateActionBarTitle("الارباح")
++        //attaches LinearLayoutManager with RecyclerView
++        viewModel.GetProfitData()
++viewModel.ProfitResponseLd?.observe(this,Observer { it ->
+ 
++view.profittext.text =  "   مجموع الارباح" +  it.profittotal!!.first().profit!!.toString()
+ 
+-        val aaChartModel: AAChartModel = AAChartModel()
+-            .chartType(AAChartType.Line)
+-            .title("الارباح")
+-            .axesTextColor("#FFFFFF")
+-            .titleStyle(AAStyle.style("#FFFFFF", 20f))
++var data = arrayListOf<Float>()
++   var monthes = arrayOf(
++        "Jan", "Feb", "Mar", "Apr", "May", "Jun",
++        "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
++    )
++    var values = arrayOf(
++        0.0,    0.0,   0.0,    0.0,    0.0,    0.0,
++        0.0,    0.0,    0.0,    0.0,    0.0,    0.0
++    )
++    it.profit!!.forEachIndexed { index, element ->
++        var i = index
++        values.set(element.month!!.toInt(),element.profit!!.toDouble())
++    }
++    val aaChartModel: AAChartModel = AAChartModel()
++        .chartType(AAChartType.Line)
++        .title("الارباح")
++        .axesTextColor("#FFFFFF")
++        .titleStyle(AAStyle.style("#FFFFFF", 20f))
+ 
+-            .backgroundColor("#070D2D")
++        .backgroundColor("#070D2D")
+ 
+-            .categories(
+-                arrayOf(
+-                        "Jan", "Feb", "Mar", "Apr", "May", "Jun",
+-                        "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
+-                    )
+-            )
+-            .dataLabelsEnabled(false)
+-            .yAxisGridLineWidth(0f)
+-            .series(
+-                arrayOf<AASeriesElement>(
+-                    AASeriesElement()
+-                        .name("Profit")
++        .categories(
++            monthes
++        )
++        .dataLabelsEnabled(false)
++        .yAxisGridLineWidth(0f)
++        .series(
++            arrayOf<AASeriesElement>(
++                AASeriesElement()
++                    .name("Profit")
+ 
+-                        .data(
+-                            arrayOf<Any>(
+-                                7.0,
+-                                6.9,
+-                                9.5,
+-                                14.5,
+-                                18.2,
+-                                21.5,
+-                                25.2,
+-                                26.5,
+-                                23.3,
+-                                18.3,
+-                                13.9,
+-                                9.6
+-                            )
+-                        ).color("rgba(51, 216, 197,1)")
++                    .data(
++                        values
++                    )
++
++                    .color("rgba(51, 216, 197,1)")
+ 
+-                )
+-            )
++            )
++        )
+ 
+-        view.aachartview.aa_drawChartWithChartModel(aaChartModel)
++    view.aachartview.aa_drawChartWithChartModel(aaChartModel)
+ 
+ 
+-        viewModel.updateActionBarTitle("الارباح")
+-        //attaches LinearLayoutManager with RecyclerView
+-        viewModel.GetProfitData()
+-viewModel.ProfitResponseLd?.observe(this,Observer { it ->
+-
+-
+ })
+         return view.root
+     }
+Index: app/src/main/java/com/example/tadawol/app/data_layer/ApiService.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.tadawol.app.data_layer\n\n\n\nimport com.example.tadawol.app.models.*\nimport io.reactivex.Observable\nimport retrofit2.http.*\n\n\ninterface APIServices {\n\n    ///////// Login API\n    @FormUrlEncoded\n    @POST(\"api/users/token.json\")\n    abstract fun userlogin(\n        @Field(\"username\") username: String,\n        @Field(\"password\") password: String\n    ): Observable<LoginModel>\n\n    ///////// Login API\n    @FormUrlEncoded\n    @POST(\"api/users/add.json\")\n    abstract fun userRegister(\n        @Field(\"username\") username: String,\n        @Field(\"password\") password: String\n    ): Observable<RegisterModel>\n\n\n    ///// Get Trades\n    @GET(\"trades.json\")\n     fun MyTrades(@Query(\"page\") page: Int): Observable<MainTrades>\n\n    @GET(\"trades.json\")\n    fun MyProfit(): Observable<Profit>\n\n    ///// Get News\n    @GET(\"news.json\")\n    fun MyNews(): Observable<NewsData>\n\n     ////// Currencies\n    @GET(\"Currencies.json\")\n    fun Currencies(): Observable<Currencies>\n\n    ////// Currencies\n    @GET(\"Trades/price.json\")\n    fun GetStockPrice(): Observable<StockPrices>\n\n\n    //// Add\n    @FormUrlEncoded\n    @POST(\"trades/add.json\")\n    abstract fun Add_Trades(\n        @Field(\"currency_id\") currency_id : Int,\n        @Field(\"enter\") enter: Float,\n        @Field(\"stop_profit\") stop_profit: Double,\n        @Field(\"stop_loss\") stop_loss: Double,\n        @Field(\"trade_status\") trade_status: Int,\n        @Field(\"notes\") notes: String,\n        @Field(\"vips\") vips: String\n\n\n    ): Observable<Trade>\n\n\n    /// Edit\n    @FormUrlEncoded\n    @POST(\"trades/edit/{id}.json\")\n    abstract fun Edit_Trades(\n        @Path (\"id\") id : Int,\n        @Field(\"currency_id\") currency_id : Int,\n        @Field(\"enter\") enter: Float,\n        @Field(\"stop_profit\") stop_profit: Double,\n        @Field(\"stop_loss\") stop_loss: Double,\n        @Field(\"trade_status\") trade_status: Int,\n        @Field(\"notes\") notes: String,\n        @Field(\"vips\") vips: String\n\n\n    ): Observable<Trade>\n}\n\n\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/example/tadawol/app/data_layer/ApiService.kt	(revision ecd9a9f05dd7296f16e10a4b52589021dabe4100)
++++ app/src/main/java/com/example/tadawol/app/data_layer/ApiService.kt	(date 1628816702000)
+@@ -30,7 +30,7 @@
+     @GET("trades.json")
+      fun MyTrades(@Query("page") page: Int): Observable<MainTrades>
+ 
+-    @GET("trades.json")
++    @GET("Trades/getprofitforuser.json")
+     fun MyProfit(): Observable<Profit>
+ 
+     ///// Get News

@@ -20,7 +20,21 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="#070d2d">
-        <com.example.tadawol.app.presentation.aachartcorelib.aachartcreator.AAChartView
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/profittext"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="50dp"
+            android:text="مجموع الارباح"
+            android:textColor="#33D8C5"
+            android:textSize="30sp"
+            app:layout_constraintBottom_toTopOf="@id/aachartview"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
+
+        </androidx.appcompat.widget.AppCompatTextView>
+<com.example.tadawol.app.presentation.aachartcorelib.aachartcreator.AAChartView
         android:id="@+id/aachartview"
         android:layout_width="match_parent"
         android:layout_height="250dp"
