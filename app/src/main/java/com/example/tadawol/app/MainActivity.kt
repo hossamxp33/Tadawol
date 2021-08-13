@@ -90,7 +90,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             }
             R.id.more -> {
                 if (checkUserLogin(this)) {
-                    PreferenceHelper.setToken("0",this)
+                    PreferenceHelper.setToken(null,this)
                     Toast.makeText(this, "تم تسجيل خروجك", Toast.LENGTH_SHORT).show()
 
                     val homeIntent = Intent(this, Login::class.java)
