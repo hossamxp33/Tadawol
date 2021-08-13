@@ -38,7 +38,6 @@ class ProfitFragment : Fragment() {
             .title("الارباح")
             .axesTextColor("#FFFFFF")
             .titleStyle(AAStyle.style("#FFFFFF", 20f))
-
             .backgroundColor("#070D2D")
 
             .categories(

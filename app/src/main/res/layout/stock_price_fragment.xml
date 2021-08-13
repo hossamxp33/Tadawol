@@ -31,117 +31,182 @@
     <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:background="#1C83D5">
+            android:orientation="vertical">
 
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/constraintLayout9"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:background="@drawable/linear_background"
+            android:background="@color/white"
             app:layout_constraintBottom_toTopOf="@+id/guideline17"
-            app:layout_constraintHeight_percent="0.52"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
-            <TextView
-                android:id="@+id/orderText"
-                android:layout_width="wrap_content"
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/constraintLayout3"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="16dp"
-                android:text="السهم"
-                app:layout_constraintRight_toLeftOf="@+id/guideline4"
+                android:background="#00c2d6"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
 
-            </TextView>
+                <TextView
+                    android:id="@+id/orderText"
+                    style="@style/StockTextStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="16dp"
+                    android:text="السهم"
+                    app:layout_constraintRight_toLeftOf="@+id/guideline4"
+                    app:layout_constraintTop_toTopOf="parent">
 
-            <TextView
-                android:id="@+id/orderText2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:text="اخر سعر"
-                app:layout_constraintRight_toLeftOf="@+id/guideline5"
-                app:layout_constraintTop_toTopOf="parent">
+                </TextView>
 
-            </TextView>
+                <TextView
+                    android:id="@+id/orderText2"
+                    style="@style/StockTextStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="اخر سعر"
 
-            <TextView
-                android:id="@+id/orderText3"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:text="القيمة "
-                app:layout_constraintRight_toLeftOf="@+id/guideline7"
-                app:layout_constraintTop_toTopOf="parent">
+                    app:layout_constraintRight_toLeftOf="@+id/guideline5"
+                    app:layout_constraintTop_toTopOf="parent">
 
-            </TextView>
-            <TextView
-                android:id="@+id/change_value"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="16dp"
-                android:text="أقل سعر"
-                app:layout_constraintRight_toLeftOf="@+id/orderText3"
-                app:layout_constraintTop_toTopOf="parent">
+                </TextView>
 
-            </TextView>
-            <TextView
-                android:id="@+id/value"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="16dp"
-                android:text="أعلي سعر "
-                app:layout_constraintRight_toLeftOf="@+id/change_value"
-                app:layout_constraintTop_toTopOf="parent">
+                <TextView
+                    android:id="@+id/orderText3"
+                    style="@style/StockTextStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="القيمة "
+                    app:layout_constraintRight_toLeftOf="@+id/guideline7"
+                    app:layout_constraintTop_toTopOf="parent">
 
-            </TextView>
+                </TextView>
+
+                <TextView
+                    android:id="@+id/change_value"
+                    style="@style/StockTextStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="أقل سعر"
+                    app:layout_constraintRight_toLeftOf="@+id/guideline1"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                </TextView>
+
+                <TextView
+                    android:id="@+id/value"
+                    style="@style/StockTextStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="أعلي سعر "
+                    app:layout_constraintRight_toLeftOf="@+id/guideline8"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+
+                <androidx.constraintlayout.widget.Guideline
+                    android:id="@+id/guideline4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layoutDirection="rtl"
+                    android:orientation="vertical"
+                    app:layout_constraintGuide_percent="0.95" />
+
+                <androidx.constraintlayout.widget.Guideline
+                    android:id="@+id/guideline5"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layoutDirection="rtl"
+                    android:orientation="vertical"
+                    app:layout_constraintGuide_percent="0.73" />
+
+                <androidx.constraintlayout.widget.Guideline
+                    android:id="@+id/guideline1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layoutDirection="rtl"
+                    android:orientation="vertical"
+                    app:layout_constraintGuide_percent="0.33" />
+
+                <androidx.constraintlayout.widget.Guideline
+                    android:id="@+id/guideline7"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layoutDirection="rtl"
+                    android:orientation="vertical"
+                    app:layout_constraintGuide_percent="0.5" />
+
+                <androidx.constraintlayout.widget.Guideline
+                    android:id="@+id/guideline8"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layoutDirection="rtl"
+                    android:orientation="vertical"
+                    app:layout_constraintGuide_percent="0.15" />
+
+                <androidx.constraintlayout.widget.Guideline
+                    android:id="@+id/guideline14"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layoutDirection="rtl"
+                    android:orientation="horizontal"
+                    app:layout_constraintGuide_begin="40dp" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyler"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/guideline14" />
+                app:layout_constraintTop_toBottomOf="@+id/constraintLayout3" />
 
-            <androidx.constraintlayout.widget.Guideline
-                android:id="@+id/guideline4"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layoutDirection="rtl"
+            <com.facebook.shimmer.ShimmerFrameLayout
+                android:id="@+id/shimmer_view_container"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_marginTop="8dp"
                 android:orientation="vertical"
-                app:layout_constraintGuide_percent="0.95" />
+                app:duration="800"
+                app:layout_constraintBottom_toTopOf="@+id/guide2"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/constraintLayout3">
 
-            <androidx.constraintlayout.widget.Guideline
-                android:id="@+id/guideline5"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layoutDirection="rtl"
-                android:orientation="vertical"
-                app:layout_constraintGuide_percent="0.73" />
+                <!-- Adding 3 rows of placeholders -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
 
-            <androidx.constraintlayout.widget.Guideline
-                android:id="@+id/guideline7"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layoutDirection="rtl"
-                android:orientation="vertical"
+                    <include layout="@layout/stock_placeholder_shimmer" />
 
-                app:layout_constraintGuide_percent="0.58" />
+                    <include layout="@layout/white_stock_placeholder_shimmer" />
 
-            <androidx.constraintlayout.widget.Guideline
-                android:id="@+id/guideline14"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layoutDirection="rtl"
-                android:orientation="horizontal"
-                app:layout_constraintGuide_begin="40dp" />
+                    <include layout="@layout/stock_placeholder_shimmer" />
+
+                    <include layout="@layout/white_stock_placeholder_shimmer" />
+
+                    <include layout="@layout/stock_placeholder_shimmer" />
+
+                    <include layout="@layout/white_stock_placeholder_shimmer" />
+
+                    <include layout="@layout/stock_placeholder_shimmer" />
+
+                </LinearLayout>
+
+            </com.facebook.shimmer.ShimmerFrameLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -154,6 +219,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                app:layout_constraintGuide_percent="0.76" />
+                app:layout_constraintGuide_percent="0.9" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

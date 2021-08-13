@@ -2,6 +2,8 @@ package com.example.tadawol.app.presentation
 
 import android.content.Context
 import android.os.Bundle
+import android.view.View
+import androidx.appcompat.widget.AppCompatImageView
 import androidx.fragment.app.FragmentTransaction
 import com.example.tadawol.R
 import com.example.tadawol.app.MainActivity
@@ -10,6 +12,8 @@ import com.example.tadawol.app.presentation.add_edit_trades.Edit_Trades_fragment
 import com.example.tadawol.app.presentation.newsfragment.NewsFragment
 import com.example.tadawol.app.presentation.recommendation_fragment.RecommendationFragment
 import com.example.tadawol.app.presentation.stock_price.StockPriceFragment
+import kotlinx.android.synthetic.main.activity_main.view.*
+import kotlinx.android.synthetic.main.recipe_placeholder_item.*
 
 class ClickHandler {
 
@@ -21,9 +25,11 @@ class ClickHandler {
             .replace(R.id.main_frame, recommendation_fragment).addToBackStack(null)
             .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
             .commit()
-
-
+        SetDefaultColor(context)
+        SelectedItemColor(context.binding!!.deal)
     }
+
+
     fun SwitchToNews( context: Context) {
 
         val news_fragment = NewsFragment()
@@ -31,7 +37,8 @@ class ClickHandler {
             .replace(R.id.main_frame, news_fragment).addToBackStack(null)
             .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
             .commit()
-
+        SetDefaultColor(context)
+        SelectedItemColor(context.binding!!.main)
 
     }
     fun SwitchToStockPriceFragment( context: Context) {
@@ -42,7 +49,8 @@ class ClickHandler {
             .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
             .commit()
 
-
+        SetDefaultColor(context)
+        SelectedItemColor(context.binding!!.company)
     }
 
     fun SwitchToEditFragment( context: Context, data :Trade) {
@@ -64,4 +72,22 @@ class ClickHandler {
     }
 
 
+
+
+
+    /////
+    fun SelectedItemColor( img: AppCompatImageView){
+        img.animate()?.apply {
+            translationX(-30f)
+        }
+        img.setBackgroundResource(R.drawable.under_line)
+
+    }
+
+    fun SetDefaultColor( context: Context){
+        ( context as MainActivity).binding?.chart!!.setBackgroundResource(R.color.float_transparent)
+        ( context as MainActivity).binding?.main!!.setBackgroundResource(R.color.float_transparent)
+        ( context as MainActivity).binding?.company!!.setBackgroundResource(R.color.float_transparent)
+        ( context as MainActivity).binding?.deal!!.setBackgroundResource(R.color.float_transparent)
+    }
 }

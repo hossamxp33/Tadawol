@@ -51,27 +51,27 @@ class StockPriceFragment : Fragment(){
             MainAdapter =    Stock_Price_Adapter(viewModel,activity!!, it)
             recyler.layoutManager = LinearLayoutManager(context)
             recyler.adapter = MainAdapter;
-            //        stoploading()
+           stoploading()
 
         })
     return view.root
     }
 
 
-//    override fun onResume() {
-//        super.onResume()
-//         shimmer_view_container.startShimmerAnimation()
-//    }
-//
-//    override fun onPause() {
-//        shimmer_view_container.stopShimmerAnimation()
-//        super.onPause()
-//    }
-//    fun stoploading() {
-//        shimmer_view_container?.setVisibility(View.GONE)
-//        shimmer_view_container?.stopShimmerAnimation()
-//
-//    }
+    override fun onResume() {
+        super.onResume()
+         shimmer_view_container.startShimmerAnimation()
+    }
+
+    override fun onPause() {
+        shimmer_view_container.stopShimmerAnimation()
+        super.onPause()
+    }
+    fun stoploading() {
+        shimmer_view_container?.setVisibility(View.GONE)
+        shimmer_view_container?.stopShimmerAnimation()
+
+    }
 
 
 

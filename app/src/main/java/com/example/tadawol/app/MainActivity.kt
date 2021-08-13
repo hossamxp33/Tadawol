@@ -31,22 +31,23 @@ import kotlinx.android.synthetic.main.app_bar_main.*
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener  {
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     private lateinit var viewModel: MainViewModel
+    var binding : ActivityMainBinding? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val binding =
-            DataBindingUtil.setContentView<ActivityMainBinding>(this, R.layout.activity_main)
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
+
         viewModel = ViewModelProviders.of(this).get(MainViewModel::class.java)
         viewModel.updateActionBarTitle("الرئيسية")
 
 
         viewModel.main_title.observe(this, androidx.lifecycle.Observer {
-          binding.title.text = it
+          binding!!.title.text = it
         })
       //  PreferenceHelper.getToken()
-        binding.context = this
-        binding.listener = ClickHandler()
+        binding!!.context = this
+        binding!!.listener = ClickHandler()
         binding!!.btnMenu.setOnClickListener{ v ->
             (this).openCloseNavigationDrawer(v)
         }
@@ -58,6 +59,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             object : ActionBarDrawerToggle(this, drawerLayout, toolBar, (R.string.open), (R.string.close)) {
 
             }
+
         val   addFragment = ProfitFragment()
         supportFragmentManager.beginTransaction().setCustomAnimations(R.anim.ttb, 0, 0,0)
             .replace(R.id.main_frame, addFragment)

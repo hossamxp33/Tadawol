@@ -20,7 +20,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="#070d2d">
-<com.example.tadawol.app.presentation.aachartcorelib.aachartcreator.AAChartView
+        <com.example.tadawol.app.presentation.aachartcorelib.aachartcreator.AAChartView
         android:id="@+id/aachartview"
         android:layout_width="match_parent"
         android:layout_height="250dp"

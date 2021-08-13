@@ -32,8 +32,14 @@ class Stock_Price_Adapter (var viewModel: MainViewModel, var context : Context?,
 
     override fun onBindViewHolder(p0: CustomViewHolder, p1: Int) {
         p0.bind(viewModel,context,data.get(p1))
+        if(p1 %2 == 1) {
+            p0.binding.constraintLayout.setBackgroundResource(R.color.lightGrey)
+        }else{
+            p0.binding.constraintLayout.setBackgroundResource(R.color.white)
 
-    }
+        }
+
+        }
 
 
     override fun onCreateViewHolder(p0: ViewGroup, p1: Int): CustomViewHolder {

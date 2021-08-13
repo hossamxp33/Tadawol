@@ -110,8 +110,9 @@ fun  Login(username:String,password:String){
 
     ////GetStockPrice
     fun  GetStockPrice(){
-        loadingLivedat.postValue(true)
         DateRepoCompnay.GetStockPrice(StockPricesResponseLD,errorLivedat,loadingLivedat)
+        loadingLivedat.postValue(true)
+
     }
     /// Get News
     fun  GetNewsData(){
