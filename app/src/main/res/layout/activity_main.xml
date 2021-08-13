@@ -130,7 +130,8 @@
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/chart"
             android:layout_width="0dp"
-            android:layout_height="30dp"
+            android:layout_height="40dp"
+            android:padding="4dp"
             android:layout_marginRight="16dp"
             android:src="@drawable/chart"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -142,7 +143,8 @@
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/company"
             android:layout_width="0dp"
-            android:layout_height="30dp"
+            android:layout_height="40dp"
+            android:padding="4dp"
             android:layout_marginRight="16dp"
             android:src="@drawable/company"
             android:onClick="@{() -> listener.SwitchToStockPriceFragment(Context)}"
@@ -154,7 +156,8 @@
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/deal"
             android:layout_width="0dp"
-            android:layout_height="30dp"
+            android:layout_height="40dp"
+            android:padding="4dp"
             android:layout_marginRight="16dp"
             android:src="@drawable/deal"
             android:onClick="@{() -> listener.SwitchToRecommends(Context)}"
@@ -166,7 +169,8 @@
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/main"
             android:layout_width="0dp"
-            android:layout_height="30dp"
+            android:layout_height="40dp"
+            android:padding="4dp"
             android:layout_marginLeft="16dp"
             android:src="@drawable/main"
             android:onClick="@{() -> listener.SwitchToNews(Context)}"
