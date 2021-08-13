@@ -1,10 +1,12 @@
 package com.example.tadawol.app
 
+import android.content.Intent
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
+import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.core.view.GravityCompat
@@ -12,9 +14,11 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.FragmentTransaction
 import androidx.lifecycle.ViewModelProviders
 import com.example.tadawol.R
+import com.example.tadawol.app.Publicusecase.checkUserLogin
 import com.example.tadawol.app.helper.PreferenceHelper
 import com.example.tadawol.app.presentation.ClickHandler
 import com.example.tadawol.app.presentation.add_edit_trades.AddTradesfragment
+import com.example.tadawol.app.presentation.login_activity.Login
 import com.example.tadawol.app.presentation.recommendation_fragment.RecommendationFragment
 import com.example.tadawol.app.presentation.viewmodel.MainViewModel
 import com.example.tadawol.databinding.ActivityMainBinding
@@ -85,13 +89,13 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 //                startActivity(homeIntent)
             }
             R.id.more -> {
-//                if (checkUserLogin(this)) {
-//                    PreferenceHelper.setAuthId("0",this)
-//                    Toast.makeText(this, "تم تسجيل خروجك", Toast.LENGTH_SHORT).show()
-//
-//                    val homeIntent = Intent(this, LoginActivity::class.java)
-//                    startActivity(homeIntent)
-//                }
+                if (checkUserLogin(this)) {
+                    PreferenceHelper.setToken("0",this)
+                    Toast.makeText(this, "تم تسجيل خروجك", Toast.LENGTH_SHORT).show()
+
+                    val homeIntent = Intent(this, Login::class.java)
+                    startActivity(homeIntent)
+                }
             }
 
 
