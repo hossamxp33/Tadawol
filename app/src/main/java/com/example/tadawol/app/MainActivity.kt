@@ -17,6 +17,7 @@ import com.example.tadawol.R
 import com.example.tadawol.app.Publicusecase.checkUserLogin
 import com.example.tadawol.app.helper.PreferenceHelper
 import com.example.tadawol.app.presentation.ClickHandler
+import com.example.tadawol.app.presentation.ProfitFragment
 import com.example.tadawol.app.presentation.add_edit_trades.AddTradesfragment
 import com.example.tadawol.app.presentation.login_activity.Login
 import com.example.tadawol.app.presentation.recommendation_fragment.RecommendationFragment
@@ -57,6 +58,12 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             object : ActionBarDrawerToggle(this, drawerLayout, toolBar, (R.string.open), (R.string.close)) {
 
             }
+        val   addFragment = ProfitFragment()
+        supportFragmentManager.beginTransaction().setCustomAnimations(R.anim.ttb, 0, 0,0)
+            .replace(R.id.main_frame, addFragment)
+            .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+            .commit()
+
 
         drawerToggle.isDrawerIndicatorEnabled = true
         drawerLayout.addDrawerListener(drawerToggle)

@@ -63,6 +63,7 @@ class MainViewModel : ViewModel() {
     var LoginResponseLD : MutableLiveData<LoginData>? = null
     var  RegisterResponseLD : MutableLiveData<RegisterData>? = null
     var TradesResponseLD : MutableLiveData<MainTrades>? = null
+    var ProfitResponseLd: MutableLiveData<Profit>? = null
     var AddTradesResponseLD : MutableLiveData<Trade>? = null
     var CurrenciesResponseLD : MutableLiveData<List<Data>>? = null
     var NewsResponseLD : MutableLiveData<List<New>>? = null
@@ -81,7 +82,7 @@ class MainViewModel : ViewModel() {
         NewsResponseLD = MutableLiveData()
         StockPricesResponseLD= MutableLiveData()
         main_title = MutableLiveData()
-
+        ProfitResponseLd = MutableLiveData()
     }
 
 ///userlogin
@@ -160,7 +161,10 @@ fun Edit_Trades(id:Int,currency_id:Int,enter : Float,stop_profit: Double, stop_l
         main_title.postValue(title)
     }
 
-
+    fun  GetProfitData(){
+        loadingLivedat.postValue(true)
+        DateRepoCompnay.GetProfitData(ProfitResponseLd,errorLivedat,loadingLivedat)
+    }
 
     override fun onCleared() {
         super.onCleared()

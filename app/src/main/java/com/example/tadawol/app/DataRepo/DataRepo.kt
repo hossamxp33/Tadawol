@@ -76,6 +76,24 @@ fun GetTradesData(page:Int, livedata: MutableLiveData<MainTrades>?,errorLiveData
             }
         )
 }
+    @SuppressLint("CheckResult")
+    fun GetProfitData(livedata: MutableLiveData<Profit>?,errorLiveData: MutableLiveData<String>, loadingLivedata: MutableLiveData<Boolean>) {
+        getServergetway().MyProfit()
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .map { data -> data }
+            .subscribe(
+                { books ->
+
+                    livedata?.postValue(books)
+                    loadingLivedata.postValue(false)
+
+                },
+                {
+                    errorLiveData.postValue(it.toString());loadingLivedata.postValue(false)
+                }
+            )
+    }
 
 
     ////Currencies

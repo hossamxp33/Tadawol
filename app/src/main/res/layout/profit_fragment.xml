@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/layout">
+    <data>
+        <variable
+            name="Context"
+            type="com.example.tadawol.app.MainActivity"/>
+        <variable
+            name="listener"
+            type="com.example.tadawol.app.presentation.ClickHandler"/>
+        <!-- <variable
+                 name="data"
+                 type="com.example.tadawol.presentaion.CompanyDatum"/>
+     -->
+
+    </data>
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#070d2d">
+<com.example.tadawol.app.presentation.aachartcorelib.aachartcreator.AAChartView
+        android:id="@+id/aachartview"
+        android:layout_width="match_parent"
+        android:layout_height="250dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+app:layout_constraintTop_toTopOf="parent"
+        >
+
+</com.example.tadawol.app.presentation.aachartcorelib.aachartcreator.AAChartView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
