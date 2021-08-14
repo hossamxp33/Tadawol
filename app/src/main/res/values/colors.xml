@@ -43,4 +43,9 @@
     <color name="blue_50">#32669f</color>
 
 
+    <color name="placeholder_bg">#dddddd</color>
+    <color name="item_name">#0c0c0c</color>
+    <color name="description">#1a1a1a</color>
+    <color name="chef">#777</color>
+    <color name="ic_launcher_background">#777</color>
 </resources>
