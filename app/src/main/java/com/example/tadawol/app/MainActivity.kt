@@ -20,6 +20,7 @@ import com.example.tadawol.app.presentation.user_setting.Setting_Fragment
 import com.example.tadawol.app.presentation.viewmodel.MainViewModel
 import com.example.tadawol.databinding.ActivityMainBinding
 import com.google.android.material.navigation.NavigationView
+import com.google.firebase.messaging.FirebaseMessaging
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
 
@@ -31,6 +32,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        FirebaseMessaging.getInstance().subscribeToTopic("1")
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
 
