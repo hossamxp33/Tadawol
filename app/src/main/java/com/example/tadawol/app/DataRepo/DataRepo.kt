@@ -6,10 +6,13 @@ import androidx.lifecycle.MutableLiveData
 import com.example.tadawol.app.data_layer.APIServices
 import com.example.tadawol.app.data_layer.ApiClient
 import com.example.tadawol.app.models.*
+import io.reactivex.BackpressureStrategy
+import io.reactivex.Observable
 
 
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
+import java.util.concurrent.TimeUnit
 
 
 class  DataRepo {
@@ -43,7 +46,7 @@ class  DataRepo {
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .map { data -> data }
-            .subscribe(
+            .subscribe(  
                 { books ->
 
                     livedata?.postValue(books.data)
@@ -118,6 +121,7 @@ fun GetTradesData(page:Int, livedata: MutableLiveData<MainTrades>?,errorLiveData
 /////GetStockPrice
 @SuppressLint("CheckResult")
 fun GetStockPrice(livedata: MutableLiveData<List<Price>>?,errorLiveData: MutableLiveData<String>, loadingLivedata: MutableLiveData<Boolean>) {
+   
     getServergetway().GetStockPrice()
         .subscribeOn(Schedulers.io())
         .observeOn(AndroidSchedulers.mainThread())
@@ -134,11 +138,15 @@ fun GetStockPrice(livedata: MutableLiveData<List<Price>>?,errorLiveData: Mutable
                 errorLiveData.postValue(it.toString());loadingLivedata.postValue(false)
             }
         )
+
+
 }
 
     ////MyNews
 @SuppressLint("CheckResult")
+
 fun GetMyNewsData(livedata: MutableLiveData<List<New>>?,errorLiveData: MutableLiveData<String>, loadingLivedata: MutableLiveData<Boolean>) {
+
     getServergetway().MyNews()
         .subscribeOn(Schedulers.io())
         .observeOn(AndroidSchedulers.mainThread())
@@ -159,10 +167,15 @@ fun GetMyNewsData(livedata: MutableLiveData<List<New>>?,errorLiveData: MutableLi
     //////Add
     @SuppressLint("CheckResult")
     fun Add(currency_id:Int, enter : Float, stop_profit: Double, stop_loss:Double, trade_status : Int, notes: String, vips:String, livedata: MutableLiveData<Trade>?, errorLiveData: MutableLiveData<String>, loadingLivedata: MutableLiveData<Boolean>) {
+
         getServergetway().Add_Trades(currency_id,enter,stop_profit,stop_loss,trade_status,notes,vips)
+
             .subscribeOn(Schedulers.io())
+
             .observeOn(AndroidSchedulers.mainThread())
+
             .map { data -> data }
+
             .subscribe(
                 { books ->
                     livedata?.postValue(books)
@@ -171,7 +184,9 @@ fun GetMyNewsData(livedata: MutableLiveData<List<New>>?,errorLiveData: MutableLi
                 {
                     errorLiveData.postValue(it.toString());loadingLivedata.postValue(false)
                 }
+
             )
+
     }
 
 
@@ -205,6 +220,8 @@ fun GetMyNewsData(livedata: MutableLiveData<List<New>>?,errorLiveData: MutableLi
     }
 
     }
+
+
     fun getServergetway () : APIServices
     {
         return ApiClient.client!!.create(APIServices::class.java)

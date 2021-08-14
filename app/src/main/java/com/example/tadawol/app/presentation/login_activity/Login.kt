@@ -4,6 +4,9 @@ import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.os.PersistableBundle
+import android.provider.Settings
+import android.provider.Settings.Secure;
+
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.BlendModeColorFilterCompat
@@ -18,13 +21,18 @@ import com.google.android.material.tabs.TabLayoutMediator
 import kotlinx.android.synthetic.main.activity_login.*
 
 class Login : AppCompatActivity()  {
-
+ var android_id : String ? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
         PreferenceHelper(this)
         if (checkUserLogin(this))
             startActivity(Intent(this  , MainActivity::class.java))
+
+      //////
+        android_id = Settings.Secure.getString(this.getContentResolver(), Settings.Secure.ANDROID_ID);
+
+
         // Tabs Customization
         tab_layout.setSelectedTabIndicatorColor(getColor(R.color.white))
         tab_layout.setBackgroundColor(ContextCompat.getColor(this, R.color.signinpurple))

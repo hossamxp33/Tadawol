@@ -55,18 +55,6 @@ fun showToastBasedOnThrowable(context: Context?,throwable: Throwable?)
 }
 
 
-fun getDate(datesample: String?): String {
-    val sdf = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZZZZZ")
-    try {
-        val dateObj = sdf.parse(datesample)
-        val timestamp = dateObj.time.toString()//  //Example -> in ms
-        val formatter = SimpleDateFormat("dd/MM/yyyy")
-        return formatter.format(Date(Long.parseLong(timestamp)))
-    } catch (e: ParseException) {
-        e.printStackTrace()
-    }
-    return null.toString()
-}
 
 val Context.isConnected: Boolean
     get() {
@@ -134,6 +122,8 @@ fun setupviewPager(viewPager: ViewPager) {
 
     return null
 }
+
+
 
  fun checkUserLogin(context: Context): Boolean {
      if (!PreferenceHelper.getToken().isNullOrEmpty())
