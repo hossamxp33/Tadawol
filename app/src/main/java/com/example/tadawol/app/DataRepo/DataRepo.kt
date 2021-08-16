@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 
 import com.example.tadawol.app.data_layer.APIServices
 import com.example.tadawol.app.data_layer.ApiClient
+import com.example.tadawol.app.helper.PreferenceHelper
 import com.example.tadawol.app.models.*
 import io.reactivex.BackpressureStrategy
 import io.reactivex.Observable
@@ -41,8 +42,8 @@ class  DataRepo {
 
     ///userRegister
     @SuppressLint("CheckResult")
-    fun userRegister(username:String, password:String, livedata: MutableLiveData<RegisterData>?, errorLiveData: MutableLiveData<String>, loadingLivedata: MutableLiveData<Boolean>) {
-        getServergetway().userRegister(username,password)
+    fun userRegister(username:String, mobile:String,password:String, livedata: MutableLiveData<RegisterData>?, errorLiveData: MutableLiveData<String>, loadingLivedata: MutableLiveData<Boolean>) {
+        getServergetway().userRegister(username,mobile,password)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .map { data -> data }
@@ -58,7 +59,24 @@ class  DataRepo {
                 }
             )
     }
+    @SuppressLint("CheckResult")
+    fun GetTradesDataForUser(page:Int, livedata: MutableLiveData<MainTrades>?,errorLiveData: MutableLiveData<String>, loadingLivedata: MutableLiveData<Boolean>) {
+        getServergetway().MyTradesForUser(PreferenceHelper.getUserId(),page)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .map { data -> data }
+            .subscribe(
+                { books ->
 
+                    livedata?.postValue(books)
+                    loadingLivedata.postValue(false)
+
+                },
+                {
+                    errorLiveData.postValue(it.toString());loadingLivedata.postValue(false)
+                }
+            )
+    }
 
     ///// Get Tadawol  Page Data
 @SuppressLint("CheckResult")
@@ -166,9 +184,9 @@ fun GetMyNewsData(livedata: MutableLiveData<List<New>>?,errorLiveData: MutableLi
 
     //////Add
     @SuppressLint("CheckResult")
-    fun Add(currency_id:Int, enter : Float, stop_profit: Double, stop_loss:Double, trade_status : Int, notes: String, vips:String, livedata: MutableLiveData<Trade>?, errorLiveData: MutableLiveData<String>, loadingLivedata: MutableLiveData<Boolean>) {
+    fun Add(currency_id:Int, enter : Float, stop_profit: Double, stop_loss:Double,notes: String,  livedata: MutableLiveData<Trade>?, errorLiveData: MutableLiveData<String>, loadingLivedata: MutableLiveData<Boolean>) {
 
-        getServergetway().Add_Trades(currency_id,enter,stop_profit,stop_loss,trade_status,notes,vips)
+        getServergetway().Add_Trades(currency_id,enter,stop_profit,stop_loss,notes)
 
             .subscribeOn(Schedulers.io())
 

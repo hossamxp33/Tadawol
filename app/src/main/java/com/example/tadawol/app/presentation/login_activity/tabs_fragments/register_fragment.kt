@@ -2,6 +2,7 @@ package com.example.tadawol.app.presentation.login_activity.tabs_fragments
 
 import android.content.Intent
 import android.os.Bundle
+import android.provider.Settings
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -27,10 +28,11 @@ class register_fragment : Fragment(){
         var view:RegisterFragmentBinding =
             DataBindingUtil.inflate(inflater,
               R.layout.register_fragment, container,false)
-
+        var  android_id = Settings.Secure.getString(activity!!.getContentResolver(),
+            Settings.Secure.ANDROID_ID);
         view.btnLogin.setOnClickListener {
 
-            viewModel.userRegister(view.etUsername.text.toString(), view.Password.text.toString())
+            viewModel.userRegister(view.etUsername.text.toString(), view.email.text.toString(),android_id)
 
         }
 

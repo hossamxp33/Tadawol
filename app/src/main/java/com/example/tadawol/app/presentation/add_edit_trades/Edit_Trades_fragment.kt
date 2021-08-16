@@ -8,6 +8,7 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Spinner
 import android.widget.Toast
+import androidx.core.content.res.ResourcesCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -20,6 +21,7 @@ import com.example.tadawol.databinding.AddTradesFragmentBinding
 import com.example.tadawol.databinding.EditTradesFragmentBinding
 import com.example.tadawol.databinding.RegisterFragmentBinding
 import com.example.tadawol.databinding.SignInFragmentBinding
+import www.sanju.motiontoast.MotionToast
 import java.lang.Exception
 
 class Edit_Trades_fragment : Fragment(){
@@ -85,7 +87,13 @@ var currency_id : Int ? = null
         viewModel.AddTradesResponseLD?.observe(this, Observer {
             if (it.success)
             {
-                Toast.makeText(context, "تم التعديل بنجاح", Toast.LENGTH_SHORT).show()
+                MotionToast.createColorToast(activity!!,
+                    "Hurray success 😍",
+                    "Upload Completed successfully!",
+                    MotionToast.TOAST_SUCCESS,
+                    MotionToast.GRAVITY_TOP,
+                    MotionToast.LONG_DURATION,
+                    ResourcesCompat.getFont(activity!!, R.font.helvetica_regular))
             }
             else
             {

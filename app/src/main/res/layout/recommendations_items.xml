@@ -276,6 +276,16 @@ app:cardBackgroundColor="@color/trans_success_stroke_color"
                 >
 
             </androidx.appcompat.widget.AppCompatImageView>
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/closedicon"
+                android:layout_width="150dp"
+                android:layout_height="150dp"
+                app:srcCompat="@drawable/closed"
+                android:layout_gravity="center"
+                android:visibility="gone"
+                >
+
+            </androidx.appcompat.widget.AppCompatImageView>
         </androidx.cardview.widget.CardView>
 
     </androidx.constraintlayout.widget.ConstraintLayout>

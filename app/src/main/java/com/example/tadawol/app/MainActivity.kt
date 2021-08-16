@@ -15,6 +15,7 @@ import com.example.tadawol.R
 import com.example.tadawol.app.presentation.ClickHandler
 import com.example.tadawol.app.presentation.ProfitFragment
 import com.example.tadawol.app.presentation.add_edit_trades.AddTradesfragment
+import com.example.tadawol.app.presentation.mytrades.Mytrades
 import com.example.tadawol.app.presentation.recommendation_fragment.RecommendationFragment
 import com.example.tadawol.app.presentation.user_setting.Setting_Fragment
 import com.example.tadawol.app.presentation.viewmodel.MainViewModel
@@ -92,8 +93,11 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             }
             R.id.home -> {
 
-//                val homeIntent = Intent(this, BankActitvity::class.java)
-//                startActivity(homeIntent)
+                val   setting_fragment = Mytrades()
+                supportFragmentManager.beginTransaction().setCustomAnimations(R.anim.ttb, 0, 0,0)
+                    .replace(R.id.main_frame, setting_fragment)
+                    .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+                    .commit()
             }
             R.id.more -> {
 

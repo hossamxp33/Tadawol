@@ -70,21 +70,23 @@ class ClickHandler {
     }
 
     fun SwitchToEditFragment( context: Context, data :Trade) {
-        val bundle = Bundle()
 
-        val edit_fragment = Edit_Trades_fragment()
+        if (data.close_date != "1") {
+            val bundle = Bundle()
 
-        bundle.putInt("id",data.id!!)
-        bundle.putParcelable("data",data)
+            val edit_fragment = Edit_Trades_fragment()
 
-        edit_fragment.arguments = bundle
+            bundle.putInt("id", data.id!!)
+            bundle.putParcelable("data", data)
 
-        ( context as MainActivity). supportFragmentManager.beginTransaction()
-            .replace(R.id.main_frame, edit_fragment).addToBackStack(null)
-            .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
-            .commit()
+            edit_fragment.arguments = bundle
 
+            (context as MainActivity).supportFragmentManager.beginTransaction()
+                .replace(R.id.main_frame, edit_fragment).addToBackStack(null)
+                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+                .commit()
 
+        }
     }
 
 

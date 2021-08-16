@@ -94,13 +94,17 @@ fun  Login(username:String,password:String){
 
 }
     ///userRegister
-    fun  userRegister(username:String,password:String){
+    fun  userRegister(username:String,mobile:String,password:String){
         loadingLivedat.postValue(true)
-        DateRepoCompnay.userRegister(username,password,RegisterResponseLD,errorLivedat,loadingLivedat)
+        DateRepoCompnay.userRegister(username,mobile,password,RegisterResponseLD,errorLivedat,loadingLivedat)
     }
     fun  GetTradesData(page:Int){
         loadingLivedat.postValue(true)
         DateRepoCompnay.GetTradesData(page,TradesResponseLD,errorLivedat,loadingLivedat)
+    }
+    fun  GetTradesDataForUser(page:Int){
+        loadingLivedat.postValue(true)
+        DateRepoCompnay.GetTradesDataForUser(page,TradesResponseLD,errorLivedat,loadingLivedat)
     }
     /// Get Currencies
     fun  GetCurrenciesData(){
@@ -120,9 +124,9 @@ fun  Login(username:String,password:String){
         DateRepoCompnay.GetMyNewsData(NewsResponseLD,errorLivedat,loadingLivedat)
     }
     /// Add Trades
-    fun Add_Trades(currency_id:Int,enter : Float,stop_profit: Double, stop_loss:Double ,trade_status : Int,notes: String,vips:String)
+    fun Add_Trades(currency_id:Int,enter : Float,stop_profit: Double, stop_loss:Double ,notes: String)
     {
-        DateRepoCompnay.Add(currency_id,enter,stop_profit,stop_loss,trade_status,notes,vips,AddTradesResponseLD,errorLivedat,loadingLivedat)
+        DateRepoCompnay.Add(currency_id,enter,stop_profit,stop_loss,notes,AddTradesResponseLD,errorLivedat,loadingLivedat)
 
     }
 

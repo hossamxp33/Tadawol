@@ -59,12 +59,10 @@ viewModel.GetCurrenciesData()
             val  enterstr : Float = view.enterStr.text.toString().toFloat()
             val  stop_profit : Double = view.stopProfit.text.toString().toDouble()
             val  stop_loss : Double = view.stopLoss.text.toString().toDouble()
-            val  trade_status : Int = view.tradeStatus.text.toString().toInt()
             val  note : String = view.note.text.toString()
-            val  vip : String = view.vips.text.toString()
 
 
-            viewModel.Add_Trades(currency_id!!,enterstr,stop_profit,stop_loss,trade_status,note,vip)
+            viewModel.Add_Trades(currency_id!!,enterstr,stop_profit,stop_loss,note)
 
 
 

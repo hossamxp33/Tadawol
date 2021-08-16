@@ -66,7 +66,7 @@
             android:background="@drawable/clear_reduisbackground"
             android:fontFamily="@font/fonts"
             android:gravity="center"
-            android:hint=" البريد الالكتروني "
+            android:hint=" الهاتف  "
             android:inputType="text"
             android:padding="16dp"
             android:textColor="#184eb4"
@@ -77,47 +77,6 @@
             app:layout_constraintTop_toBottomOf="@+id/etUsername" />
         <!-- android:theme="@style/etTheme" -->
 
-        <androidx.appcompat.widget.AppCompatEditText
-            android:id="@+id/Password"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="24dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="24dp"
-            android:autoSizeTextType="uniform"
-            android:background="@drawable/clear_reduisbackground"
-            android:fontFamily="@font/fonts"
-            android:gravity="center"
-            android:hint=" كلمة المرور "
-            android:inputType="textPassword"
-            android:padding="16dp"
-            android:textColorHint="@color/white"
-            android:textSize="16dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.504"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/email" />
-
-        <androidx.appcompat.widget.AppCompatEditText
-            android:id="@+id/confirm_Password"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="24dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="24dp"
-            android:autoSizeTextType="uniform"
-            android:background="@drawable/clear_reduisbackground"
-            android:fontFamily="@font/fonts"
-            android:gravity="center"
-            android:hint=" كلمة المرور "
-            android:inputType="textPassword"
-            android:padding="16dp"
-            android:textColorHint="@color/white"
-            android:textSize="16dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.504"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/Password" />
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btnLogin"
@@ -133,7 +92,7 @@
             android:background="@drawable/green_linear_background"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/confirm_Password" />
+            app:layout_constraintTop_toBottomOf="@+id/email" />
 
 
         <androidx.appcompat.widget.AppCompatImageView

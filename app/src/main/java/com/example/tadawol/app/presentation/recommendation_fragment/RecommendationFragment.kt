@@ -1,7 +1,6 @@
 package com.example.tadawol.app.presentation.recommendation_fragment
 
 import android.os.Bundle
-import android.os.Handler
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,13 +15,12 @@ import com.example.tadawol.app.Publicusecase.showToastBasedOnThrowable
 import com.example.tadawol.app.models.Trade
 import com.example.tadawol.app.presentation.viewmodel.MainViewModel
 import com.example.tadawol.databinding.RecommendationsFragmentBinding
-import com.example.tadawol.databinding.RecommendationsFragmentBindingImpl
 import kotlinx.android.synthetic.main.recommendations_fragment.*
 import java.util.*
 import kotlin.collections.ArrayList
 
 
-class RecommendationFragment : Fragment(){
+open class RecommendationFragment : Fragment(){
     val viewModel: MainViewModel by lazy {
         ViewModelProviders.of(requireActivity()).get(MainViewModel::class.java)
     }
@@ -31,7 +29,21 @@ class RecommendationFragment : Fragment(){
     lateinit var list : ArrayList<Trade>
     internal var page = 1
 
+open fun getdata(view: RecommendationsFragmentBinding) {
+    viewModel.GetTradesData(page)
+    view. recyler.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+        override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+            super.onScrolled(recyclerView, dx, dy)
+            val lastVisibleItem =
+                (Objects.requireNonNull(recyclerView.layoutManager) as LinearLayoutManager).findLastCompletelyVisibleItemPosition()
+            if (lastVisibleItem == MainAdapter.getItemCount() -1) {
+                page++
+                viewModel.GetTradesData(page)
 
+            }
+        }
+    })
+}
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
@@ -39,24 +51,12 @@ class RecommendationFragment : Fragment(){
             DataBindingUtil.inflate(inflater,
               R.layout.recommendations_fragment, container,false)
            page = 1
-
+getdata(view)
         viewModel.updateActionBarTitle("التوصيات")
         //attaches LinearLayoutManager with RecyclerView
-        viewModel.GetTradesData(page)
 
 
-        view. recyler.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                super.onScrolled(recyclerView, dx, dy)
-                val lastVisibleItem =
-                    (Objects.requireNonNull(recyclerView.layoutManager) as LinearLayoutManager).findLastCompletelyVisibleItemPosition()
-                if (lastVisibleItem == MainAdapter.getItemCount() -1) {
-                    page++
-                    viewModel.GetTradesData(page)
 
-                }
-            }
-        })
 
 
     return view.root
@@ -68,7 +68,6 @@ class RecommendationFragment : Fragment(){
             if ( page == 1 )
                 showToastBasedOnThrowable(context,Throwable())
         })
-        viewModel.GetTradesData(page)
 
 
         viewModel.loadingLivedat.observe(this,

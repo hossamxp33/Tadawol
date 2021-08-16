@@ -22,13 +22,21 @@ interface APIServices {
     @POST("api/users/add.json")
     abstract fun userRegister(
         @Field("username") username: String,
-        @Field("password") password: String
+        @Field("mobile") mobile: String,
+        @Field("password") mobpasswordile: String
+
     ): Observable<RegisterModel>
 
 
     ///// Get Trades
     @GET("trades.json")
      fun MyTrades(@Query("page") page: Int): Observable<MainTrades>
+
+    @GET("trades/getTradesByUserId/{id}.json")
+    fun MyTradesForUser(  @Path ("id") id : Int,@Query("page") page: Int   ,
+    ): Observable<MainTrades>
+
+
 
     @GET("Trades/getprofitforuser.json")
     fun MyProfit(): Observable<Profit>
@@ -54,9 +62,7 @@ interface APIServices {
         @Field("enter") enter: Float,
         @Field("stop_profit") stop_profit: Double,
         @Field("stop_loss") stop_loss: Double,
-        @Field("trade_status") trade_status: Int,
         @Field("notes") notes: String,
-        @Field("vips") vips: String
 
 
     ): Observable<Trade>

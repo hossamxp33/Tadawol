@@ -37,7 +37,12 @@ class Recommendations_Adapter (var viewModel: MainViewModel, var context : Conte
             p0.binding.vipicon.visibility = View.GONE
 
         }
+        if (data.get(p1).close_date!! == "1"){
+            p0.binding.vipicon.visibility = View.GONE
 
+            p0.binding.blurviewlayout.visibility = View.VISIBLE
+            p0.binding.closedicon.visibility = View.VISIBLE
+        }
     }
 
     override fun onCreateViewHolder(p0: ViewGroup, p1: Int): CustomViewHolder {
