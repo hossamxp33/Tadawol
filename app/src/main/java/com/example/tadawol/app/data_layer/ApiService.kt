@@ -13,7 +13,7 @@ interface APIServices {
     @FormUrlEncoded
     @POST("api/users/token.json")
     abstract fun userlogin(
-        @Field("username") username: String,
+        @Field("mobile") username: String,
         @Field("password") password: String
     ): Observable<LoginModel>
 

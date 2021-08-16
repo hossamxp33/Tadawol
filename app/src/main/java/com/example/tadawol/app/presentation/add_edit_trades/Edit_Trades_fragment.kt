@@ -87,13 +87,7 @@ var currency_id : Int ? = null
         viewModel.AddTradesResponseLD?.observe(this, Observer {
             if (it.success)
             {
-                MotionToast.createColorToast(activity!!,
-                    "Hurray success 😍",
-                    "Upload Completed successfully!",
-                    MotionToast.TOAST_SUCCESS,
-                    MotionToast.GRAVITY_TOP,
-                    MotionToast.LONG_DURATION,
-                    ResourcesCompat.getFont(activity!!, R.font.helvetica_regular))
+
             }
             else
             {

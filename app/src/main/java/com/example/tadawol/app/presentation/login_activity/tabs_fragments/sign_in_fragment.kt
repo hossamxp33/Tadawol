@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.content.res.ResourcesCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -20,6 +21,7 @@ import com.example.tadawol.app.presentation.viewmodel.MainViewModel
 import com.example.tadawol.databinding.RegisterFragmentBinding
 import com.example.tadawol.databinding.SignInFragmentBinding
 import org.jetbrains.anko.support.v4.act
+import www.sanju.motiontoast.MotionToast
 
 class sign_in_fragment : Fragment(){
     val viewModel: MainViewModel by lazy {
@@ -31,6 +33,13 @@ class sign_in_fragment : Fragment(){
         var view: SignInFragmentBinding =
             DataBindingUtil.inflate(inflater,
                 R.layout.sign_in_fragment, container,false)
+        MotionToast.createColorToast(activity!!,
+            "Hurray success 😍",
+            "Upload Completed successfully!",
+            MotionToast.TOAST_SUCCESS,
+            MotionToast.GRAVITY_TOP,
+            MotionToast.LONG_DURATION,
+            ResourcesCompat.getFont(activity!!, R.font.helvetica_regular))
         view.btnLogin.setOnClickListener {
             var  android_id = Settings.Secure.getString(activity!!.getContentResolver(),
                 Settings.Secure.ANDROID_ID);

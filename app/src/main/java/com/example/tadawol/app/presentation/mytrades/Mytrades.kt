@@ -11,9 +11,5 @@ class Mytrades : RecommendationFragment() {
 
  override fun getdata(view: RecommendationsFragmentBinding) {
      viewModel.GetTradesDataForUser(page)
-     var  android_id = Settings.Secure.getString(activity!!.getContentResolver(),
-         Settings.Secure.ANDROID_ID);
-
-println(android_id)
  }
 }
