@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.example.tadawol.R
+import com.example.tadawol.app.helper.PreferenceHelper
 import com.example.tadawol.app.presentation.aachartcorelib.aachartcreator.AAChartModel
 import com.example.tadawol.app.presentation.aachartcorelib.aachartcreator.AASeriesElement
 import com.example.tadawol.app.presentation.aachartcorelib.aachartenum.AAChartType
@@ -36,7 +37,7 @@ class ProfitFragment : Fragment() {
         viewModel.GetProfitData()
 viewModel.ProfitResponseLd?.observe(this,Observer { it ->
 
-view.profittext.text =  "   مجموع الارباح" +  it.profittotal!!.first().profit!!.toString()
+//view.profittext.text =  "   مجموع الارباح" +  it.profittotal!!.first().profit!!.toString()
 
 var data = arrayListOf<Float>()
    var monthes = arrayOf(

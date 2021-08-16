@@ -14,6 +14,8 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.example.tadawol.R
 import com.example.tadawol.app.MainActivity
+import com.example.tadawol.app.Publicusecase.ERROR_MotionToast
+import com.example.tadawol.app.Publicusecase.SUCCESS_MotionToast
 import com.example.tadawol.app.helper.PreferenceHelper
 import com.example.tadawol.app.presentation.login_activity.Login
 import com.example.tadawol.app.presentation.recommendation_fragment.RecommendationFragment
@@ -33,40 +35,46 @@ class sign_in_fragment : Fragment(){
         var view: SignInFragmentBinding =
             DataBindingUtil.inflate(inflater,
                 R.layout.sign_in_fragment, container,false)
-        MotionToast.createColorToast(activity!!,
-            "Hurray success 😍",
-            "Upload Completed successfully!",
-            MotionToast.TOAST_SUCCESS,
-            MotionToast.GRAVITY_TOP,
-            MotionToast.LONG_DURATION,
-            ResourcesCompat.getFont(activity!!, R.font.helvetica_regular))
+
         view.btnLogin.setOnClickListener {
             var  android_id = Settings.Secure.getString(activity!!.getContentResolver(),
                 Settings.Secure.ANDROID_ID);
+
             viewModel.Login(view.etUsername.text.toString(), android_id)
 
         }
 
         //// Should be requireActivity() Be Cause this is Fragment
         viewModel.LoginResponseLD?.observe(requireActivity(), Observer {
-            if (it.token != null) {
+            if (it.token != null && it.mobile != null) {
                 PreferenceHelper.setToken(it.token,activity)
-                PreferenceHelper.setUserId(it.userid!!)
+                 PreferenceHelper.setUserId(it.userid!!)
+                PreferenceHelper.setUsername(it.username!!)
                 PreferenceHelper.setUserGroupId(it.groupid!!)
 
-                if (!(view.etUsername.text.isEmpty() || view.etUsername.text.isEmpty()))
+                if (!(view.etUsername.text.isEmpty()))
                 {
-                    Toast.makeText(context, "تم تسجيل الدخول", Toast.LENGTH_SHORT).show()
+                    SUCCESS_MotionToast ("تم تسجيل الدخول",context!!)
 
                     val homeIntent = Intent(context,MainActivity()::class.java)
                     (context as Login).startActivity(homeIntent)
+
              }
-            }
-            else{
-                Toast.makeText(context, "خطأ بكلمة المرور او اسم المستخدم", Toast.LENGTH_SHORT).show()
+            }else{
+                ERROR_MotionToast("",context!!)
             }
 
+
+        })
+
+        viewModel.errorLivedat.observe(this, Observer {
+            ERROR_MotionToast(it,context!!)
         })
         return view.root
     }
+
+
+
+    ////// ERROR Toast
+
 }

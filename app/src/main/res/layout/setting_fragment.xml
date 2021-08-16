@@ -11,6 +11,10 @@
     <variable
         name="listener"
         type="com.example.tadawol.app.presentation.ClickHandler"/>
+
+
+
+
 </data>
 
 <androidx.constraintlayout.widget.ConstraintLayout
@@ -101,26 +105,6 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 
-    <TextView
-            android:id="@+id/changepw"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
-            android:gravity="center|center_vertical"
-            android:padding="15dp"
-            android:text="تغيير كلمة السر "
-            android:textColor="@color/white"
-            android:textSize="20sp"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/data"
-            app:layout_constraintWidth_percent="0.5" />
-
-
-
-
-
-
     <!--<TextView-->
     <!--android:id="@+id/login"-->
     <!--android:layout_width="match_parent"-->
@@ -178,19 +162,19 @@
 <!--                app:layout_constraintTop_toTopOf="parent" />-->
 
     <TextView
-            android:id="@+id/profileCard"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:gravity="center|center_vertical"
-            android:padding="15dp"
-            android:text="تقديم مساعدة  "
-            android:textColor="@color/white"
-            android:textSize="18sp"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/changepw"
-            app:layout_constraintWidth_percent="0.5" />
+        android:id="@+id/profileCard"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:gravity="center|center_vertical"
+        android:padding="15dp"
+        android:layout_marginTop="24dp"
+        android:text="تقديم مساعدة  "
+        android:textColor="@color/white"
+        android:textSize="18sp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/data"
+        app:layout_constraintWidth_percent="0.5" />
 <!--    </androidx.constraintlayout.widget.ConstraintLayout>-->
 
 <!--    <ImageView-->

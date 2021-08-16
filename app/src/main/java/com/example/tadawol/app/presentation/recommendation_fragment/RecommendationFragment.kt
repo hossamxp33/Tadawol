@@ -29,21 +29,6 @@ open class RecommendationFragment : Fragment(){
     lateinit var list : ArrayList<Trade>
     internal var page = 1
 
-open fun getdata(view: RecommendationsFragmentBinding) {
-    viewModel.GetTradesData(page)
-    view. recyler.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-        override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-            super.onScrolled(recyclerView, dx, dy)
-            val lastVisibleItem =
-                (Objects.requireNonNull(recyclerView.layoutManager) as LinearLayoutManager).findLastCompletelyVisibleItemPosition()
-            if (lastVisibleItem == MainAdapter.getItemCount() -1) {
-                page++
-                viewModel.GetTradesData(page)
-
-            }
-        }
-    })
-}
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
@@ -51,7 +36,7 @@ open fun getdata(view: RecommendationsFragmentBinding) {
             DataBindingUtil.inflate(inflater,
               R.layout.recommendations_fragment, container,false)
            page = 1
-getdata(view)
+         getdata(view)
         viewModel.updateActionBarTitle("التوصيات")
         //attaches LinearLayoutManager with RecyclerView
 
@@ -100,6 +85,21 @@ getdata(view)
          shimmer_view_container.startShimmerAnimation()
     }
 
+    open fun getdata(view: RecommendationsFragmentBinding) {
+        viewModel.GetTradesData(page)
+        view. recyler.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+                val lastVisibleItem =
+                    (Objects.requireNonNull(recyclerView.layoutManager) as LinearLayoutManager).findLastCompletelyVisibleItemPosition()
+                if (lastVisibleItem == MainAdapter.getItemCount() -1) {
+                    page++
+                    viewModel.GetTradesData(page)
+
+                }
+            }
+        })
+    }
     override fun onPause() {
         shimmer_view_container.stopShimmerAnimation()
         super.onPause()

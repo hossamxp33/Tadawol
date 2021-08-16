@@ -42,7 +42,7 @@ class  DataRepo {
 
     ///userRegister
     @SuppressLint("CheckResult")
-    fun userRegister(username:String, mobile:String,password:String, livedata: MutableLiveData<RegisterData>?, errorLiveData: MutableLiveData<String>, loadingLivedata: MutableLiveData<Boolean>) {
+    fun userRegister(username:String, mobile:String,password:String, livedata: MutableLiveData<RegisterModel>?, errorLiveData: MutableLiveData<String>, loadingLivedata: MutableLiveData<Boolean>) {
         getServergetway().userRegister(username,mobile,password)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
@@ -50,7 +50,7 @@ class  DataRepo {
             .subscribe(  
                 { books ->
 
-                    livedata?.postValue(books.data)
+                    livedata?.postValue(books)
                     loadingLivedata.postValue(false)
 
                 },

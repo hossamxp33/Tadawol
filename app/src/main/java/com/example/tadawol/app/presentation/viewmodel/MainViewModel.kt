@@ -1,16 +1,21 @@
 package com.example.tadawol.app.presentation.viewmodel
 
+import android.app.Activity
 import android.graphics.Color
 import android.widget.TextView
 import androidx.appcompat.widget.AppCompatImageView
+import androidx.core.content.res.ResourcesCompat
 import androidx.databinding.BindingAdapter
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.bumptech.glide.Glide
+import com.example.tadawol.R
 import com.example.tadawol.app.DataRepo.DataRepo
+import com.example.tadawol.app.MainActivity
 import com.example.tadawol.app.models.*
 import com.example.tadawol.app.presentation.login_activity.Login
 import io.reactivex.disposables.CompositeDisposable
+import www.sanju.motiontoast.MotionToast
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -61,7 +66,7 @@ class MainViewModel : ViewModel() {
 
     var loadingLivedat: MutableLiveData<Boolean> = MutableLiveData()
     var LoginResponseLD : MutableLiveData<LoginData>? = null
-    var  RegisterResponseLD : MutableLiveData<RegisterData>? = null
+    var  RegisterResponseLD : MutableLiveData<RegisterModel>? = null
     var TradesResponseLD : MutableLiveData<MainTrades>? = null
     var ProfitResponseLd: MutableLiveData<Profit>? = null
     var AddTradesResponseLD : MutableLiveData<Trade>? = null
@@ -96,7 +101,15 @@ fun  Login(username:String,password:String){
     ///userRegister
     fun  userRegister(username:String,mobile:String,password:String){
         loadingLivedat.postValue(true)
-        DateRepoCompnay.userRegister(username,mobile,password,RegisterResponseLD,errorLivedat,loadingLivedat)
+            DateRepoCompnay.userRegister(
+                username,
+                mobile,
+                password,
+                RegisterResponseLD,
+                errorLivedat,
+                loadingLivedat
+            )
+
     }
     fun  GetTradesData(page:Int){
         loadingLivedat.postValue(true)
@@ -156,11 +169,21 @@ fun Edit_Trades(id:Int,currency_id:Int,enter : Float,stop_profit: Double, stop_l
             data.trade_status.toString().trim() == ""||
             data.notes.toString().trim() == ""|| data.vips.toString().trim() == "") {
             errorLivedat.postValue("اكمل البيانات")
+
             return false
         } else
             return true
     }
+    private fun Login_validate(data:  LoginData): Boolean {
+        if (data.username.toString().trim() == "" ||
+            data.mobile.toString().trim() == "")
+        {
+            errorLivedat.postValue("اكمل البيانات")
 
+            return false
+        } else
+            return true
+    }
 
     fun updateActionBarTitle(title: String){
         main_title.postValue(title)

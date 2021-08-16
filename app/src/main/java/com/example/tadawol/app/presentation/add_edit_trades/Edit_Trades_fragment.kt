@@ -70,7 +70,7 @@ var currency_id : Int ? = null
 
 //// Edit Button .. send data
         view.btnLogin.setOnClickListener {
-    try {
+      try {
         val  enterstr : Float = view.enterStr.text.toString().toFloat()
         val  stop_profit : Double = view.stopProfit.text.toString().toDouble()
         val  stop_loss : Double = view.stopLoss.text.toString().toDouble()
@@ -79,7 +79,8 @@ var currency_id : Int ? = null
         val  vip : String = view.vips.text.toString()
 
     viewModel.Edit_Trades(trade_id!!,currency_id!!,enterstr,stop_profit,stop_loss,trade_status,note,vip)
-    }catch (e : Exception){
+    }catch (e : Exception)
+    {
     Toast.makeText(context, "أكمل البيانات", Toast.LENGTH_SHORT).show()
      }
         }
@@ -91,13 +92,22 @@ var currency_id : Int ? = null
             }
             else
             {
-                Toast.makeText(context, " أكمل البيانات", Toast.LENGTH_SHORT).show()
-            }
+                MotionToast.createColorToast(activity!!, "Hurray success 😍", "أكمل البيانات",
+                    MotionToast.TOAST_ERROR,
+                    MotionToast.GRAVITY_TOP,
+                    MotionToast.LONG_DURATION,
+                    ResourcesCompat.getFont(activity!!, R.font.helvetica_regular))            }
         })
 
         viewModel.errorLivedat.observe(this,
             Observer {
-                Toast.makeText(context, "$it", Toast.LENGTH_SHORT).show()
+                MotionToast.createColorToast(activity!!,
+                    "Hurray success 😍",
+                    it,
+                    MotionToast.TOAST_ERROR,
+                    MotionToast.GRAVITY_TOP,
+                    MotionToast.LONG_DURATION,
+                    ResourcesCompat.getFont(activity!!, R.font.helvetica_regular))
             })
 
 

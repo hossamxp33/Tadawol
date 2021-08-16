@@ -15,13 +15,17 @@ import android.view.View
 import android.view.WindowManager
 import android.widget.ImageView
 import android.widget.Toast
+import androidx.core.content.res.ResourcesCompat
 import com.bumptech.glide.Glide
 import com.example.tadawol.R
+import com.example.tadawol.app.MainActivity
 import com.example.tadawol.app.data_layer.ApiClient
 import com.example.tadawol.app.helper.PreferenceHelper
+import com.example.tadawol.app.presentation.login_activity.Login
 
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
+import www.sanju.motiontoast.MotionToast
 import java.io.IOException
 import java.lang.Long
 import java.net.SocketTimeoutException
@@ -156,4 +160,24 @@ fun openFacebook(context: Context) {
     openURL.data = Uri.parse("https://www.facebook.com/IRAQKMCO")
     context.startActivity(openURL)
 }
+///////// ERROR_MotionToast
+fun ERROR_MotionToast(massage : String,context: Context){
+    MotionToast.createColorToast(context as Login,
+        "Hurray success 😍",
+        massage,
+        MotionToast.TOAST_ERROR,
+        MotionToast.GRAVITY_BOTTOM,
+        MotionToast.LONG_DURATION,
+        ResourcesCompat.getFont(context, R.font.helvetica_regular))
+}
 
+///TOAST_SUCCESS_MotionToast
+fun SUCCESS_MotionToast(massage : String,context: Context){
+    MotionToast.createColorToast(context as Login,
+        "Hurray success 😍",
+        massage,
+        MotionToast.TOAST_SUCCESS,
+        MotionToast.GRAVITY_BOTTOM,
+        MotionToast.LONG_DURATION,
+        ResourcesCompat.getFont(context, R.font.helvetica_regular))
+}

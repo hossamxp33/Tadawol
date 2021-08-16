@@ -32,8 +32,7 @@ class Setting_Fragment : Fragment(){
 
         view.context = context as MainActivity
         view.listener = ClickHandler()
-
-
+        view.username.text = PreferenceHelper.getUsername()
 
     return view.root
     }
