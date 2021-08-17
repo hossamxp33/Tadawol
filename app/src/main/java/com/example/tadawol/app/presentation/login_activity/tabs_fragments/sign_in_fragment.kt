@@ -61,14 +61,14 @@ class sign_in_fragment : Fragment(){
 
              }
             }else{
-                ERROR_MotionToast("",context!!)
+                ERROR_MotionToast("Error in data",context!!)
             }
 
 
         })
 
         viewModel.errorLivedat.observe(this, Observer {
-            ERROR_MotionToast(it,context!!)
+            ERROR_MotionToast("Error in data",context!!)
         })
         return view.root
     }

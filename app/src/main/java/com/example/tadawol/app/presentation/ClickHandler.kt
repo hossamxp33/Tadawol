@@ -2,19 +2,25 @@ package com.example.tadawol.app.presentation
 
 import android.content.Context
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.View
+import android.widget.Switch
 import android.widget.Toast
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.core.content.ContextCompat.startActivity
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
 import com.example.tadawol.R
 import com.example.tadawol.app.MainActivity
 import com.example.tadawol.app.Publicusecase.checkUserLogin
 import com.example.tadawol.app.helper.PreferenceHelper
+import com.example.tadawol.app.models.New
 import com.example.tadawol.app.models.Trade
 import com.example.tadawol.app.presentation.add_edit_trades.Edit_Trades_fragment
+import com.example.tadawol.app.presentation.contact_us.Contact_Us_Fragment
 import com.example.tadawol.app.presentation.login_activity.Login
+import com.example.tadawol.app.presentation.newsfragment.Details_News_Fragment
 import com.example.tadawol.app.presentation.newsfragment.NewsFragment
 import com.example.tadawol.app.presentation.recommendation_fragment.RecommendationFragment
 import com.example.tadawol.app.presentation.stock_price.StockPriceFragment
@@ -23,53 +29,64 @@ import kotlinx.android.synthetic.main.recipe_placeholder_item.*
 
 class ClickHandler {
 
-
-    fun SwitchToRecommends( context: Context) {
-
-        val recommendation_fragment = RecommendationFragment()
-        ( context as MainActivity). supportFragmentManager.beginTransaction()
-            .replace(R.id.main_frame, recommendation_fragment).addToBackStack(null)
-            .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
-            .commit()
+    /// Switch To Recommends
+    fun SwitchToRecommends(context: Context) {
+        SwitchFun(context as MainActivity, RecommendationFragment())
         SetDefaultColor(context)
         SelectedItemColor(context.binding!!.deal)
     }
-    fun SwitchToLogin( context: Context) {
+    /// Switch To Contact Us
 
-                if (checkUserLogin  (context)) {
-                    PreferenceHelper.setToken(null,  (context))
-                    val homeIntent = Intent(context, Login::class.java)
-                    context.startActivity(homeIntent)
-                    Toast.makeText(  ( context as MainActivity), "تم تسجيل خروجك", Toast.LENGTH_SHORT).show()
+    fun SwitchToContactUs(context: Context) {
+        SwitchFun(context, Contact_Us_Fragment())
+    }
 
-                }
-                }
+    /// Switch To Login
+    fun SwitchToLogin(context: Context) {
+
+        if (checkUserLogin(context)) {
+            PreferenceHelper.setToken(null, (context))
+            val homeIntent = Intent(context, Login::class.java)
+            context.startActivity(homeIntent)
+            Toast.makeText((context as MainActivity), "تم تسجيل خروجك", Toast.LENGTH_SHORT).show()
+
+        }
+    }
 
 
-    fun SwitchToNews( context: Context) {
+    /////  Switch To News
+    fun SwitchToNews(context: Context) {
 
-        val news_fragment = NewsFragment()
-        ( context as MainActivity). supportFragmentManager.beginTransaction()
-            .replace(R.id.main_frame, news_fragment).addToBackStack(null)
-            .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
-            .commit()
+        SwitchFun(context as MainActivity, NewsFragment())
         SetDefaultColor(context)
         SelectedItemColor(context.binding!!.main)
 
     }
-    fun SwitchToStockPriceFragment( context: Context) {
 
-        val stockPrices_fragment = StockPriceFragment()
-        ( context as MainActivity). supportFragmentManager.beginTransaction()
-            .replace(R.id.main_frame, stockPrices_fragment).addToBackStack(null)
-            .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
-            .commit()
+    /////  Switch To News Details
+    fun SwitchToNewsDetails(context: Context, data: New) {
 
+        val bundle = Bundle()
+        bundle.putParcelable("news_data", data)
+        val news_fragment = Details_News_Fragment()
+        news_fragment.arguments = bundle
+        SwitchFun(context as MainActivity,news_fragment)
         SetDefaultColor(context)
-        SelectedItemColor(context.binding!!.company)
+        SelectedItemColor(context.binding!!.main)
+
     }
 
-    fun SwitchToEditFragment( context: Context, data :Trade) {
+    //////  Switch To Stock Price Fragment
+    fun SwitchToStockPriceFragment(context: Context) {
+
+        SwitchFun(context as MainActivity, StockPriceFragment())
+        SetDefaultColor(context)
+        SelectedItemColor(context.binding!!.company)
+
+    }
+
+    ////////Switch To Edit Fragment
+    fun SwitchToEditFragment(context: Context, data: Trade) {
 
         if (data.close_date != "1") {
             val bundle = Bundle()
@@ -88,13 +105,26 @@ class ClickHandler {
 
         }
     }
+/// make call
+fun DoCall(con:Context, phone: String?)
+{
+    val intent =  Intent(Intent.ACTION_CALL, Uri.parse("tel:" + "07721499299"));
+    con.startActivity(intent);
+}
 
 
 
+    ///// Main Switch Fun
+    fun SwitchFun(context: Context, fragment: Fragment) {
 
+        (context as MainActivity).supportFragmentManager.beginTransaction()
+            .replace(R.id.main_frame, fragment).addToBackStack(null)
+            .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+            .commit()
+    }
 
-    /////
-    fun SelectedItemColor( img: AppCompatImageView){
+    ///// Selected Item Color
+    fun SelectedItemColor(img: AppCompatImageView) {
         img.animate()?.apply {
             translationX(-30f)
         }
@@ -102,10 +132,10 @@ class ClickHandler {
 
     }
 
-    fun SetDefaultColor( context: Context){
-        ( context as MainActivity).binding?.chart!!.setBackgroundResource(R.color.float_transparent)
-        ( context as MainActivity).binding?.main!!.setBackgroundResource(R.color.float_transparent)
-        ( context as MainActivity).binding?.company!!.setBackgroundResource(R.color.float_transparent)
-        ( context as MainActivity).binding?.deal!!.setBackgroundResource(R.color.float_transparent)
+    fun SetDefaultColor(context: Context) {
+        (context as MainActivity).binding?.chart!!.setBackgroundResource(R.color.float_transparent)
+        (context).binding?.main!!.setBackgroundResource(R.color.float_transparent)
+        (context).binding?.company!!.setBackgroundResource(R.color.float_transparent)
+        (context).binding?.deal!!.setBackgroundResource(R.color.float_transparent)
     }
 }

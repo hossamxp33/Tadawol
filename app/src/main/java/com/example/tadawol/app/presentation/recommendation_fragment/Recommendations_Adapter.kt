@@ -13,17 +13,12 @@ import com.example.tadawol.app.models.Trade
 import com.example.tadawol.app.presentation.ClickHandler
 import com.example.tadawol.app.presentation.viewmodel.MainViewModel
 import com.example.tadawol.databinding.RecommendationsItemsBinding
+import java.lang.Exception
 
 
 class Recommendations_Adapter (var viewModel: MainViewModel, var context : Context?, var data:List<Trade>) : RecyclerView.Adapter<CustomViewHolder>() {
     override fun getItemCount(): Int {
-
         return  data.size
-    }
-    companion object
-    {
-        private const val VIEW_TYPE_DATA = 0;
-        private const val VIEW_TYPE_PROGRESS = 1;
     }
 
     override fun onBindViewHolder(p0: CustomViewHolder, p1: Int) {
@@ -39,10 +34,24 @@ class Recommendations_Adapter (var viewModel: MainViewModel, var context : Conte
         }
         if (data.get(p1).close_date!! == "1"){
             p0.binding.vipicon.visibility = View.GONE
-
             p0.binding.blurviewlayout.visibility = View.VISIBLE
             p0.binding.closedicon.visibility = View.VISIBLE
         }
+
+        try {
+            if (data.get(p1).created!! < data.get(p1).modified!!){
+                p0.binding.edited.visibility = View.VISIBLE
+                p0.binding.editedTxt.visibility = View.VISIBLE
+
+            }else{
+                p0.binding.edited.visibility = View.GONE
+                p0.binding.editedTxt.visibility = View.GONE
+            }
+        }catch (e : Exception){
+
+        }
+
+
     }
 
     override fun onCreateViewHolder(p0: ViewGroup, p1: Int): CustomViewHolder {

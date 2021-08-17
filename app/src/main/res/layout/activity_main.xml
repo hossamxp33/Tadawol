@@ -1,188 +1,186 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<layout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
-<data>
 
-    <variable
-        name="Context"
-        type="com.example.tadawol.app.MainActivity"/>
-    <variable
-        name="listener"
-        type="com.example.tadawol.app.presentation.ClickHandler"/>
+    <data>
 
-</data>
+        <variable
+            name="Context"
+            type="com.example.tadawol.app.MainActivity" />
 
-<androidx.constraintlayout.widget.ConstraintLayout
-    android:id="@+id/mainlayout"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".app.MainActivity"
-    android:background="@color/colorAccent">
+        <variable
+            name="listener"
+            type="com.example.tadawol.app.presentation.ClickHandler" />
 
+    </data>
 
-    <androidx.drawerlayout.widget.DrawerLayout
-        android:id="@+id/drawerLayout"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/mainlayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:fitsSystemWindows="true"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
         android:background="@color/colorAccent"
-        tools:context=".presentaion.MainActivity">
+        tools:context=".app.MainActivity">
 
-        <include
-            layout="@layout/app_bar_main"
+
+        <androidx.drawerlayout.widget.DrawerLayout
+            android:id="@+id/drawerLayout"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-
-        <com.google.android.material.navigation.NavigationView
-            android:id="@+id/nav_view"
-            android:layout_width="200dp"
             android:layout_height="match_parent"
-            android:layout_gravity="start"
-            android:layout_marginTop="90dp"
-            android:layout_marginBottom="90dp"
+            android:background="@color/colorAccent"
             android:fitsSystemWindows="true"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:menu="@menu/drawer_menu"
-            app:itemTextColor="@color/white"
-            app:itemIconTint="@color/white"
-            style="@style/DrawerArrowStyle"
-          />
-
-
-    </androidx.drawerlayout.widget.DrawerLayout>
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/logoLayout"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:background="@color/colorAccent"
-        android:layout_marginTop="28dp"
-        app:layout_constraintHeight_percent="0.09"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-
-        <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/notification"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_marginLeft="24dp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/idea" />
-
-        <TextView
-            android:id="@+id/title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Hello World!"
-            android:textColor="@color/white"
-            android:fontFamily="@font/kokn"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-        <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/btn_menu"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_marginRight="24dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/drawer_icon" />
-
-        <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/bottom"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:srcCompat="@drawable/topline"
-           />
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="70dp"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent">
-
-        <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/line"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:src="@drawable/topline"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-           />
-        <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/chart"
-            android:layout_width="0dp"
-            android:layout_height="40dp"
-            android:padding="4dp"
-            android:layout_marginRight="16dp"
-            android:src="@drawable/chart"
-            app:layout_constraintBottom_toBottomOf="parent"
+            tools:context=".presentaion.MainActivity">
+
+            <include
+                layout="@layout/app_bar_main"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+            <com.google.android.material.navigation.NavigationView
+                android:id="@+id/nav_view"
+                style="@style/DrawerArrowStyle"
+                android:layout_width="200dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="start"
+                android:layout_marginTop="90dp"
+                android:layout_marginBottom="90dp"
+                android:fitsSystemWindows="true"
+                app:itemIconTint="@color/white"
+                app:itemTextColor="@color/white"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:menu="@menu/drawer_menu" />
+
+
+        </androidx.drawerlayout.widget.DrawerLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/logoLayout"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginTop="28dp"
+            android:background="@color/colorAccent"
+            app:layout_constraintHeight_percent="0.09"
+            app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintWidth_percent="0.2" />
+            app:layout_constraintTop_toTopOf="parent">
 
 
-        <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/company"
-            android:layout_width="0dp"
-            android:layout_height="40dp"
-            android:padding="4dp"
-            android:layout_marginRight="16dp"
-            android:src="@drawable/company"
-            android:onClick="@{() -> listener.SwitchToStockPriceFragment(Context)}"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintRight_toLeftOf="@+id/chart"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintWidth_percent="0.2" />
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/notification"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginLeft="24dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/idea" />
 
-        <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/deal"
-            android:layout_width="0dp"
-            android:layout_height="40dp"
-            android:padding="4dp"
-            android:layout_marginRight="16dp"
-            android:src="@drawable/deal"
-            android:onClick="@{() -> listener.SwitchToRecommends(Context)}"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintRight_toLeftOf="@+id/company"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintWidth_percent="0.2" />
+            <TextView
+                android:id="@+id/title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/kokn"
+                android:text="Hello World!"
+                android:textColor="@color/white"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-        <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/main"
-            android:layout_width="0dp"
-            android:layout_height="40dp"
-            android:padding="4dp"
-            android:layout_marginLeft="16dp"
-            android:src="@drawable/main"
-            android:onClick="@{() -> listener.SwitchToNews(Context)}"
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/btn_menu"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginRight="24dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/drawer_icon" />
 
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/bottom"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:srcCompat="@drawable/topline" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="70dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintWidth_percent="0.2" />
+            app:layout_constraintRight_toRightOf="parent">
 
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/line"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:src="@drawable/topline"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/chart"
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:layout_marginRight="16dp"
+                android:padding="4dp"
+                android:src="@drawable/chart"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintWidth_percent="0.2" />
+
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/company"
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:layout_marginRight="16dp"
+                android:onClick="@{() -> listener.SwitchToStockPriceFragment(Context)}"
+                android:padding="4dp"
+                android:src="@drawable/company"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintRight_toLeftOf="@+id/chart"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintWidth_percent="0.2" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/deal"
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:layout_marginRight="16dp"
+                android:onClick="@{() -> listener.SwitchToRecommends(Context)}"
+                android:padding="4dp"
+                android:src="@drawable/deal"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintRight_toLeftOf="@+id/company"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintWidth_percent="0.2" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/main"
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:layout_marginLeft="16dp"
+                android:onClick="@{() -> listener.SwitchToNews(Context)}"
+                android:padding="4dp"
+                android:src="@drawable/main"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintWidth_percent="0.2" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
-</androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

@@ -41,9 +41,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-
-            android:onClick="@{() -> listener.SwitchToEditFragment(Context,data)}">
+            app:layout_constraintTop_toTopOf="parent">
 
             <androidx.constraintlayout.widget.Guideline
                 android:id="@+id/guide2"
@@ -224,15 +222,40 @@
                     android:background="@drawable/note_redius_bg"
                     app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
                     android:text="@{Html.fromHtml(String.format(data.notes))}"
                     android:textColor="@color/white"
-                    app:layout_constraintTop_toBottomOf="@+id/textView"
+                    app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintLeft_toLeftOf="parent"/>
+                    app:layout_constraintTop_toBottomOf="@+id/textView" />
 
+                <TextView
+                    android:id="@+id/edited"
+                    style="@style/StockTextStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="32dp"
+                    android:layout_marginTop="4dp"
+                    android:textColor="@color/white"
+                    app:datetext="@{data.modified}"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/edited_txt"
+                    style="@style/StockTextStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginTop="4dp"
+                    android:text="تعديل في"
+                    android:textColor="@color/white"
+                    app:layout_constraintLeft_toRightOf="@+id/edited"
+                    app:layout_constraintTop_toTopOf="parent" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>

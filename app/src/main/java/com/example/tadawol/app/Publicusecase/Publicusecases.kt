@@ -15,6 +15,7 @@ import android.view.View
 import android.view.WindowManager
 import android.widget.ImageView
 import android.widget.Toast
+import androidx.core.content.ContextCompat.startActivity
 import androidx.core.content.res.ResourcesCompat
 import com.bumptech.glide.Glide
 import com.example.tadawol.R
@@ -93,11 +94,13 @@ fun getBitmap(context: Context?): Bitmap {
 
 }
 
-fun makeCall(con:Context, phone: String?)
-{
-    val intent =  Intent(Intent.ACTION_CALL, Uri.parse("tel:" + phone));
-    con.startActivity(intent);
-}
+
+    fun call(context: Context,number: String) {
+        val dialIntent = Intent(Intent.ACTION_DIAL)
+        dialIntent.data = Uri.parse("tel:" + number)
+          context.startActivity(dialIntent)
+    }
+
 
 
 fun setupviewPager(viewPager: ViewPager) {
@@ -160,10 +163,18 @@ fun openFacebook(context: Context) {
     openURL.data = Uri.parse("https://www.facebook.com/IRAQKMCO")
     context.startActivity(openURL)
 }
+
+/// open Url
+fun openUrl(context: Context) {
+
+    val openURL = Intent(android.content.Intent.ACTION_VIEW)
+     openURL.data = Uri.parse("https://www.al-fateh-iq.com/")
+    context.startActivity(openURL)
+}
 ///////// ERROR_MotionToast
 fun ERROR_MotionToast(massage : String,context: Context){
     MotionToast.createColorToast(context as Login,
-        "Hurray success 😍",
+        "Error",
         massage,
         MotionToast.TOAST_ERROR,
         MotionToast.GRAVITY_BOTTOM,
@@ -181,3 +192,4 @@ fun SUCCESS_MotionToast(massage : String,context: Context){
         MotionToast.LONG_DURATION,
         ResourcesCompat.getFont(context, R.font.helvetica_regular))
 }
+/// for main activity

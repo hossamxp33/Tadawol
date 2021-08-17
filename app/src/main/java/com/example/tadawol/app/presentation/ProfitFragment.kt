@@ -40,11 +40,11 @@ viewModel.ProfitResponseLd?.observe(this,Observer { it ->
 //view.profittext.text =  "   مجموع الارباح" +  it.profittotal!!.first().profit!!.toString()
 
 var data = arrayListOf<Float>()
-   var monthes = arrayOf(
+   val monthes = arrayOf(
         "Jan", "Feb", "Mar", "Apr", "May", "Jun",
         "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
     )
-    var values = arrayOf(
+    val values = arrayOf(
         0.0,    0.0,   0.0,    0.0,    0.0,    0.0,
         0.0,    0.0,    0.0,    0.0,    0.0,    0.0
     )

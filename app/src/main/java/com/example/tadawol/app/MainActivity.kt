@@ -19,6 +19,7 @@ import com.example.tadawol.app.presentation.ProfitFragment
 import com.example.tadawol.app.presentation.add_edit_trades.AddTradesfragment
 import com.example.tadawol.app.presentation.mytrades.Mytrades
 import com.example.tadawol.app.presentation.recommendation_fragment.RecommendationFragment
+import com.example.tadawol.app.presentation.upgrade_fragment.Upgrade_Fragment
 import com.example.tadawol.app.presentation.user_setting.Setting_Fragment
 import com.example.tadawol.app.presentation.viewmodel.MainViewModel
 import com.example.tadawol.databinding.ActivityMainBinding
@@ -79,10 +80,10 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     override fun onNavigationItemSelected(menuItem: MenuItem): Boolean {
 
         when (menuItem.itemId) {
-            R.id.recommendations -> {
-         val homeFragment = RecommendationFragment()
+            R.id.upgrade -> {
+         val upgrade = Upgrade_Fragment()
                 supportFragmentManager.beginTransaction().setCustomAnimations(R.anim.ttb, 0, 0,0)
-                    .replace(R.id.main_frame, homeFragment)
+                    .replace(R.id.main_frame, upgrade)
                     .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
                     .commit()
 //
@@ -95,7 +96,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                     .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
                     .commit()
             }
-            R.id.home -> {
+            R.id.my_trades -> {
 
                 val   setting_fragment = Mytrades()
                 supportFragmentManager.beginTransaction().setCustomAnimations(R.anim.ttb, 0, 0,0)

@@ -70,10 +70,7 @@ class NewsFragment : Fragment(){
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewModel.errorLivedat.observe(this, Observer {
-            if ( page == 1 )
-                showToastBasedOnThrowable(context,Throwable())
-        })
+
 
 
         viewModel.GetNewsData()

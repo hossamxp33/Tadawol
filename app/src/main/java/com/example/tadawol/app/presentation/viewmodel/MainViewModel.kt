@@ -16,6 +16,7 @@ import com.example.tadawol.app.models.*
 import com.example.tadawol.app.presentation.login_activity.Login
 import io.reactivex.disposables.CompositeDisposable
 import www.sanju.motiontoast.MotionToast
+import java.lang.Exception
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -46,7 +47,7 @@ fun setImageResource(imageView: AppCompatImageView, resource: String?) {
 
 @BindingAdapter("datetext")
 fun setDatetext(text:TextView,resource: String?) {
-
+try {
     val myFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss")
     val dateObj: Date
     dateObj = myFormat.parse(resource)
@@ -54,6 +55,10 @@ fun setDatetext(text:TextView,resource: String?) {
     val fromServer = SimpleDateFormat("yyyy-MM-dd HH:mm a",Locale("ar"))
     val dateString = fromServer.format(Date(java.lang.Long.parseLong(timestamp)))
     text.text = dateString
+}
+catch (e :Exception){
+
+}
 }
 
 

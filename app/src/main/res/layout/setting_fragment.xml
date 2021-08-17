@@ -171,6 +171,8 @@
         android:text="تقديم مساعدة  "
         android:textColor="@color/white"
         android:textSize="18sp"
+        android:onClick="@{() -> listener.SwitchToContactUs(Context)}"
+
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/data"

@@ -1,7 +1,6 @@
 package com.example.tadawol.app.data_layer
 
 
-
 import com.example.tadawol.app.models.*
 import io.reactivex.Observable
 import retrofit2.http.*
@@ -30,12 +29,12 @@ interface APIServices {
 
     ///// Get Trades
     @GET("trades.json")
-     fun MyTrades(@Query("page") page: Int): Observable<MainTrades>
+    fun MyTrades(@Query("page") page: Int): Observable<MainTrades>
 
     @GET("trades/getTradesByUserId/{id}.json")
-    fun MyTradesForUser(  @Path ("id") id : Int,@Query("page") page: Int   ,
+    fun MyTradesForUser(
+        @Path("id") id: Int, @Query("page") page: Int,
     ): Observable<MainTrades>
-
 
 
     @GET("Trades/getprofitforuser.json")
@@ -45,7 +44,7 @@ interface APIServices {
     @GET("news.json")
     fun MyNews(): Observable<NewsData>
 
-     ////// Currencies
+    ////// Currencies
     @GET("Currencies.json")
     fun Currencies(): Observable<Currencies>
 
@@ -58,22 +57,22 @@ interface APIServices {
     @FormUrlEncoded
     @POST("trades/add.json")
     abstract fun Add_Trades(
-        @Field("currency_id") currency_id : Int,
+        @Field("currency_id") currency_id: Int,
         @Field("enter") enter: Float,
         @Field("stop_profit") stop_profit: Double,
         @Field("stop_loss") stop_loss: Double,
         @Field("notes") notes: String,
 
 
-    ): Observable<Trade>
+        ): Observable<Trade>
 
 
     /// Edit
     @FormUrlEncoded
     @POST("trades/edit/{id}.json")
     abstract fun Edit_Trades(
-        @Path ("id") id : Int,
-        @Field("currency_id") currency_id : Int,
+        @Path("id") id: Int,
+        @Field("currency_id") currency_id: Int,
         @Field("enter") enter: Float,
         @Field("stop_profit") stop_profit: Double,
         @Field("stop_loss") stop_loss: Double,

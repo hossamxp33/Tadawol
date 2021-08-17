@@ -6,10 +6,9 @@
     <group android:checkableBehavior="single"
             >
         <item
-                android:id="@+id/home"
-                android:icon="@drawable/main"
-            
-                android:title="الرئيسية" />
+                android:id="@+id/my_trades"
+                android:icon="@drawable/deal"
+                android:title="توصياتي" />
 
         <item
 
@@ -21,9 +20,9 @@
 
         <item
 
-                android:id="@+id/recommendations"
-                android:icon="@drawable/deal"
-                android:title="التوصيات" />
+                android:id="@+id/upgrade"
+                android:icon="@drawable/star"
+                android:title="الترقية" />
 
     </group>
 
@@ -34,7 +33,7 @@
         <item
                 android:id="@+id/more"
                  
-                android:icon="@drawable/vip_arrow"
+                android:icon="@drawable/settings"
                 android:title="اعداد الحساب" />
 
     </item>

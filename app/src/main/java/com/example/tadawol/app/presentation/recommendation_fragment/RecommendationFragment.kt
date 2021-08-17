@@ -26,13 +26,13 @@ open class RecommendationFragment : Fragment(){
     }
     lateinit var MainAdapter: Recommendations_Adapter
 
-    lateinit var list : ArrayList<Trade>
+    open  var list : ArrayList<Trade> ? = null
     internal var page = 1
 
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
-        var view: RecommendationsFragmentBinding =
+        val view: RecommendationsFragmentBinding =
             DataBindingUtil.inflate(inflater,
               R.layout.recommendations_fragment, container,false)
            page = 1
@@ -49,10 +49,6 @@ open class RecommendationFragment : Fragment(){
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewModel.errorLivedat.observe(this, Observer {
-            if ( page == 1 )
-                showToastBasedOnThrowable(context,Throwable())
-        })
 
 
         viewModel.loadingLivedat.observe(this,
@@ -61,15 +57,15 @@ open class RecommendationFragment : Fragment(){
         viewModel.TradesResponseLD?.observe(this , Observer { it ->
             if (page == 1) {
                 list = ArrayList(it.trades)
-                if (list.size>0) {
-                    MainAdapter =    it?.let { it1 -> Recommendations_Adapter(viewModel,requireActivity(), list) }!!
+                if (list!!.size>0) {
+                    MainAdapter =    it?.let { it1 -> Recommendations_Adapter(viewModel,requireActivity(), list!!) }!!
                     recyler.layoutManager = LinearLayoutManager(context)
-                    recyler.adapter = MainAdapter;
+                    recyler.adapter = MainAdapter
                     stoploading()
 
                 }
             } else{
-                list.addAll(it.trades)
+                list!!.addAll(it.trades)
                 MainAdapter.notifyDataSetChanged()
                 recyler.scrollToPosition(MainAdapter.getItemCount() - 9)
                 stoploading()

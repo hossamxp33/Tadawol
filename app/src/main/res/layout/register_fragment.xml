@@ -54,7 +54,9 @@
             android:textSize="16dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/guide1" />
+            app:layout_constraintTop_toTopOf="@+id/guide1"
+            android:autofillHints=""
+            tools:ignore="HardcodedText,SpUsage" />
 
         <EditText
             android:id="@+id/mobile"
@@ -74,7 +76,8 @@
             android:textSize="16dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/etUsername" />
+            app:layout_constraintTop_toBottomOf="@+id/etUsername"
+            tools:ignore="Autofill,HardcodedText,SpUsage" />
         <!-- android:theme="@style/etTheme" -->
 
 
