@@ -78,6 +78,8 @@ class MainViewModel : ViewModel() {
     var CurrenciesResponseLD : MutableLiveData<List<Data>>? = null
     var NewsResponseLD : MutableLiveData<List<New>>? = null
     var StockPricesResponseLD : MutableLiveData<List<Price>>? = null
+    var     SliderDataResponseLD: MutableLiveData<List<Slider>>? = null
+    var     SubscriptionResponseLD: MutableLiveData<List<Data>>? = null
 
      var main_title = MutableLiveData<String>()
 
@@ -93,6 +95,8 @@ class MainViewModel : ViewModel() {
         StockPricesResponseLD= MutableLiveData()
         main_title = MutableLiveData()
         ProfitResponseLd = MutableLiveData()
+        SliderDataResponseLD= MutableLiveData()
+        SubscriptionResponseLD= MutableLiveData()
     }
 
 ///userlogin
@@ -133,6 +137,19 @@ fun  Login(username:String,password:String){
     ////GetStockPrice
     fun  GetStockPrice(){
         DateRepoCompnay.GetStockPrice(StockPricesResponseLD,errorLivedat,loadingLivedat)
+        loadingLivedat.postValue(true)
+
+    }
+
+    ////////Slider Data
+    fun  GetSliderData(){
+        DateRepoCompnay.SliderData(SliderDataResponseLD,errorLivedat,loadingLivedat)
+        loadingLivedat.postValue(true)
+
+    }
+    ///GetSubscriptionsData
+    fun  GetSubscriptionsData(){
+        DateRepoCompnay.GetSubscriptionsData(SubscriptionResponseLD,errorLivedat,loadingLivedat)
         loadingLivedat.postValue(true)
 
     }

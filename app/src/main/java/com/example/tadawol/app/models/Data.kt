@@ -6,5 +6,8 @@ data class Data(
     var modified: String,
     var name: String,
     var price_buy: Int,
+    var period: String,
+    var photo: String,
     var price_sell: Int
+
 )

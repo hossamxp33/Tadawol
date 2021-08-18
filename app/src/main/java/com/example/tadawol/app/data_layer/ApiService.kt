@@ -82,6 +82,17 @@ interface APIServices {
 
 
     ): Observable<Trade>
+
+
+    //// Slider
+    @POST("sliders.json")/*{company_id}*/
+    fun SliderData():
+            Observable<SliderData>
+
+    //////subscriptions.json
+    @POST("subscriptions.json")/*{company_id}*/
+    fun SubscriptionsData():
+            Observable<Subscriptions>
 }
 
 

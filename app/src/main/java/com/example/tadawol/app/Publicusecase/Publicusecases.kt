@@ -18,6 +18,7 @@ import android.widget.Toast
 import androidx.core.content.ContextCompat.startActivity
 import androidx.core.content.res.ResourcesCompat
 import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
 import com.example.tadawol.R
 import com.example.tadawol.app.MainActivity
 import com.example.tadawol.app.data_layer.ApiClient
@@ -202,4 +203,12 @@ fun ERROR_MotionToast_main(massage : String,context: Context){
         MotionToast.GRAVITY_BOTTOM,
         MotionToast.LONG_DURATION,
         ResourcesCompat.getFont(context, R.font.helvetica_regular))
+}
+
+//////////////
+fun loudImage(context: Context, imag: ImageView, url: String?) {
+    Glide.with(context).applyDefaultRequestOptions(
+        RequestOptions()
+            .placeholder(R.drawable.noimg)
+            .error(R.drawable.noimg)).load(url).into(imag)
 }
