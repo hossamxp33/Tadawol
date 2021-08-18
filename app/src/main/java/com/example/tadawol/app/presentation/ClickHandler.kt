@@ -84,7 +84,14 @@ class ClickHandler {
         SelectedItemColor(context.binding!!.company)
 
     }
+    //////  Switch To Chart Fragment
+    fun SwitchToChartFragment(context: Context) {
 
+        SwitchFun(context as MainActivity, ProfitFragment())
+        SetDefaultColor(context)
+        SelectedItemColor(context.binding!!.company)
+
+    }
     ////////Switch To Edit Fragment
     fun SwitchToEditFragment(context: Context, data: Trade) {
 

@@ -136,6 +136,8 @@
                 android:layout_marginRight="16dp"
                 android:padding="4dp"
                 android:src="@drawable/chart"
+                android:onClick="@{() -> listener.SwitchToChartFragment(Context)}"
+
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
