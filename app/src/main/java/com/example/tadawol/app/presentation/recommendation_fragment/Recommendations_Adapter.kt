@@ -9,6 +9,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.tadawol.R
 import com.example.tadawol.app.MainActivity
+import com.example.tadawol.app.helper.PreferenceHelper
 import com.example.tadawol.app.models.Trade
 import com.example.tadawol.app.presentation.ClickHandler
 import com.example.tadawol.app.presentation.viewmodel.MainViewModel
@@ -23,33 +24,28 @@ class Recommendations_Adapter (var viewModel: MainViewModel, var context : Conte
 
     override fun onBindViewHolder(p0: CustomViewHolder, p1: Int) {
         p0.bind(viewModel,context,data.get(p1))
-        if (data.get(p1).vips == "1"){
 
+if (PreferenceHelper.getIsActive() == false) {
+    if (data.get(p1).vips == "1") {
         p0.binding.blurviewlayout.visibility = View.VISIBLE
-         p0.binding.vipicon.visibility = View.VISIBLE
-        }else{
-            p0.binding.blurviewlayout.visibility = View.GONE
-            p0.binding.vipicon.visibility = View.GONE
+        p0.binding.vipicon.visibility = View.VISIBLE
+    }else{
+        p0.binding.blurviewlayout.visibility = View.GONE
+        p0.binding.vipicon.visibility = View.GONE
+    }
+     }else {
 
-        }
+    p0.binding.blurviewlayout.visibility = View.GONE
+    p0.binding.vipicon.visibility = View.GONE
+
+}
         if (data.get(p1).close_date!! == "1"){
             p0.binding.vipicon.visibility = View.GONE
             p0.binding.blurviewlayout.visibility = View.VISIBLE
             p0.binding.closedicon.visibility = View.VISIBLE
         }
 
-        try {
-            if (data.get(p1).created!! < data.get(p1).modified!!){
-                p0.binding.edited.visibility = View.VISIBLE
-                p0.binding.editedTxt.visibility = View.VISIBLE
 
-            }else{
-                p0.binding.edited.visibility = View.GONE
-                p0.binding.editedTxt.visibility = View.GONE
-            }
-        }catch (e : Exception){
-
-        }
 
 
     }

@@ -122,9 +122,9 @@
                     android:id="@+id/title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@{Html.fromHtml(String.format(data.title))}"
+                    android:text="@{Html.fromHtml(data.title)}"
                     style="@style/TextStyle"
-                    android:layout_marginTop="24dp"
+                    android:layout_marginTop="16dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/textView" />
@@ -135,14 +135,16 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="8dp"
                     android:layout_marginRight="8dp"
-                    android:text="@{Html.fromHtml(String.format(data.description))}"
+                    android:layout_marginBottom="16dp"
+                    android:text="@{Html.fromHtml(data.description)}"
                     android:scrollbars = "vertical"
-
                     style="@style/TextStyle"
+                    android:layout_marginTop="16dp"
+
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/textView" />
+                    app:layout_constraintTop_toBottomOf="@+id/title" />
 
 
             </androidx.constraintlayout.widget.ConstraintLayout>
@@ -153,7 +155,7 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
 
-                app:layout_constraintGuide_percent="0.85" />
+                app:layout_constraintGuide_percent="0.95" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
 

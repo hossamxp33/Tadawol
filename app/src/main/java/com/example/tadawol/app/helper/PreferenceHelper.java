@@ -15,15 +15,29 @@ public class PreferenceHelper {
     private static String Username = "username";
     private static String orderid = "orderid";
     private static String credit = "credit";
-
     private static String type = "type";
     private static String UserGroupId = "UserGroupId";
     private static String ROOMID = "ROOMID";
     private static String INCHAT = "INCHAT";
+    private static String IsActive = "IsActive";
+
     private final String CURRENTLAT = "latitude";
     private final String CURRENTLONG = "longtude";
     private final String CURRENTCATEGRY = "CURRENTCATEGRY";
     private Context context;
+    public static Boolean getIsActive() {
+        return app_prefs.getBoolean(IsActive, false);
+
+    }
+
+    public static void setIsActive(Boolean isActive) {
+        Editor edit = app_prefs.edit();
+        edit.putBoolean(IsActive, isActive);
+        edit.apply();
+    }
+
+
+
 
     public PreferenceHelper(Context context) {
         this.context = context;

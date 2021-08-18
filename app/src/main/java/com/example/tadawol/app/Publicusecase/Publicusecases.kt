@@ -192,4 +192,14 @@ fun SUCCESS_MotionToast(massage : String,context: Context){
         MotionToast.LONG_DURATION,
         ResourcesCompat.getFont(context, R.font.helvetica_regular))
 }
-/// for main activity
+/// for main activity+
+
+fun ERROR_MotionToast_main(massage : String,context: Context){
+    MotionToast.createColorToast(context as MainActivity,
+        "Error",
+        massage,
+        MotionToast.TOAST_ERROR,
+        MotionToast.GRAVITY_BOTTOM,
+        MotionToast.LONG_DURATION,
+        ResourcesCompat.getFont(context, R.font.helvetica_regular))
+}

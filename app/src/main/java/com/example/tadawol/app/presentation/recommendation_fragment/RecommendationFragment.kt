@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.tadawol.R
 import com.example.tadawol.app.Publicusecase.showToastBasedOnThrowable
+import com.example.tadawol.app.helper.PreferenceHelper
 import com.example.tadawol.app.models.Trade
 import com.example.tadawol.app.presentation.viewmodel.MainViewModel
 import com.example.tadawol.databinding.RecommendationsFragmentBinding
@@ -56,6 +57,7 @@ open class RecommendationFragment : Fragment(){
 
         viewModel.TradesResponseLD?.observe(this , Observer { it ->
             if (page == 1) {
+                PreferenceHelper.setIsActive(it.isactive)
                 list = ArrayList(it.trades)
                 if (list!!.size>0) {
                     MainAdapter =    it?.let { it1 -> Recommendations_Adapter(viewModel,requireActivity(), list!!) }!!
