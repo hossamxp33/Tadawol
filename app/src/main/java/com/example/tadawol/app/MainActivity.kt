@@ -9,15 +9,18 @@ import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.core.view.GravityCompat
+import androidx.core.view.get
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.FragmentTransaction
 import androidx.lifecycle.ViewModelProviders
 import com.example.tadawol.R
 import com.example.tadawol.app.helper.PreferenceHelper
+import com.example.tadawol.app.presentaion.notification_fragment.NotificationFragment
 import com.example.tadawol.app.presentation.ClickHandler
 import com.example.tadawol.app.presentation.ProfitFragment
 import com.example.tadawol.app.presentation.add_edit_trades.AddTradesfragment
 import com.example.tadawol.app.presentation.mytrades.Mytrades
+import com.example.tadawol.app.presentation.newsfragment.NewsFragment
 import com.example.tadawol.app.presentation.recommendation_fragment.RecommendationFragment
 import com.example.tadawol.app.presentation.upgrade_fragment.Upgrade_Fragment
 import com.example.tadawol.app.presentation.user_setting.Setting_Fragment
@@ -45,6 +48,13 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
          PreferenceHelper.getToken()
 
+        binding!!.notification.setOnClickListener {
+            val upgrade = NotificationFragment()
+            supportFragmentManager.beginTransaction().setCustomAnimations(R.anim.ttb, 0, 0,0)
+                .replace(R.id.main_frame, upgrade)
+                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+                .commit()
+        }
         viewModel.main_title.observe(this, androidx.lifecycle.Observer {
           binding!!.title.text = it
         })
@@ -63,17 +73,21 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             }
 
 
-        val   addFragment = ProfitFragment()
+        val   addFragment = NewsFragment()
         supportFragmentManager.beginTransaction().setCustomAnimations(R.anim.ttb, 0, 0,0)
             .replace(R.id.main_frame, addFragment)
             .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
             .commit()
+        if (PreferenceHelper.getUserGroupId() == 0) {
+            nav_view.menu.get(1).isVisible = false
+            nav_view.menu.get(0).isVisible = false
 
-
+        }
         drawerToggle.isDrawerIndicatorEnabled = true
         drawerLayout.addDrawerListener(drawerToggle)
         drawerToggle.syncState()
         nav_view.setNavigationItemSelectedListener(this)
+
 
     }
 

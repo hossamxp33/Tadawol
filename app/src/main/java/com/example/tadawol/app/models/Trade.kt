@@ -19,6 +19,7 @@ data class Trade(
     var currency: Currency ?=null,
     var modified: String ?=null,
     var success: Boolean  = false,
+    var user_id: Int?  = null,
 
     var close_date: String ?=null
 

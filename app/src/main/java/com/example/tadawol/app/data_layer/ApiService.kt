@@ -51,7 +51,10 @@ interface APIServices {
     ////// Currencies
     @GET("Trades/price.json")
     fun GetStockPrice(): Observable<StockPrices>
-
+    // Notifications
+    @GET("notifications.json")/*{company_id}*/
+    fun GetNotifications():
+            Observable<Notification>
 
     //// Add
     @FormUrlEncoded
@@ -62,6 +65,7 @@ interface APIServices {
         @Field("stop_profit") stop_profit: Double,
         @Field("stop_loss") stop_loss: Double,
         @Field("notes") notes: String,
+        @Field("user_id") user_id: String,
 
 
         ): Observable<Trade>
@@ -78,7 +82,7 @@ interface APIServices {
         @Field("stop_loss") stop_loss: Double,
         @Field("trade_status") trade_status: Int,
         @Field("notes") notes: String,
-        @Field("vips") vips: String
+        @Field("close_date") close_date: String
 
 
     ): Observable<Trade>

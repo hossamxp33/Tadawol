@@ -33,11 +33,13 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/constraintLayout"
             android:layout_width="match_parent"
-            android:layout_height="180dp"
+            android:layout_height="200dp"
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
             android:layout_marginEnd="16dp"
-            android:background="@drawable/gradint_bk"
+            android:onClick="@{() -> listener.SwitchToEditFragment(Context,data)}"
+
+        android:background="@drawable/gradint_bk"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
@@ -56,7 +58,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@drawable/blue_redius"
-               app:datetext="@{String.valueOf(data.currency.created) }"
+               app:datetext="@{String.valueOf(data.created) }"
                 android:padding="6dp"
                 android:textSize="16dp"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -88,6 +90,7 @@
                     app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintGuide_percent="0.23" />
                 <ImageView
+                    android:id="@+id/arrow"
                     android:layout_width="60dp"
                     android:layout_height="wrap_content"
                     app:layout_constraintTop_toTopOf="parent"
@@ -113,17 +116,26 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    app:layout_constraintGuide_percent="0.35" />
-                <TextView
-                    android:id="@+id/tb"
+                    app:layout_constraintGuide_percent="0.5" />
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/centerlayout"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="TP"
-                    android:fontFamily="@font/kokn"
-                    android:textColor="@color/lightgreen"
-                    android:textSize="20dp"
-                    app:layout_constraintLeft_toLeftOf="@id/guide4"
-                    app:layout_constraintTop_toTopOf="parent"/>
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    >
+
+                    <TextView
+                        android:id="@+id/tb"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/kokn"
+                        android:text="TP"
+                        android:textColor="@color/lightgreen"
+                        android:textSize="20dp"
+                        app:layout_constraintLeft_toLeftOf="@id/centerlayout"
+                        app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
                     android:id="@+id/tb_enter"
@@ -147,7 +159,7 @@
                     android:textColor="@color/lightgreen"
                     android:textSize="20dp"
                     android:textStyle="bold"
-                    app:layout_constraintLeft_toLeftOf="@id/guide4"
+                    app:layout_constraintLeft_toLeftOf="@id/centerlayout"
                     app:layout_constraintTop_toBottomOf="@+id/tb" />
 
                 <TextView
@@ -161,6 +173,7 @@
                     android:textStyle="bold"
                     app:layout_constraintLeft_toRightOf="@id/sl"
                     app:layout_constraintTop_toBottomOf="@+id/tb" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <androidx.constraintlayout.widget.Guideline
                     android:id="@+id/guide6"
@@ -192,20 +205,22 @@
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintLeft_toRightOf="@id/guide6" />
 
+
             </androidx.constraintlayout.widget.ConstraintLayout>
 
 
 
             <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/noteslayout"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:layout_marginStart="8dp"
                 android:layout_marginEnd="8dp"
                 android:layout_marginBottom="8dp"
                 android:background="@drawable/light_violet_reduisbackground"
-                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintBottom_toTopOf="@id/editdate"
                 app:layout_constraintTop_toBottomOf="@id/guide3">
 
                 <TextView
@@ -224,6 +239,7 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
+                    android:id="@+id/htmltext"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="4dp"
@@ -233,41 +249,32 @@
                     app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/textView" />
 
-                <TextView
-                    android:id="@+id/edited"
-                    style="@style/StockTextStyle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="32dp"
-                    android:layout_marginTop="4dp"
-                    android:textColor="@color/white"
-                    app:datetext="@{data.modified}"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
 
-                <TextView
-                    android:id="@+id/edited_txt"
-                    style="@style/StockTextStyle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="8dp"
-                    android:layout_marginTop="4dp"
-                    android:text="تعديل في"
-                    android:textColor="@color/white"
-                    app:layout_constraintLeft_toRightOf="@+id/edited"
-                    app:layout_constraintTop_toTopOf="parent" />
             </androidx.constraintlayout.widget.ConstraintLayout>
-
+            <TextView
+                android:id="@+id/editdate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/kokn"
+                android:layout_marginEnd="15dp"
+                android:text=""
+                android:visibility="gone"
+                android:layout_marginBottom="5dp"
+                android:textColor="@color/red"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/noteslayout"
+               />
         </androidx.constraintlayout.widget.ConstraintLayout>
         <androidx.cardview.widget.CardView
             android:id="@+id/blurviewlayout"
 
             android:layout_width="match_parent"
-            android:layout_height="180dp"
+            android:layout_height="200dp"
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
             android:layout_marginEnd="16dp"
-app:cardBackgroundColor="@color/trans_success_stroke_color"
+            app:cardBackgroundColor="@color/trans_success_stroke_color"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"

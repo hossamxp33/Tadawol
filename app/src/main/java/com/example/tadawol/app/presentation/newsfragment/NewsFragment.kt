@@ -44,7 +44,7 @@ class NewsFragment : Fragment(){
               R.layout.news_fragment, container,false)
            page = 1
 
-        viewModel.updateActionBarTitle("أخبار الاقتصاد العالمي والمحلي")
+        viewModel.updateActionBarTitle("اراء المحللين")
         viewModel.GetNewsData()
 
         view.context = context as MainActivity

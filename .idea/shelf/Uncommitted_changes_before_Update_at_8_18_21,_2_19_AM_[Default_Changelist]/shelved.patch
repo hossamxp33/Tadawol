@@ -1,0 +1,919 @@
+Index: app/src/main/java/com/example/tadawol/app/presentation/ClickHandler.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.tadawol.app.presentation\n\nimport android.content.Context\nimport android.content.Intent\nimport android.net.Uri\nimport android.os.Bundle\nimport android.view.View\nimport android.widget.Switch\nimport android.widget.Toast\nimport androidx.appcompat.widget.AppCompatImageView\nimport androidx.core.content.ContextCompat.startActivity\nimport androidx.fragment.app.Fragment\nimport androidx.fragment.app.FragmentTransaction\nimport com.example.tadawol.R\nimport com.example.tadawol.app.MainActivity\nimport com.example.tadawol.app.Publicusecase.checkUserLogin\nimport com.example.tadawol.app.helper.PreferenceHelper\nimport com.example.tadawol.app.models.New\nimport com.example.tadawol.app.models.Trade\nimport com.example.tadawol.app.presentation.add_edit_trades.Edit_Trades_fragment\nimport com.example.tadawol.app.presentation.contact_us.Contact_Us_Fragment\nimport com.example.tadawol.app.presentation.login_activity.Login\nimport com.example.tadawol.app.presentation.newsfragment.Details_News_Fragment\nimport com.example.tadawol.app.presentation.newsfragment.NewsFragment\nimport com.example.tadawol.app.presentation.recommendation_fragment.RecommendationFragment\nimport com.example.tadawol.app.presentation.stock_price.StockPriceFragment\nimport kotlinx.android.synthetic.main.activity_main.view.*\nimport kotlinx.android.synthetic.main.recipe_placeholder_item.*\n\nclass ClickHandler {\n\n    /// Switch To Recommends\n    fun SwitchToRecommends(context: Context) {\n        SwitchFun(context as MainActivity, RecommendationFragment())\n        SetDefaultColor(context)\n        SelectedItemColor(context.binding!!.deal)\n    }\n    /// Switch To Contact Us\n\n    fun SwitchToContactUs(context: Context) {\n        SwitchFun(context, Contact_Us_Fragment())\n    }\n\n    /// Switch To Login\n    fun SwitchToLogin(context: Context) {\n\n        if (checkUserLogin(context)) {\n            PreferenceHelper.setToken(null, (context))\n            val homeIntent = Intent(context, Login::class.java)\n            context.startActivity(homeIntent)\n            Toast.makeText((context as MainActivity), \"تم تسجيل خروجك\", Toast.LENGTH_SHORT).show()\n\n        }\n    }\n\n\n    /////  Switch To News\n    fun SwitchToNews(context: Context) {\n\n        SwitchFun(context as MainActivity, NewsFragment())\n        SetDefaultColor(context)\n        SelectedItemColor(context.binding!!.main)\n\n    }\n\n    /////  Switch To News Details\n    fun SwitchToNewsDetails(context: Context, data: New) {\n\n        val bundle = Bundle()\n        bundle.putParcelable(\"news_data\", data)\n        val news_fragment = Details_News_Fragment()\n        news_fragment.arguments = bundle\n        SwitchFun(context as MainActivity,news_fragment)\n        SetDefaultColor(context)\n        SelectedItemColor(context.binding!!.main)\n\n    }\n\n    //////  Switch To Stock Price Fragment\n    fun SwitchToStockPriceFragment(context: Context) {\n\n        SwitchFun(context as MainActivity, StockPriceFragment())\n        SetDefaultColor(context)\n        SelectedItemColor(context.binding!!.company)\n\n    }\n\n    ////////Switch To Edit Fragment\n    fun SwitchToEditFragment(context: Context, data: Trade) {\n\n        if (data.close_date != \"1\") {\n            val bundle = Bundle()\n\n            val edit_fragment = Edit_Trades_fragment()\n\n            bundle.putInt(\"id\", data.id!!)\n            bundle.putParcelable(\"data\", data)\n\n            edit_fragment.arguments = bundle\n\n            (context as MainActivity).supportFragmentManager.beginTransaction()\n                .replace(R.id.main_frame, edit_fragment).addToBackStack(null)\n                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)\n                .commit()\n\n        }\n    }\n/// make call\nfun DoCall(con:Context, phone: String?)\n{\n    val intent =  Intent(Intent.ACTION_CALL, Uri.parse(\"tel:\" + \"07721499299\"));\n    con.startActivity(intent);\n}\n\n\n\n    ///// Main Switch Fun\n    fun SwitchFun(context: Context, fragment: Fragment) {\n\n        (context as MainActivity).supportFragmentManager.beginTransaction()\n            .replace(R.id.main_frame, fragment).addToBackStack(null)\n            .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)\n            .commit()\n    }\n\n    ///// Selected Item Color\n    fun SelectedItemColor(img: AppCompatImageView) {\n        img.animate()?.apply {\n            translationX(-30f)\n        }\n        img.setBackgroundResource(R.drawable.under_line)\n\n    }\n\n    fun SetDefaultColor(context: Context) {\n        (context as MainActivity).binding?.chart!!.setBackgroundResource(R.color.float_transparent)\n        (context).binding?.main!!.setBackgroundResource(R.color.float_transparent)\n        (context).binding?.company!!.setBackgroundResource(R.color.float_transparent)\n        (context).binding?.deal!!.setBackgroundResource(R.color.float_transparent)\n    }\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/example/tadawol/app/presentation/ClickHandler.kt	(revision 073aa8ae0b33f5e0006616df6f16c3ca98ed023e)
++++ app/src/main/java/com/example/tadawol/app/presentation/ClickHandler.kt	(date 1629245314000)
+@@ -54,6 +54,15 @@
+     }
+ 
+ 
++   // swtich TO Chart
++   fun SwitchToProfit(context: Context) {
++       val edit_fragment = ProfitFragment()
++
++       (context as MainActivity).supportFragmentManager.beginTransaction()
++           .replace(R.id.main_frame, edit_fragment).addToBackStack(null)
++           .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
++           .commit()
++   }
+     /////  Switch To News
+     fun SwitchToNews(context: Context) {
+ 
+Index: app/src/main/java/com/example/tadawol/app/presentation/viewmodel/MainViewModel.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.tadawol.app.presentation.viewmodel\n\nimport android.app.Activity\nimport android.graphics.Color\nimport android.widget.TextView\nimport androidx.appcompat.widget.AppCompatImageView\nimport androidx.core.content.res.ResourcesCompat\nimport androidx.databinding.BindingAdapter\nimport androidx.lifecycle.MutableLiveData\nimport androidx.lifecycle.ViewModel\nimport com.bumptech.glide.Glide\nimport com.example.tadawol.R\nimport com.example.tadawol.app.DataRepo.DataRepo\nimport com.example.tadawol.app.MainActivity\nimport com.example.tadawol.app.models.*\nimport com.example.tadawol.app.presentation.login_activity.Login\nimport io.reactivex.disposables.CompositeDisposable\nimport www.sanju.motiontoast.MotionToast\nimport java.lang.Exception\nimport java.text.SimpleDateFormat\nimport java.util.*\n\n\n@BindingAdapter(\"app:imageResource\")\nfun setImageResource(imageView: AppCompatImageView, resource: String?) {\n    Glide.with(imageView.context).load(resource).into(imageView)\n}\n\n@BindingAdapter(\"text_color\")\n/////// set Stock image statue /////\n fun setTextColor(text: TextView, color: Int?) {\n    if (color!! < 0) {\n\n        text.setTextColor(Color.parseColor(\"#ef1919\"))\n    } else if (color > 0){\n\n        text.setTextColor(Color.parseColor(\"#008577\"))\n\n    }\n        else { // Note the block\n            // Display an image on image view from drawable\n            text.setTextColor(Color.parseColor(\"#9C9898\"))\n        }\n    }\n\n\n\n@BindingAdapter(\"datetext\")\nfun setDatetext(text:TextView,resource: String?) {\ntry {\n    val myFormat = SimpleDateFormat(\"yyyy-MM-dd'T'HH:mm:ss\")\n    val dateObj: Date\n    dateObj = myFormat.parse(resource)\n    val timestamp = dateObj.getTime().toString()//  //Example -> in ms\n    val fromServer = SimpleDateFormat(\"yyyy-MM-dd HH:mm a\",Locale(\"ar\"))\n    val dateString = fromServer.format(Date(java.lang.Long.parseLong(timestamp)))\n    text.text = dateString\n}\ncatch (e :Exception){\n\n}\n}\n\n\nclass MainViewModel : ViewModel() {\n\n    var DateRepoCompnay: DataRepo = DataRepo()\n     var mCompositeDisposable = CompositeDisposable()\n\n    var errorLivedat: MutableLiveData<String> = MutableLiveData()\n\n    var loadingLivedat: MutableLiveData<Boolean> = MutableLiveData()\n    var LoginResponseLD : MutableLiveData<LoginData>? = null\n    var  RegisterResponseLD : MutableLiveData<RegisterModel>? = null\n    var TradesResponseLD : MutableLiveData<MainTrades>? = null\n    var ProfitResponseLd: MutableLiveData<Profit>? = null\n    var AddTradesResponseLD : MutableLiveData<Trade>? = null\n    var CurrenciesResponseLD : MutableLiveData<List<Data>>? = null\n    var NewsResponseLD : MutableLiveData<List<New>>? = null\n    var StockPricesResponseLD : MutableLiveData<List<Price>>? = null\n\n     var main_title = MutableLiveData<String>()\n\n\n    init {\n        errorLivedat= MutableLiveData()\n        loadingLivedat= MutableLiveData()\n        LoginResponseLD= MutableLiveData()\n        TradesResponseLD = MutableLiveData()\n        AddTradesResponseLD = MutableLiveData()\n        CurrenciesResponseLD = MutableLiveData()\n        NewsResponseLD = MutableLiveData()\n        StockPricesResponseLD= MutableLiveData()\n        main_title = MutableLiveData()\n        ProfitResponseLd = MutableLiveData()\n    }\n\n///userlogin\nfun  Login(username:String,password:String){\n    loadingLivedat.postValue(true)\n\n    DateRepoCompnay.userlogin(username,password,LoginResponseLD,errorLivedat,loadingLivedat)\n\n\n}\n    ///userRegister\n    fun  userRegister(username:String,mobile:String,password:String){\n        loadingLivedat.postValue(true)\n            DateRepoCompnay.userRegister(\n                username,\n                mobile,\n                password,\n                RegisterResponseLD,\n                errorLivedat,\n                loadingLivedat\n            )\n\n    }\n    fun  GetTradesData(page:Int){\n        loadingLivedat.postValue(true)\n        DateRepoCompnay.GetTradesData(page,TradesResponseLD,errorLivedat,loadingLivedat)\n    }\n    fun  GetTradesDataForUser(page:Int){\n        loadingLivedat.postValue(true)\n        DateRepoCompnay.GetTradesDataForUser(page,TradesResponseLD,errorLivedat,loadingLivedat)\n    }\n    /// Get Currencies\n    fun  GetCurrenciesData(){\n        loadingLivedat.postValue(true)\n        DateRepoCompnay.GetCurrenciesData(CurrenciesResponseLD,errorLivedat,loadingLivedat)\n    }\n\n    ////GetStockPrice\n    fun  GetStockPrice(){\n        DateRepoCompnay.GetStockPrice(StockPricesResponseLD,errorLivedat,loadingLivedat)\n        loadingLivedat.postValue(true)\n\n    }\n    /// Get News\n    fun  GetNewsData(){\n        loadingLivedat.postValue(true)\n        DateRepoCompnay.GetMyNewsData(NewsResponseLD,errorLivedat,loadingLivedat)\n    }\n    /// Add Trades\n    fun Add_Trades(currency_id:Int,enter : Float,stop_profit: Double, stop_loss:Double ,notes: String)\n    {\n        DateRepoCompnay.Add(currency_id,enter,stop_profit,stop_loss,notes,AddTradesResponseLD,errorLivedat,loadingLivedat)\n\n    }\n\n\n///Edit_Trades\nfun Edit_Trades(id:Int,currency_id:Int,enter : Float,stop_profit: Double, stop_loss:Double ,trade_status : Int,notes: String,vips:String)\n{ if (validate(Trade(currency_id,enter,stop_profit,stop_loss, trade_status, notes, vips))) {\n        DateRepoCompnay.Edit_Trades(\n            id,\n            currency_id,\n            enter,\n            stop_profit,\n            stop_loss,\n            trade_status,\n            notes,\n            vips,\n            AddTradesResponseLD,\n            errorLivedat,\n            loadingLivedat\n        )\n    }\n}\n\n    private fun validate(data: Trade): Boolean {\n        if (data.enter.toString().trim() == \"\" ||\n            data.stop_profit.toString().trim() == \"\"||\n            data.trade_status.toString().trim() == \"\"||\n            data.notes.toString().trim() == \"\"|| data.vips.toString().trim() == \"\") {\n            errorLivedat.postValue(\"اكمل البيانات\")\n\n            return false\n        } else\n            return true\n    }\n    private fun Login_validate(data:  LoginData): Boolean {\n        if (data.username.toString().trim() == \"\" ||\n            data.mobile.toString().trim() == \"\")\n        {\n            errorLivedat.postValue(\"اكمل البيانات\")\n\n            return false\n        } else\n            return true\n    }\n\n    fun updateActionBarTitle(title: String){\n        main_title.postValue(title)\n    }\n\n    fun  GetProfitData(){\n        loadingLivedat.postValue(true)\n        DateRepoCompnay.GetProfitData(ProfitResponseLd,errorLivedat,loadingLivedat)\n    }\n\n    override fun onCleared() {\n        super.onCleared()\n        mCompositeDisposable.dispose()\n        mCompositeDisposable.clear()\n\n    }\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/example/tadawol/app/presentation/viewmodel/MainViewModel.kt	(revision 073aa8ae0b33f5e0006616df6f16c3ca98ed023e)
++++ app/src/main/java/com/example/tadawol/app/presentation/viewmodel/MainViewModel.kt	(date 1629218514000)
+@@ -62,6 +62,7 @@
+ }
+ 
+ 
++
+ class MainViewModel : ViewModel() {
+ 
+     var DateRepoCompnay: DataRepo = DataRepo()
+@@ -150,7 +151,7 @@
+ 
+ 
+ ///Edit_Trades
+-fun Edit_Trades(id:Int,currency_id:Int,enter : Float,stop_profit: Double, stop_loss:Double ,trade_status : Int,notes: String,vips:String)
++fun Edit_Trades(id:Int,currency_id:Int,enter : Float,stop_profit: Double, stop_loss:Double ,trade_status : Int,notes: String,vips:String,swtich:String)
+ { if (validate(Trade(currency_id,enter,stop_profit,stop_loss, trade_status, notes, vips))) {
+         DateRepoCompnay.Edit_Trades(
+             id,
+@@ -161,6 +162,7 @@
+             trade_status,
+             notes,
+             vips,
++            swtich ,
+             AddTradesResponseLD,
+             errorLivedat,
+             loadingLivedat
+Index: app/src/main/res/layout/sign_in_fragment.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"utf-8\"?>\n<layout xmlns:android=\"http://schemas.android.com/apk/res/android\"\n    xmlns:app=\"http://schemas.android.com/apk/res-auto\"\n    xmlns:tools=\"http://schemas.android.com/tools\"\n    android:id=\"@+id/layout\">\n    <data>\n        <variable\n                name=\"Context\"\n                type=\"com.example.tadawol.app.MainActivity\"/>\n        <variable\n                name=\"listener\"\n                type=\"com.example.tadawol.app.presentation.ClickHandler\"/>\n       <!-- <variable\n                name=\"data\"\n                type=\"com.example.tadawol.presentaion.CompanyDatum\"/>\n    -->\n\n    </data>\n    <androidx.constraintlayout.widget.ConstraintLayout\n            android:layout_width=\"match_parent\"\n            android:layout_height=\"match_parent\"\n            android:background=\"#070d2d\">\n\n\n\n        <androidx.constraintlayout.widget.Guideline\n                android:id=\"@+id/guide2\"\n                android:layout_width=\"wrap_content\"\n                android:layout_height=\"wrap_content\"\n                android:orientation=\"horizontal\"\n                app:layout_constraintGuide_percent=\"0.28\" />\n\n\n        <EditText\n            android:id=\"@+id/etUsername\"\n            android:layout_width=\"match_parent\"\n            android:layout_height=\"wrap_content\"\n            android:layout_marginStart=\"24dp\"\n            android:layout_marginTop=\"16dp\"\n            android:layout_marginEnd=\"24dp\"\n            android:background=\"@drawable/clear_reduisbackground\"\n            android:fontFamily=\"@font/fonts\"\n            android:gravity=\"center\"\n            android:hint=\" اسم المستخدم \"\n            android:inputType=\"text\"\n            android:padding=\"16dp\"\n            android:textColor=\"#184eb4\"\n            android:textColorHint=\"@color/white\"\n            android:textSize=\"16dp\"\n            app:layout_constraintEnd_toEndOf=\"parent\"\n            app:layout_constraintStart_toStartOf=\"parent\"\n            app:layout_constraintTop_toTopOf=\"parent\" />\n        <!-- android:theme=\"@style/etTheme\" -->\n\n\n\n        <androidx.appcompat.widget.AppCompatButton\n            android:id=\"@+id/btnLogin\"\n            android:layout_width=\"0dp\"\n            android:layout_height=\"wrap_content\"\n            android:layout_marginTop=\"16dp\"\n            android:background=\"@drawable/green_linear_background\"\n            android:fontFamily=\"@font/kokn\"\n            android:padding=\"10dp\"\n            android:paddingBottom=\"10dp\"\n            android:text=\" دخول \"\n            android:textColor=\"@color/white\"\n            android:textSize=\"24sp\"\n            app:layout_constraintEnd_toEndOf=\"parent\"\n            app:layout_constraintStart_toStartOf=\"parent\"\n            app:layout_constraintTop_toBottomOf=\"@+id/etUsername\"\n            app:layout_constraintWidth_percent=\"0.5\" />\n\n\n        <androidx.appcompat.widget.AppCompatImageView\n                android:id=\"@+id/version\"\n                android:layout_width=\"wrap_content\"\n                android:layout_height=\"wrap_content\"\n                android:layout_marginBottom=\"24dp\"\n                android:fontFamily=\"@font/fonts\"\n                android:scaleType=\"fitXY\"\n                android:textColor=\"#FFFFFF\"\n                app:layout_constraintBottom_toBottomOf=\"parent\"\n                app:layout_constraintEnd_toEndOf=\"parent\"\n                app:layout_constraintStart_toStartOf=\"parent\" />\n    </androidx.constraintlayout.widget.ConstraintLayout>\n</layout>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/res/layout/sign_in_fragment.xml	(revision 073aa8ae0b33f5e0006616df6f16c3ca98ed023e)
++++ app/src/main/res/layout/sign_in_fragment.xml	(date 1629245512000)
+@@ -41,10 +41,10 @@
+             android:background="@drawable/clear_reduisbackground"
+             android:fontFamily="@font/fonts"
+             android:gravity="center"
+-            android:hint=" اسم المستخدم "
++            android:hint=" رقم الهاتف  "
+             android:inputType="text"
+             android:padding="16dp"
+-            android:textColor="#184eb4"
++            android:textColor="@color/white"
+             android:textColorHint="@color/white"
+             android:textSize="16dp"
+             app:layout_constraintEnd_toEndOf="parent"
+Index: app/src/main/res/layout/activity_main.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"utf-8\"?>\n\n<layout xmlns:android=\"http://schemas.android.com/apk/res/android\"\n    xmlns:app=\"http://schemas.android.com/apk/res-auto\"\n    xmlns:tools=\"http://schemas.android.com/tools\">\n\n    <data>\n\n        <variable\n            name=\"Context\"\n            type=\"com.example.tadawol.app.MainActivity\" />\n\n        <variable\n            name=\"listener\"\n            type=\"com.example.tadawol.app.presentation.ClickHandler\" />\n\n    </data>\n\n    <androidx.constraintlayout.widget.ConstraintLayout\n        android:id=\"@+id/mainlayout\"\n        android:layout_width=\"match_parent\"\n        android:layout_height=\"match_parent\"\n        android:background=\"@color/colorAccent\"\n        tools:context=\".app.MainActivity\">\n\n\n        <androidx.drawerlayout.widget.DrawerLayout\n            android:id=\"@+id/drawerLayout\"\n            android:layout_width=\"match_parent\"\n            android:layout_height=\"match_parent\"\n            android:background=\"@color/colorAccent\"\n            android:fitsSystemWindows=\"true\"\n            app:layout_constraintBottom_toBottomOf=\"parent\"\n            app:layout_constraintEnd_toEndOf=\"parent\"\n            app:layout_constraintStart_toStartOf=\"parent\"\n            app:layout_constraintTop_toTopOf=\"parent\"\n            tools:context=\".presentaion.MainActivity\">\n\n            <include\n                layout=\"@layout/app_bar_main\"\n                android:layout_width=\"match_parent\"\n                android:layout_height=\"match_parent\" />\n\n            <com.google.android.material.navigation.NavigationView\n                android:id=\"@+id/nav_view\"\n                style=\"@style/DrawerArrowStyle\"\n                android:layout_width=\"200dp\"\n                android:layout_height=\"match_parent\"\n                android:layout_gravity=\"start\"\n                android:layout_marginTop=\"90dp\"\n                android:layout_marginBottom=\"90dp\"\n                android:fitsSystemWindows=\"true\"\n                app:itemIconTint=\"@color/white\"\n                app:itemTextColor=\"@color/white\"\n                app:layout_constraintEnd_toEndOf=\"parent\"\n                app:layout_constraintStart_toStartOf=\"parent\"\n                app:menu=\"@menu/drawer_menu\" />\n\n\n        </androidx.drawerlayout.widget.DrawerLayout>\n\n        <androidx.constraintlayout.widget.ConstraintLayout\n            android:id=\"@+id/logoLayout\"\n            android:layout_width=\"match_parent\"\n            android:layout_height=\"0dp\"\n            android:layout_marginTop=\"28dp\"\n            android:background=\"@color/colorAccent\"\n            app:layout_constraintHeight_percent=\"0.09\"\n            app:layout_constraintLeft_toLeftOf=\"parent\"\n            app:layout_constraintRight_toRightOf=\"parent\"\n            app:layout_constraintTop_toTopOf=\"parent\">\n\n\n            <androidx.appcompat.widget.AppCompatImageView\n                android:id=\"@+id/notification\"\n                android:layout_width=\"40dp\"\n                android:layout_height=\"40dp\"\n                android:layout_marginLeft=\"24dp\"\n                app:layout_constraintBottom_toBottomOf=\"parent\"\n                app:layout_constraintLeft_toLeftOf=\"parent\"\n                app:layout_constraintTop_toTopOf=\"parent\"\n                app:srcCompat=\"@drawable/idea\" />\n\n            <TextView\n                android:id=\"@+id/title\"\n                android:layout_width=\"wrap_content\"\n                android:layout_height=\"wrap_content\"\n                android:fontFamily=\"@font/kokn\"\n                android:text=\"Hello World!\"\n                android:textColor=\"@color/white\"\n                app:layout_constraintBottom_toBottomOf=\"parent\"\n                app:layout_constraintLeft_toLeftOf=\"parent\"\n                app:layout_constraintRight_toRightOf=\"parent\"\n                app:layout_constraintTop_toTopOf=\"parent\" />\n\n            <androidx.appcompat.widget.AppCompatImageView\n                android:id=\"@+id/btn_menu\"\n                android:layout_width=\"40dp\"\n                android:layout_height=\"40dp\"\n                android:layout_marginRight=\"24dp\"\n                app:layout_constraintBottom_toBottomOf=\"parent\"\n                app:layout_constraintRight_toRightOf=\"parent\"\n                app:layout_constraintTop_toTopOf=\"parent\"\n                app:srcCompat=\"@drawable/drawer_icon\" />\n\n            <androidx.appcompat.widget.AppCompatImageView\n                android:id=\"@+id/bottom\"\n                android:layout_width=\"match_parent\"\n                android:layout_height=\"wrap_content\"\n                app:layout_constraintBottom_toBottomOf=\"parent\"\n                app:layout_constraintRight_toRightOf=\"parent\"\n                app:srcCompat=\"@drawable/topline\" />\n        </androidx.constraintlayout.widget.ConstraintLayout>\n\n\n        <androidx.constraintlayout.widget.ConstraintLayout\n            android:layout_width=\"match_parent\"\n            android:layout_height=\"70dp\"\n            app:layout_constraintBottom_toBottomOf=\"parent\"\n            app:layout_constraintLeft_toLeftOf=\"parent\"\n            app:layout_constraintRight_toRightOf=\"parent\">\n\n            <androidx.appcompat.widget.AppCompatImageView\n                android:id=\"@+id/line\"\n                android:layout_width=\"match_parent\"\n                android:layout_height=\"wrap_content\"\n                android:src=\"@drawable/topline\"\n                app:layout_constraintEnd_toEndOf=\"parent\"\n                app:layout_constraintStart_toStartOf=\"parent\"\n                app:layout_constraintTop_toTopOf=\"parent\" />\n\n            <androidx.appcompat.widget.AppCompatImageView\n                android:id=\"@+id/chart\"\n                android:layout_width=\"0dp\"\n                android:layout_height=\"40dp\"\n                android:layout_marginRight=\"16dp\"\n                android:padding=\"4dp\"\n                android:src=\"@drawable/chart\"\n                app:layout_constraintBottom_toBottomOf=\"parent\"\n                app:layout_constraintRight_toRightOf=\"parent\"\n                app:layout_constraintTop_toTopOf=\"parent\"\n                app:layout_constraintWidth_percent=\"0.2\" />\n\n\n            <androidx.appcompat.widget.AppCompatImageView\n                android:id=\"@+id/company\"\n                android:layout_width=\"0dp\"\n                android:layout_height=\"40dp\"\n                android:layout_marginRight=\"16dp\"\n                android:onClick=\"@{() -> listener.SwitchToStockPriceFragment(Context)}\"\n                android:padding=\"4dp\"\n                android:src=\"@drawable/company\"\n                app:layout_constraintBottom_toBottomOf=\"parent\"\n                app:layout_constraintRight_toLeftOf=\"@+id/chart\"\n                app:layout_constraintTop_toTopOf=\"parent\"\n                app:layout_constraintWidth_percent=\"0.2\" />\n\n            <androidx.appcompat.widget.AppCompatImageView\n                android:id=\"@+id/deal\"\n                android:layout_width=\"0dp\"\n                android:layout_height=\"40dp\"\n                android:layout_marginRight=\"16dp\"\n                android:onClick=\"@{() -> listener.SwitchToRecommends(Context)}\"\n                android:padding=\"4dp\"\n                android:src=\"@drawable/deal\"\n                app:layout_constraintBottom_toBottomOf=\"parent\"\n                app:layout_constraintRight_toLeftOf=\"@+id/company\"\n                app:layout_constraintTop_toTopOf=\"parent\"\n                app:layout_constraintWidth_percent=\"0.2\" />\n\n            <androidx.appcompat.widget.AppCompatImageView\n                android:id=\"@+id/main\"\n                android:layout_width=\"0dp\"\n                android:layout_height=\"40dp\"\n                android:layout_marginLeft=\"16dp\"\n                android:onClick=\"@{() -> listener.SwitchToNews(Context)}\"\n                android:padding=\"4dp\"\n                android:src=\"@drawable/main\"\n                app:layout_constraintBottom_toBottomOf=\"parent\"\n                app:layout_constraintLeft_toLeftOf=\"parent\"\n                app:layout_constraintTop_toTopOf=\"parent\"\n                app:layout_constraintWidth_percent=\"0.2\" />\n\n        </androidx.constraintlayout.widget.ConstraintLayout>\n    </androidx.constraintlayout.widget.ConstraintLayout>\n</layout>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/res/layout/activity_main.xml	(revision 073aa8ae0b33f5e0006616df6f16c3ca98ed023e)
++++ app/src/main/res/layout/activity_main.xml	(date 1629245072000)
+@@ -136,6 +136,8 @@
+                 android:layout_marginRight="16dp"
+                 android:padding="4dp"
+                 android:src="@drawable/chart"
++                android:onClick="@{() -> listener.SwitchToProfit(Context)}"
++
+                 app:layout_constraintBottom_toBottomOf="parent"
+                 app:layout_constraintRight_toRightOf="parent"
+                 app:layout_constraintTop_toTopOf="parent"
+Index: app/src/main/res/layout/register_fragment.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"utf-8\"?>\n<layout xmlns:android=\"http://schemas.android.com/apk/res/android\"\n    xmlns:app=\"http://schemas.android.com/apk/res-auto\"\n    xmlns:tools=\"http://schemas.android.com/tools\"\n    android:id=\"@+id/layout\">\n    <data>\n        <variable\n                name=\"Context\"\n                type=\"com.example.tadawol.app.MainActivity\"/>\n        <variable\n                name=\"listener\"\n                type=\"com.example.tadawol.app.presentation.ClickHandler\"/>\n       <!-- <variable\n                name=\"data\"\n                type=\"com.example.tadawol.presentaion.CompanyDatum\"/>\n    -->\n\n    </data>\n    <androidx.constraintlayout.widget.ConstraintLayout\n            android:layout_width=\"match_parent\"\n            android:layout_height=\"match_parent\"\n            android:background=\"#070d2d\">\n\n        <androidx.constraintlayout.widget.Guideline\n                android:id=\"@+id/guide1\"\n                android:layout_width=\"wrap_content\"\n                android:layout_height=\"wrap_content\"\n                android:orientation=\"horizontal\"\n                app:layout_constraintGuide_percent=\"0.08\" />\n\n        <androidx.constraintlayout.widget.Guideline\n                android:id=\"@+id/guide2\"\n                android:layout_width=\"wrap_content\"\n                android:layout_height=\"wrap_content\"\n                android:orientation=\"horizontal\"\n                app:layout_constraintGuide_percent=\"0.28\" />\n\n\n        <EditText\n            android:id=\"@+id/etUsername\"\n            android:layout_width=\"match_parent\"\n            android:layout_height=\"wrap_content\"\n            android:layout_marginStart=\"24dp\"\n            android:layout_marginTop=\"16dp\"\n            android:layout_marginEnd=\"24dp\"\n            android:background=\"@drawable/clear_reduisbackground\"\n            android:fontFamily=\"@font/fonts\"\n            android:gravity=\"center\"\n            android:hint=\" اسم المستخدم \"\n            android:inputType=\"text\"\n            android:padding=\"16dp\"\n            android:textColor=\"#184eb4\"\n            android:textColorHint=\"@color/white\"\n            android:textSize=\"16dp\"\n            app:layout_constraintEnd_toEndOf=\"parent\"\n            app:layout_constraintStart_toStartOf=\"parent\"\n            app:layout_constraintTop_toTopOf=\"@+id/guide1\"\n            android:autofillHints=\"\"\n            tools:ignore=\"HardcodedText,SpUsage\" />\n\n        <EditText\n            android:id=\"@+id/mobile\"\n            android:layout_width=\"match_parent\"\n            android:layout_height=\"wrap_content\"\n            android:layout_marginStart=\"24dp\"\n            android:layout_marginTop=\"16dp\"\n            android:layout_marginEnd=\"24dp\"\n            android:background=\"@drawable/clear_reduisbackground\"\n            android:fontFamily=\"@font/fonts\"\n            android:gravity=\"center\"\n            android:hint=\" الهاتف  \"\n            android:inputType=\"text\"\n            android:padding=\"16dp\"\n            android:textColor=\"#184eb4\"\n            android:textColorHint=\"@color/white\"\n            android:textSize=\"16dp\"\n            app:layout_constraintEnd_toEndOf=\"parent\"\n            app:layout_constraintStart_toStartOf=\"parent\"\n            app:layout_constraintTop_toBottomOf=\"@+id/etUsername\"\n            tools:ignore=\"Autofill,HardcodedText,SpUsage\" />\n        <!-- android:theme=\"@style/etTheme\" -->\n\n\n        <androidx.appcompat.widget.AppCompatButton\n            android:id=\"@+id/btnLogin\"\n            android:layout_width=\"0dp\"\n            android:layout_height=\"wrap_content\"\n            android:layout_marginTop=\"16dp\"\n            android:fontFamily=\"@font/kokn\"\n            android:paddingBottom=\"10dp\"\n            android:text=\" تسجيل \"\n            android:textSize=\"24sp\"\n            android:textColor=\"@color/white\"\n            app:layout_constraintWidth_percent=\"0.5\"\n            android:background=\"@drawable/green_linear_background\"\n            app:layout_constraintEnd_toEndOf=\"parent\"\n            app:layout_constraintStart_toStartOf=\"parent\"\n            app:layout_constraintTop_toBottomOf=\"@+id/mobile\" />\n\n\n        <androidx.appcompat.widget.AppCompatImageView\n                android:id=\"@+id/version\"\n                android:layout_width=\"wrap_content\"\n                android:layout_height=\"wrap_content\"\n                android:layout_marginBottom=\"24dp\"\n                android:fontFamily=\"@font/fonts\"\n                android:scaleType=\"fitXY\"\n                android:textColor=\"#FFFFFF\"\n                app:layout_constraintBottom_toBottomOf=\"parent\"\n                app:layout_constraintEnd_toEndOf=\"parent\"\n                app:layout_constraintStart_toStartOf=\"parent\" />\n    </androidx.constraintlayout.widget.ConstraintLayout>\n</layout>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/res/layout/register_fragment.xml	(revision 073aa8ae0b33f5e0006616df6f16c3ca98ed023e)
++++ app/src/main/res/layout/register_fragment.xml	(date 1629245512000)
+@@ -47,9 +47,10 @@
+             android:fontFamily="@font/fonts"
+             android:gravity="center"
+             android:hint=" اسم المستخدم "
++            android:textColor="@color/white"
++
+             android:inputType="text"
+             android:padding="16dp"
+-            android:textColor="#184eb4"
+             android:textColorHint="@color/white"
+             android:textSize="16dp"
+             app:layout_constraintEnd_toEndOf="parent"
+Index: app/src/main/res/layout/news_items.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"utf-8\"?>\n<layout xmlns:android=\"http://schemas.android.com/apk/res/android\"\n    xmlns:app=\"http://schemas.android.com/apk/res-auto\"\n    xmlns:tools=\"http://schemas.android.com/tools\"\n    android:id=\"@+id/layout\">\n    <data>\n        <variable\n            name=\"Context\"\n            type=\"com.example.tadawol.app.MainActivity\"/>\n        <variable\n            name=\"listener\"\n            type=\"com.example.tadawol.app.presentation.ClickHandler\"/>\n\n\n        <variable\n            name=\"data\"\n            type=\"com.example.tadawol.app.models.New\"/>\n\n        <variable\n            name=\"viewmodel\"\n            type=\"com.example.tadawol.app.presentation.viewmodel.MainViewModel\"/>\n\n        <import type=\"android.text.Html\"/>\n\n\n    </data>\n    <androidx.constraintlayout.widget.ConstraintLayout\n        android:layout_width=\"match_parent\"\n        android:layout_height=\"wrap_content\"\n         android:layoutDirection=\"ltr\"\n        >\n\n        <androidx.constraintlayout.widget.ConstraintLayout\n            android:id=\"@+id/constraintLayout\"\n            android:layout_width=\"match_parent\"\n            android:layout_height=\"250dp\"\n            android:layout_marginLeft=\"8dp\"\n            android:layout_marginTop=\"16dp\"\n            android:layout_marginRight=\"8dp\"\n            android:background=\"@drawable/gradint_bk\"\n            app:layout_constraintBottom_toBottomOf=\"parent\"\n            app:layout_constraintLeft_toLeftOf=\"parent\"\n            app:layout_constraintRight_toRightOf=\"parent\"\n            app:layout_constraintTop_toTopOf=\"parent\"\n            android:onClick=\"@{() -> listener.SwitchToNewsDetails(Context,data)}\">\n\n            <androidx.cardview.widget.CardView\n                android:layout_width=\"match_parent\"\n                android:layout_height=\"0dp\"\n                android:layout_marginLeft=\"16dp\"\n                android:layout_marginTop=\"8dp\"\n                android:layout_marginRight=\"16dp\"\n                app:cardCornerRadius=\"15dp\"\n                app:layout_constraintBottom_toTopOf=\"@+id/guide3\"\n                app:layout_constraintLeft_toLeftOf=\"parent\"\n                app:layout_constraintRight_toRightOf=\"parent\"\n                app:layout_constraintTop_toBottomOf=\"@+id/date\">\n\n                <androidx.appcompat.widget.AppCompatImageView\n                    android:layout_width=\"match_parent\"\n                    android:layout_height=\"match_parent\"\n                    android:scaleType=\"fitXY\"\n                    app:imageResource=\"@{data.photo}\"\n                    app:layout_constraintBottom_toBottomOf=\"parent\"\n                    app:layout_constraintLeft_toLeftOf=\"parent\"\n                    app:layout_constraintRight_toRightOf=\"parent\"\n                    app:layout_constraintTop_toTopOf=\"parent\" />\n            </androidx.cardview.widget.CardView>\n\n            <androidx.constraintlayout.widget.Guideline\n                android:id=\"@+id/guide2\"\n                android:layout_width=\"wrap_content\"\n                android:layout_height=\"wrap_content\"\n                android:orientation=\"horizontal\"\n                app:layout_constraintGuide_percent=\"0.22\"\n                app:layout_constraintLeft_toLeftOf=\"parent\"\n                app:layout_constraintRight_toRightOf=\"parent\" />\n\n            <androidx.appcompat.widget.AppCompatTextView\n                android:id=\"@+id/date\"\n                android:layout_width=\"wrap_content\"\n                android:layout_height=\"wrap_content\"\n                android:background=\"@drawable/blue_redius\"\n                android:padding=\"6dp\"\n                android:textSize=\"12dp\"\n                app:datetext=\"@{String.valueOf(data.created) }\"\n                app:layout_constraintEnd_toEndOf=\"parent\"\n                app:layout_constraintStart_toStartOf=\"parent\"\n                app:layout_constraintTop_toTopOf=\"parent\" />\n\n            <androidx.constraintlayout.widget.Guideline\n                android:id=\"@+id/guide3\"\n                android:layout_width=\"wrap_content\"\n                android:layout_height=\"wrap_content\"\n                android:orientation=\"horizontal\"\n\n                app:layout_constraintGuide_percent=\"0.7\" />\n\n\n            <androidx.constraintlayout.widget.ConstraintLayout\n                android:id=\"@+id/constraintLayout2\"\n                android:layout_width=\"0dp\"\n                android:layout_height=\"0dp\"\n                android:layout_marginLeft=\"16dp\"\n                android:layout_marginTop=\"8dp\"\n                android:layout_marginRight=\"16dp\"\n                android:layout_marginBottom=\"8dp\"\n                android:background=\"@drawable/light_violet_reduisbackground\"\n                app:layout_constraintBottom_toBottomOf=\"parent\"\n                app:layout_constraintLeft_toLeftOf=\"parent\"\n                app:layout_constraintRight_toRightOf=\"parent\"\n                app:layout_constraintTop_toBottomOf=\"@id/guide3\">\n\n                <TextView\n                    android:id=\"@+id/textView\"\n                    android:layout_width=\"wrap_content\"\n                    android:layout_height=\"wrap_content\"\n                    android:background=\"@drawable/note_redius_bg\"\n                    android:fontFamily=\"@font/kokn\"\n                    android:paddingLeft=\"8dp\"\n                    android:paddingTop=\"4dp\"\n                    android:paddingRight=\"8dp\"\n                    android:text=\"وصف\"\n                    android:textColor=\"@color/white\"\n                    android:textStyle=\"bold\"\n                    app:layout_constraintRight_toRightOf=\"parent\"\n                    app:layout_constraintTop_toTopOf=\"parent\" />\n\n                <TextView\n                    android:id=\"@+id/title\"\n                    android:layout_width=\"wrap_content\"\n                    android:layout_height=\"wrap_content\"\n                    android:gravity=\"center\"\n                    android:text=\"@{Html.fromHtml(String.format(data.title))}\"\n                    android:textColor=\"@color/white\"\n                    app:layout_constraintEnd_toStartOf=\"@+id/textView\"\n                    app:layout_constraintStart_toStartOf=\"parent\"\n                    app:layout_constraintTop_toTopOf=\"parent\" />\n\n                <TextView\n                    android:layout_width=\"0dp\"\n                    android:layout_height=\"wrap_content\"\n                    android:layout_marginLeft=\"8dp\"\n                    android:layout_marginRight=\"8dp\"\n                    android:gravity=\"right\"\n                    android:text=\"@{Html.fromHtml(String.format(data.description))}\"\n                    android:textColor=\"@color/white\"\n                    app:layout_constraintBottom_toBottomOf=\"parent\"\n                    app:layout_constraintLeft_toLeftOf=\"parent\"\n                    app:layout_constraintRight_toRightOf=\"parent\"\n                    app:layout_constraintTop_toBottomOf=\"@+id/title\"\n                    app:layout_constraintWidth_percent=\"0.8\" />\n\n\n            </androidx.constraintlayout.widget.ConstraintLayout>\n\n        </androidx.constraintlayout.widget.ConstraintLayout>\n\n\n\n    </androidx.constraintlayout.widget.ConstraintLayout>\n</layout>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/res/layout/news_items.xml	(revision 073aa8ae0b33f5e0006616df6f16c3ca98ed023e)
++++ app/src/main/res/layout/news_items.xml	(date 1629240250000)
+@@ -122,34 +122,22 @@
+                     android:paddingRight="8dp"
+                     android:text="وصف"
+                     android:textColor="@color/white"
+-                    android:textStyle="bold"
+                     app:layout_constraintRight_toRightOf="parent"
+                     app:layout_constraintTop_toTopOf="parent" />
+ 
+                 <TextView
+                     android:id="@+id/title"
+-                    android:layout_width="wrap_content"
++                    android:layout_width="0dp"
+                     android:layout_height="wrap_content"
+-                    android:gravity="center"
+                     android:text="@{Html.fromHtml(String.format(data.title))}"
+                     android:textColor="@color/white"
++                    android:gravity="right"
++                    android:layout_marginRight="10dp"
++                    android:layout_marginTop="10dp"
+                     app:layout_constraintEnd_toStartOf="@+id/textView"
+-                    app:layout_constraintStart_toStartOf="parent"
++                    app:layout_constraintWidth_percent="0.8"
+                     app:layout_constraintTop_toTopOf="parent" />
+ 
+-                <TextView
+-                    android:layout_width="0dp"
+-                    android:layout_height="wrap_content"
+-                    android:layout_marginLeft="8dp"
+-                    android:layout_marginRight="8dp"
+-                    android:gravity="right"
+-                    android:text="@{Html.fromHtml(String.format(data.description))}"
+-                    android:textColor="@color/white"
+-                    app:layout_constraintBottom_toBottomOf="parent"
+-                    app:layout_constraintLeft_toLeftOf="parent"
+-                    app:layout_constraintRight_toRightOf="parent"
+-                    app:layout_constraintTop_toBottomOf="@+id/title"
+-                    app:layout_constraintWidth_percent="0.8" />
+ 
+ 
+             </androidx.constraintlayout.widget.ConstraintLayout>
+Index: app/src/main/java/com/example/tadawol/app/presentation/add_edit_trades/Edit_Trades_fragment.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.tadawol.app.presentation.add_edit_trades\n\nimport android.os.Bundle\nimport android.view.LayoutInflater\nimport android.view.View\nimport android.view.ViewGroup\nimport android.widget.AdapterView\nimport android.widget.ArrayAdapter\nimport android.widget.Spinner\nimport android.widget.Toast\nimport androidx.core.content.res.ResourcesCompat\nimport androidx.databinding.DataBindingUtil\nimport androidx.fragment.app.Fragment\nimport androidx.lifecycle.Observer\nimport androidx.lifecycle.ViewModelProviders\nimport com.example.tadawol.R\nimport com.example.tadawol.app.models.Data\nimport com.example.tadawol.app.models.Trade\nimport com.example.tadawol.app.presentation.viewmodel.MainViewModel\nimport com.example.tadawol.databinding.AddTradesFragmentBinding\nimport com.example.tadawol.databinding.EditTradesFragmentBinding\nimport com.example.tadawol.databinding.RegisterFragmentBinding\nimport com.example.tadawol.databinding.SignInFragmentBinding\nimport www.sanju.motiontoast.MotionToast\nimport java.lang.Exception\n\nclass Edit_Trades_fragment : Fragment(){\n    val viewModel: MainViewModel by lazy {\n        ViewModelProviders.of(this).get(MainViewModel::class.java)\n    }\n    lateinit  var spinner: Spinner\n    var CompanyList:List<Data>? = null\n    var trade_Data:Trade? = null\nvar currency_id : Int ? = null\n    var trade_id : Int ? = null\n\n    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {\n        var view:EditTradesFragmentBinding =\n            DataBindingUtil.inflate(inflater,\n              R.layout.edit_trades_fragment, container,false)\n        trade_id = arguments?.getInt(\"id\")\n        trade_Data= arguments?.getParcelable(\"data\")\n        spinner = view.currencySpinner\n\n        viewModel.GetCurrenciesData()\n\n     ///// Get Currency Data with Spinner ///////\n        viewModel.CurrenciesResponseLD?.observe(this, Observer {\n            spinner.adapter = activity?.applicationContext?.\n            let { it1 -> ArrayAdapter(it1, R.layout.spinner, it.map { it.name }) }\n            CompanyList  = it\n        })\n        spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {\n            override fun onNothingSelected(parent: AdapterView<*>?) {}\n            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {\n               val arrayadapter =  CompanyList!!.get(position)\n               var id = arrayadapter.id\n                currency_id = id\n            }\n        }\n\n        ///////// Set Data for inputs\n        view.enterStr.setText(trade_Data?.enter.toString())\n        view.stopProfit.setText(trade_Data?.stop_profit.toString())\n        view.stopLoss.setText(trade_Data?.stop_loss.toString())\n        view.tradeStatus.setText(trade_Data?.trade_status.toString())\n        view.note.setText(trade_Data?.notes)\n        view.vips.setText(trade_Data?.vips)\n\n\n//// Edit Button .. send data\n        view.btnLogin.setOnClickListener {\n      try {\n        val  enterstr : Float = view.enterStr.text.toString().toFloat()\n        val  stop_profit : Double = view.stopProfit.text.toString().toDouble()\n        val  stop_loss : Double = view.stopLoss.text.toString().toDouble()\n        val  trade_status : Int = view.tradeStatus.text.toString().toInt()\n        val  note : String = view.note.text.toString()\n        val  vip : String = view.vips.text.toString()\n\n    viewModel.Edit_Trades(trade_id!!,currency_id!!,enterstr,stop_profit,stop_loss,trade_status,note,vip)\n    }catch (e : Exception)\n    {\n    Toast.makeText(context, \"أكمل البيانات\", Toast.LENGTH_SHORT).show()\n     }\n        }\n\n        viewModel.AddTradesResponseLD?.observe(this, Observer {\n            if (it.success)\n            {\n\n            }\n            else\n            {\n                MotionToast.createColorToast(activity!!, \"Hurray success \uD83D\uDE0D\", \"أكمل البيانات\",\n                    MotionToast.TOAST_ERROR,\n                    MotionToast.GRAVITY_TOP,\n                    MotionToast.LONG_DURATION,\n                    ResourcesCompat.getFont(activity!!, R.font.helvetica_regular))            }\n        })\n\n        viewModel.errorLivedat.observe(this,\n            Observer {\n                MotionToast.createColorToast(activity!!,\n                    \"Hurray success \uD83D\uDE0D\",\n                    it,\n                    MotionToast.TOAST_ERROR,\n                    MotionToast.GRAVITY_TOP,\n                    MotionToast.LONG_DURATION,\n                    ResourcesCompat.getFont(activity!!, R.font.helvetica_regular))\n            })\n\n\n\n    return view.root\n    }\n\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/example/tadawol/app/presentation/add_edit_trades/Edit_Trades_fragment.kt	(revision 073aa8ae0b33f5e0006616df6f16c3ca98ed023e)
++++ app/src/main/java/com/example/tadawol/app/presentation/add_edit_trades/Edit_Trades_fragment.kt	(date 1629231061000)
+@@ -77,8 +77,15 @@
+         val  trade_status : Int = view.tradeStatus.text.toString().toInt()
+         val  note : String = view.note.text.toString()
+         val  vip : String = view.vips.text.toString()
++          var   switchvalue = String()
++ if(view.switchButton.isChecked == true)
++ {
++      switchvalue = "1"
+ 
+-    viewModel.Edit_Trades(trade_id!!,currency_id!!,enterstr,stop_profit,stop_loss,trade_status,note,vip)
++ }else {
++      switchvalue = "0"
++ }
++    viewModel.Edit_Trades(trade_id!!,currency_id!!,enterstr,stop_profit,stop_loss,trade_status,note,vip,switchvalue)
+     }catch (e : Exception)
+     {
+     Toast.makeText(context, "أكمل البيانات", Toast.LENGTH_SHORT).show()
+Index: app/src/main/res/layout/add_trades_fragment.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"utf-8\"?>\n<layout xmlns:android=\"http://schemas.android.com/apk/res/android\"\n    xmlns:app=\"http://schemas.android.com/apk/res-auto\"\n    xmlns:tools=\"http://schemas.android.com/tools\"\n    android:id=\"@+id/layout\">\n    <data>\n        <variable\n                name=\"Context\"\n                type=\"com.example.tadawol.app.MainActivity\"/>\n        <variable\n                name=\"listener\"\n                type=\"com.example.tadawol.app.presentation.ClickHandler\"/>\n       <!-- <variable\n                name=\"data\"\n                type=\"com.example.tadawol.presentaion.CompanyDatum\"/>\n    -->\n\n    </data>\n    <androidx.constraintlayout.widget.ConstraintLayout\n            android:layout_width=\"match_parent\"\n            android:layout_height=\"match_parent\"\n            android:background=\"#070d2d\">\n\n        <androidx.constraintlayout.widget.Guideline\n            android:id=\"@+id/guide1\"\n            android:layout_width=\"wrap_content\"\n            android:layout_height=\"wrap_content\"\n            android:orientation=\"horizontal\"\n            app:layout_constraintGuide_percent=\"0.1\" />\n\n        <androidx.constraintlayout.widget.Guideline\n                android:id=\"@+id/guide2\"\n                android:layout_width=\"wrap_content\"\n                android:layout_height=\"wrap_content\"\n                android:orientation=\"horizontal\"\n                app:layout_constraintGuide_percent=\"0.28\" />\n        <androidx.constraintlayout.widget.ConstraintLayout\n            android:id=\"@+id/chose_order\"\n            android:layout_width=\"match_parent\"\n            android:layout_height=\"wrap_content\"\n            android:layout_alignParentStart=\"true\"\n            android:layout_centerVertical=\"true\"\n            android:layout_marginStart=\"64dp\"\n            android:layout_marginTop=\"24dp\"\n            android:layout_marginEnd=\"64dp\"\n            android:background=\"@drawable/linear_background\"\n            android:padding=\"11dp\"\n            app:layout_constraintRight_toRightOf=\"parent\"\n            app:layout_constraintLeft_toLeftOf=\"parent\"\n            app:layout_constraintTop_toTopOf=\"parent\">\n\n            <Spinner\n                android:id=\"@+id/currency_spinner\"\n                android:layout_width=\"wrap_content\"\n                android:layout_height=\"wrap_content\"\n                android:layout_centerVertical=\"true\"\n                android:layout_marginLeft=\"16dp\"\n                android:background=\"@android:color/transparent\"\n                android:gravity=\"left\"\n                android:spinnerMode=\"dialog\"\n                app:layout_constraintLeft_toLeftOf=\"parent\"\n                app:layout_constraintTop_toTopOf=\"parent\" />\n\n            <TextView\n                android:layout_width=\"wrap_content\"\n                android:layout_height=\"wrap_content\"\n                android:textStyle=\"bold\"\n                app:layout_constraintBottom_toBottomOf=\"parent\"\n                app:layout_constraintRight_toRightOf=\"parent\"\n                app:layout_constraintTop_toTopOf=\"parent\" />\n\n        </androidx.constraintlayout.widget.ConstraintLayout>\n\n\n        <EditText\n            android:id=\"@+id/enter_str\"\n            android:layout_width=\"match_parent\"\n            android:layout_height=\"wrap_content\"\n            android:layout_marginStart=\"24dp\"\n            android:layout_marginTop=\"32dp\"\n            android:layout_marginEnd=\"24dp\"\n            android:background=\"@drawable/clear_reduisbackground\"\n            android:fontFamily=\"@font/fonts\"\n            android:gravity=\"center\"\n            android:hint=\"الدخول\"\n            android:inputType=\"text\"\n            android:padding=\"16dp\"\n            android:textColor=\"#184eb4\"\n            android:textColorHint=\"@color/white\"\n            android:textSize=\"16dp\"\n            app:layout_constraintEnd_toEndOf=\"parent\"\n            app:layout_constraintStart_toStartOf=\"parent\"\n            app:layout_constraintTop_toTopOf=\"@+id/guide1\" />\n\n        <EditText\n            android:id=\"@+id/stop_profit\"\n            android:layout_width=\"match_parent\"\n            android:layout_height=\"wrap_content\"\n            android:layout_marginStart=\"24dp\"\n            android:layout_marginTop=\"16dp\"\n            android:layout_marginEnd=\"24dp\"\n            android:background=\"@drawable/clear_reduisbackground\"\n            android:fontFamily=\"@font/fonts\"\n            android:gravity=\"center\"\n            android:hint=\"ايقاف الربح \"\n            android:inputType=\"text\"\n            android:padding=\"16dp\"\n            android:textColor=\"#184eb4\"\n            android:textColorHint=\"@color/white\"\n            android:textSize=\"16dp\"\n            app:layout_constraintEnd_toEndOf=\"parent\"\n            app:layout_constraintStart_toStartOf=\"parent\"\n            app:layout_constraintTop_toBottomOf=\"@+id/enter_str\" />\n        <!-- android:theme=\"@style/etTheme\" -->\n\n        <androidx.appcompat.widget.AppCompatEditText\n            android:id=\"@+id/stop_loss\"\n            android:layout_width=\"0dp\"\n            android:layout_height=\"wrap_content\"\n            android:layout_marginStart=\"24dp\"\n            android:layout_marginTop=\"16dp\"\n            android:layout_marginEnd=\"24dp\"\n            android:autoSizeTextType=\"uniform\"\n            android:background=\"@drawable/clear_reduisbackground\"\n            android:fontFamily=\"@font/fonts\"\n            android:gravity=\"center\"\n            android:hint=\"ايقاف الخسارة \"\n            android:inputType=\"textPassword\"\n            android:padding=\"16dp\"\n            android:textColorHint=\"@color/white\"\n            android:textSize=\"16dp\"\n            app:layout_constraintEnd_toEndOf=\"parent\"\n            app:layout_constraintHorizontal_bias=\"0.504\"\n            app:layout_constraintStart_toStartOf=\"parent\"\n            app:layout_constraintTop_toBottomOf=\"@+id/stop_profit\" />\n\n\n        <androidx.appcompat.widget.AppCompatEditText\n            android:id=\"@+id/note\"\n            android:layout_width=\"0dp\"\n            android:layout_height=\"wrap_content\"\n            android:layout_marginStart=\"24dp\"\n            android:layout_marginTop=\"16dp\"\n            android:layout_marginEnd=\"24dp\"\n            android:background=\"@drawable/clear_reduisbackground\"\n            android:fontFamily=\"@font/fonts\"\n            android:gravity=\"center\"\n            android:hint=\"اضافة ملاحظة\"\n            android:inputType=\"text\"\n            android:padding=\"16dp\"\n            android:textColorHint=\"@color/white\"\n            android:textSize=\"16dp\"\n            app:layout_constraintEnd_toEndOf=\"parent\"\n            app:layout_constraintHorizontal_bias=\"0.504\"\n            app:layout_constraintStart_toStartOf=\"parent\"\n            app:layout_constraintTop_toBottomOf=\"@+id/stop_loss\" />\n\n\n        <androidx.appcompat.widget.AppCompatButton\n            android:id=\"@+id/btnLogin\"\n            android:layout_width=\"0dp\"\n            android:layout_height=\"wrap_content\"\n            android:layout_marginTop=\"16dp\"\n            android:background=\"@drawable/green_linear_background\"\n            android:fontFamily=\"@font/kokn\"\n            android:paddingBottom=\"10dp\"\n            android:text=\" اضافة \"\n            android:textColor=\"@color/white\"\n            android:textSize=\"24sp\"\n            app:layout_constraintEnd_toEndOf=\"parent\"\n            app:layout_constraintStart_toStartOf=\"parent\"\n            app:layout_constraintTop_toBottomOf=\"@+id/note\"\n            app:layout_constraintWidth_percent=\"0.5\" />\n\n\n        <androidx.appcompat.widget.AppCompatImageView\n                android:id=\"@+id/version\"\n                android:layout_width=\"wrap_content\"\n                android:layout_height=\"wrap_content\"\n                android:layout_marginBottom=\"24dp\"\n                android:fontFamily=\"@font/fonts\"\n                android:scaleType=\"fitXY\"\n                android:textColor=\"#FFFFFF\"\n                app:layout_constraintBottom_toBottomOf=\"parent\"\n                app:layout_constraintEnd_toEndOf=\"parent\"\n                app:layout_constraintStart_toStartOf=\"parent\" />\n    </androidx.constraintlayout.widget.ConstraintLayout>\n</layout>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/res/layout/add_trades_fragment.xml	(revision 073aa8ae0b33f5e0006616df6f16c3ca98ed023e)
++++ app/src/main/res/layout/add_trades_fragment.xml	(date 1629234123000)
+@@ -83,9 +83,10 @@
+             android:fontFamily="@font/fonts"
+             android:gravity="center"
+             android:hint="الدخول"
+-            android:inputType="text"
++            android:inputType="numberDecimal"
+             android:padding="16dp"
+-            android:textColor="#184eb4"
++
++            android:textColor="@color/white"
+             android:textColorHint="@color/white"
+             android:textSize="16dp"
+             app:layout_constraintEnd_toEndOf="parent"
+@@ -103,9 +104,10 @@
+             android:fontFamily="@font/fonts"
+             android:gravity="center"
+             android:hint="ايقاف الربح "
+-            android:inputType="text"
++            android:inputType="numberDecimal"
+             android:padding="16dp"
+-            android:textColor="#184eb4"
++
++            android:textColor="@color/white"
+             android:textColorHint="@color/white"
+             android:textSize="16dp"
+             app:layout_constraintEnd_toEndOf="parent"
+@@ -125,8 +127,9 @@
+             android:fontFamily="@font/fonts"
+             android:gravity="center"
+             android:hint="ايقاف الخسارة "
+-            android:inputType="textPassword"
++            android:inputType="numberDecimal"
+             android:padding="16dp"
++            android:textColor="@color/white"
+             android:textColorHint="@color/white"
+             android:textSize="16dp"
+             app:layout_constraintEnd_toEndOf="parent"
+@@ -149,6 +152,7 @@
+             android:inputType="text"
+             android:padding="16dp"
+             android:textColorHint="@color/white"
++            android:textColor="@color/white"
+             android:textSize="16dp"
+             app:layout_constraintEnd_toEndOf="parent"
+             app:layout_constraintHorizontal_bias="0.504"
+Index: app/src/main/java/com/example/tadawol/app/presentation/login_activity/tabs_fragments/sign_in_fragment.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.tadawol.app.presentation.login_activity.tabs_fragments\n\nimport android.content.Intent\nimport android.os.Bundle\nimport android.provider.Settings\nimport android.view.LayoutInflater\nimport android.view.View\nimport android.view.ViewGroup\nimport android.widget.Toast\nimport androidx.core.content.res.ResourcesCompat\nimport androidx.databinding.DataBindingUtil\nimport androidx.fragment.app.Fragment\nimport androidx.lifecycle.Observer\nimport androidx.lifecycle.ViewModelProviders\nimport com.example.tadawol.R\nimport com.example.tadawol.app.MainActivity\nimport com.example.tadawol.app.Publicusecase.ERROR_MotionToast\nimport com.example.tadawol.app.Publicusecase.SUCCESS_MotionToast\nimport com.example.tadawol.app.helper.PreferenceHelper\nimport com.example.tadawol.app.presentation.login_activity.Login\nimport com.example.tadawol.app.presentation.recommendation_fragment.RecommendationFragment\nimport com.example.tadawol.app.presentation.viewmodel.MainViewModel\nimport com.example.tadawol.databinding.RegisterFragmentBinding\nimport com.example.tadawol.databinding.SignInFragmentBinding\nimport org.jetbrains.anko.support.v4.act\nimport www.sanju.motiontoast.MotionToast\n\nclass sign_in_fragment : Fragment(){\n    val viewModel: MainViewModel by lazy {\n        ViewModelProviders.of(this).get(MainViewModel::class.java)\n    }\n\n    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {\n\n        var view: SignInFragmentBinding =\n            DataBindingUtil.inflate(inflater,\n                R.layout.sign_in_fragment, container,false)\n\n        view.btnLogin.setOnClickListener {\n            var  android_id = Settings.Secure.getString(activity!!.getContentResolver(),\n                Settings.Secure.ANDROID_ID);\n\n            viewModel.Login(view.etUsername.text.toString(), android_id)\n\n        }\n\n        //// Should be requireActivity() Be Cause this is Fragment\n        viewModel.LoginResponseLD?.observe(requireActivity(), Observer {\n            if (it.token != null && it.mobile != null) {\n                PreferenceHelper.setToken(it.token,activity)\n                 PreferenceHelper.setUserId(it.userid!!)\n                PreferenceHelper.setUsername(it.username!!)\n                PreferenceHelper.setUserGroupId(it.groupid!!)\n\n                if (!(view.etUsername.text.isEmpty()))\n                {\n                    SUCCESS_MotionToast (\"تم تسجيل الدخول\",context!!)\n\n                    val homeIntent = Intent(context,MainActivity()::class.java)\n                    (context as Login).startActivity(homeIntent)\n\n             }\n            }else{\n                ERROR_MotionToast(\"Error in data\",context!!)\n            }\n\n\n        })\n\n        viewModel.errorLivedat.observe(this, Observer {\n            ERROR_MotionToast(\"Error in data\",context!!)\n        })\n        return view.root\n    }\n\n\n\n    ////// ERROR Toast\n\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/example/tadawol/app/presentation/login_activity/tabs_fragments/sign_in_fragment.kt	(revision 073aa8ae0b33f5e0006616df6f16c3ca98ed023e)
++++ app/src/main/java/com/example/tadawol/app/presentation/login_activity/tabs_fragments/sign_in_fragment.kt	(date 1629217462000)
+@@ -54,21 +54,21 @@
+ 
+                 if (!(view.etUsername.text.isEmpty()))
+                 {
+-                    SUCCESS_MotionToast ("تم تسجيل الدخول",context!!)
++                    SUCCESS_MotionToast ("تم تسجيل الدخول",activity!!)
+ 
+                     val homeIntent = Intent(context,MainActivity()::class.java)
+                     (context as Login).startActivity(homeIntent)
+ 
+              }
+             }else{
+-                ERROR_MotionToast("Error in data",context!!)
++                ERROR_MotionToast("Error in data",activity!!)
+             }
+ 
+ 
+         })
+ 
+         viewModel.errorLivedat.observe(this, Observer {
+-            ERROR_MotionToast("Error in data",context!!)
++            ERROR_MotionToast("Error in data",activity!!)
+         })
+         return view.root
+     }
+Index: app/src/main/java/com/example/tadawol/app/presentation/login_activity/tabs_fragments/register_fragment.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.tadawol.app.presentation.login_activity.tabs_fragments\n\nimport android.annotation.SuppressLint\nimport android.content.Intent\nimport android.os.Bundle\nimport android.provider.Settings\nimport android.view.LayoutInflater\nimport android.view.View\nimport android.view.ViewGroup\nimport android.widget.Toast\nimport androidx.core.content.res.ResourcesCompat\nimport androidx.databinding.DataBindingUtil\nimport androidx.fragment.app.Fragment\nimport androidx.lifecycle.Observer\nimport androidx.lifecycle.ViewModelProviders\nimport com.example.tadawol.R\nimport com.example.tadawol.app.MainActivity\nimport com.example.tadawol.app.Publicusecase.ERROR_MotionToast\nimport com.example.tadawol.app.Publicusecase.SUCCESS_MotionToast\nimport com.example.tadawol.app.helper.PreferenceHelper\nimport com.example.tadawol.app.presentation.login_activity.Login\nimport com.example.tadawol.app.presentation.viewmodel.MainViewModel\nimport com.example.tadawol.databinding.RegisterFragmentBinding\nimport com.example.tadawol.databinding.SignInFragmentBinding\nimport www.sanju.motiontoast.MotionToast\n\nclass register_fragment : Fragment() {\n    val viewModel: MainViewModel by lazy {\n        ViewModelProviders.of(this).get(MainViewModel::class.java)\n    }\n\n    @SuppressLint(\"HardwareIds\")\n    override fun onCreateView(\n        inflater: LayoutInflater,\n        container: ViewGroup?,\n        savedInstanceState: Bundle?\n    ): View? {\n\n        val view: RegisterFragmentBinding =\n            DataBindingUtil.inflate(\n                inflater,\n                R.layout.register_fragment, container, false\n            )\n\n        view.btnLogin.setOnClickListener {\n            val android_id = Settings.Secure.getString(\n                activity!!.getContentResolver(),\n                Settings.Secure.ANDROID_ID\n            )\n            viewModel.userRegister(\n                view.etUsername.text.toString(),\n                view.mobile.text.toString(),\n                android_id\n            )\n\n        }\n        //// Should be requireActivity() Be Cause this is Fragment\n        viewModel.RegisterResponseLD?.observe(requireActivity(), Observer {\n            if (!(view.etUsername.text.isEmpty() || view.mobile.text.isEmpty())) {\n                if (it.success) {\n\n                    SUCCESS_MotionToast(\"تم التسجيل بنجاح\",context!!)\n                    val homeIntent = Intent(context, MainActivity()::class.java)\n                    (context as Login).startActivity(homeIntent)\n                } else {\n                    ERROR_MotionToast(\"الرجاء ادخال البيانات صحيحة\",context!!)\n\n                }\n            } else {\n                ERROR_MotionToast(\"خطا\",context!!)\n            }\n\n        })\n\n        viewModel.errorLivedat.observe(this, Observer {\n            ERROR_MotionToast(\"خطا\",context!!)\n        })\n\n        return view.root\n    }\n\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/example/tadawol/app/presentation/login_activity/tabs_fragments/register_fragment.kt	(revision 073aa8ae0b33f5e0006616df6f16c3ca98ed023e)
++++ app/src/main/java/com/example/tadawol/app/presentation/login_activity/tabs_fragments/register_fragment.kt	(date 1629216933000)
+@@ -59,21 +59,21 @@
+             if (!(view.etUsername.text.isEmpty() || view.mobile.text.isEmpty())) {
+                 if (it.success) {
+ 
+-                    SUCCESS_MotionToast("تم التسجيل بنجاح",context!!)
++                    SUCCESS_MotionToast("تم التسجيل بنجاح",activity!!)
+                     val homeIntent = Intent(context, MainActivity()::class.java)
+                     (context as Login).startActivity(homeIntent)
+                 } else {
+-                    ERROR_MotionToast("الرجاء ادخال البيانات صحيحة",context!!)
++                    ERROR_MotionToast("الرجاء ادخال البيانات صحيحة",activity!!)
+ 
+                 }
+             } else {
+-                ERROR_MotionToast("خطا",context!!)
++                ERROR_MotionToast("خطا",activity!!)
+             }
+ 
+         })
+ 
+         viewModel.errorLivedat.observe(this, Observer {
+-            ERROR_MotionToast("خطا",context!!)
++            ERROR_MotionToast("خطا",activity!!)
+         })
+ 
+         return view.root
+Index: app/src/main/res/layout/recommendations_items.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"utf-8\"?>\n<layout xmlns:android=\"http://schemas.android.com/apk/res/android\"\n    xmlns:app=\"http://schemas.android.com/apk/res-auto\"\n    xmlns:tools=\"http://schemas.android.com/tools\"\n    android:id=\"@+id/layout\">\n    <data>\n        <variable\n            name=\"Context\"\n            type=\"com.example.tadawol.app.MainActivity\"/>\n        <variable\n            name=\"listener\"\n            type=\"com.example.tadawol.app.presentation.ClickHandler\"/>\n\n\n        <variable\n            name=\"data\"\n            type=\"com.example.tadawol.app.models.Trade\"/>\n\n        <variable\n            name=\"viewmodel\"\n            type=\"com.example.tadawol.app.presentation.viewmodel.MainViewModel\"/>\n\n        <import type=\"android.text.Html\"/>\n\n\n    </data>\n    <androidx.constraintlayout.widget.ConstraintLayout\n        android:layout_width=\"match_parent\"\n        android:layout_height=\"wrap_content\"\n         android:layoutDirection=\"ltr\"\n        >\n\n        <androidx.constraintlayout.widget.ConstraintLayout\n            android:id=\"@+id/constraintLayout\"\n            android:layout_width=\"match_parent\"\n            android:layout_height=\"180dp\"\n            android:layout_marginStart=\"16dp\"\n            android:layout_marginTop=\"16dp\"\n            android:layout_marginEnd=\"16dp\"\n            android:background=\"@drawable/gradint_bk\"\n            app:layout_constraintBottom_toBottomOf=\"parent\"\n            app:layout_constraintRight_toRightOf=\"parent\"\n            app:layout_constraintLeft_toLeftOf=\"parent\"\n            app:layout_constraintTop_toTopOf=\"parent\">\n\n            <androidx.constraintlayout.widget.Guideline\n                android:id=\"@+id/guide2\"\n                android:layout_width=\"wrap_content\"\n                android:layout_height=\"wrap_content\"\n                android:orientation=\"horizontal\"\n                app:layout_constraintLeft_toLeftOf=\"parent\"\n                app:layout_constraintRight_toRightOf=\"parent\"\n                app:layout_constraintGuide_percent=\"0.22\" />\n\n            <androidx.appcompat.widget.AppCompatTextView\n                android:layout_width=\"wrap_content\"\n                android:layout_height=\"wrap_content\"\n                android:background=\"@drawable/blue_redius\"\n               app:datetext=\"@{String.valueOf(data.currency.created) }\"\n                android:padding=\"6dp\"\n                android:textSize=\"16dp\"\n                app:layout_constraintEnd_toEndOf=\"parent\"\n                app:layout_constraintStart_toStartOf=\"parent\"\n                app:layout_constraintTop_toTopOf=\"parent\" />\n\n            <androidx.constraintlayout.widget.Guideline\n                android:id=\"@+id/guide3\"\n                android:layout_width=\"wrap_content\"\n                android:layout_height=\"wrap_content\"\n                android:orientation=\"horizontal\"\n\n                app:layout_constraintGuide_percent=\"0.6\" />\n\n            <androidx.constraintlayout.widget.ConstraintLayout\n                android:layout_width=\"match_parent\"\n                android:layout_height=\"0dp\"\n                app:layout_constraintLeft_toLeftOf=\"parent\"\n                app:layout_constraintRight_toRightOf=\"parent\"\n                app:layout_constraintTop_toTopOf=\"@+id/guide2\"\n                app:layout_constraintBottom_toBottomOf=\"@+id/guide3\">\n\n                <androidx.constraintlayout.widget.Guideline\n                    android:id=\"@+id/guide5\"\n                    android:layout_width=\"wrap_content\"\n                    android:layout_height=\"wrap_content\"\n                    android:orientation=\"vertical\"\n                    app:layout_constraintLeft_toLeftOf=\"parent\"\n                    app:layout_constraintRight_toRightOf=\"parent\"\n                    app:layout_constraintGuide_percent=\"0.23\" />\n                <ImageView\n                    android:layout_width=\"60dp\"\n                    android:layout_height=\"wrap_content\"\n                    app:layout_constraintTop_toTopOf=\"parent\"\n                    app:layout_constraintRight_toLeftOf=\"@id/guide5\"\n                    android:src=\"@drawable/line_chart\"\n                    />\n\n                <TextView\n                    android:layout_width=\"wrap_content\"\n                    android:layout_height=\"wrap_content\"\n                    android:layout_marginBottom=\"16dp\"\n                    android:fontFamily=\"@font/kokn\"\n                    android:text=\"@{data.enter + ``}\"\n                    android:textColor=\"@color/lightgreen\"\n                    android:textSize=\"20dp\"\n                    android:textStyle=\"bold\"\n                    app:layout_constraintBottom_toBottomOf=\"parent\"\n                    app:layout_constraintRight_toRightOf=\"@id/guide5\" />\n\n\n                <androidx.constraintlayout.widget.Guideline\n                    android:id=\"@+id/guide4\"\n                    android:layout_width=\"wrap_content\"\n                    android:layout_height=\"wrap_content\"\n                    android:orientation=\"vertical\"\n                    app:layout_constraintGuide_percent=\"0.35\" />\n                <TextView\n                    android:id=\"@+id/tb\"\n                    android:layout_width=\"wrap_content\"\n                    android:layout_height=\"wrap_content\"\n                    android:text=\"TP\"\n                    android:fontFamily=\"@font/kokn\"\n                    android:textColor=\"@color/lightgreen\"\n                    android:textSize=\"20dp\"\n                    app:layout_constraintLeft_toLeftOf=\"@id/guide4\"\n                    app:layout_constraintTop_toTopOf=\"parent\"/>\n\n                <TextView\n                    android:id=\"@+id/tb_enter\"\n                    android:layout_width=\"wrap_content\"\n                    android:layout_height=\"wrap_content\"\n                    android:layout_marginLeft=\"16dp\"\n                    android:fontFamily=\"@font/kokn\"\n                    android:text=\"@{String.valueOf(data.stop_profit)}\"\n                    app:text_color=\"@{data.trade_status}\"\n                    android:textSize=\"20dp\"\n                    android:textStyle=\"bold\"\n                    app:layout_constraintLeft_toRightOf=\"@id/tb\"\n                    app:layout_constraintTop_toTopOf=\"parent\" />\n\n                <TextView\n                    android:id=\"@+id/sl\"\n                    android:layout_width=\"wrap_content\"\n                    android:layout_height=\"wrap_content\"\n                    android:fontFamily=\"@font/kokn\"\n                    android:text=\"SL\"\n                    android:textColor=\"@color/lightgreen\"\n                    android:textSize=\"20dp\"\n                    android:textStyle=\"bold\"\n                    app:layout_constraintLeft_toLeftOf=\"@id/guide4\"\n                    app:layout_constraintTop_toBottomOf=\"@+id/tb\" />\n\n                <TextView\n                    android:id=\"@+id/sl_exitt\"\n                    android:layout_width=\"wrap_content\"\n                    android:layout_height=\"wrap_content\"\n                    android:layout_marginLeft=\"16dp\"\n                    android:fontFamily=\"@font/kokn\"\n                    android:text=\"@{String.valueOf(data.stop_loss)}\"\n                    android:textSize=\"20dp\"\n                    android:textStyle=\"bold\"\n                    app:layout_constraintLeft_toRightOf=\"@id/sl\"\n                    app:layout_constraintTop_toBottomOf=\"@+id/tb\" />\n\n                <androidx.constraintlayout.widget.Guideline\n                    android:id=\"@+id/guide6\"\n                    android:layout_width=\"wrap_content\"\n                    android:layout_height=\"wrap_content\"\n                    android:orientation=\"vertical\"\n                    app:layout_constraintLeft_toLeftOf=\"parent\"\n                    app:layout_constraintRight_toRightOf=\"parent\"\n                    app:layout_constraintGuide_percent=\"0.75\" />\n\n                <TextView\n                    android:layout_width=\"wrap_content\"\n                    android:layout_height=\"wrap_content\"\n                    android:text='@{data.trade_status > 0.0 ? (`+ `+ data.trade_status +` PIPS`) :  data.trade_status  &lt; 0.0 ? (` `+ data.trade_status + ` PIPS`) : data.trade_status == 0.0 ?  (data.trade_status + ` PIPS`) : (data.trade_status + `PIPS`)  }'\n                    app:text_color=\"@{data.trade_status}\"\n\n                    android:textColor=\"@color/lightgreen\"\n                    android:textSize=\"20dp\"\n                    android:textStyle=\"bold\"\n                    app:layout_constraintLeft_toRightOf=\"@+id/guide6\"\n                    app:layout_constraintTop_toTopOf=\"parent\" />\n\n                <ImageView\n                    android:layout_width=\"wrap_content\"\n                    android:layout_height=\"wrap_content\"\n                    android:layout_marginLeft=\"16dp\"\n                    android:layout_marginBottom=\"16dp\"\n                    android:src=\"@drawable/vip_arrow\"\n                    app:layout_constraintBottom_toBottomOf=\"parent\"\n                    app:layout_constraintLeft_toRightOf=\"@id/guide6\" />\n\n            </androidx.constraintlayout.widget.ConstraintLayout>\n\n\n\n            <androidx.constraintlayout.widget.ConstraintLayout\n                android:layout_width=\"0dp\"\n                android:layout_height=\"0dp\"\n                android:layout_marginStart=\"8dp\"\n                android:layout_marginEnd=\"8dp\"\n                android:layout_marginBottom=\"8dp\"\n                android:background=\"@drawable/light_violet_reduisbackground\"\n                app:layout_constraintBottom_toBottomOf=\"parent\"\n                app:layout_constraintRight_toRightOf=\"parent\"\n                app:layout_constraintLeft_toLeftOf=\"parent\"\n                app:layout_constraintTop_toBottomOf=\"@id/guide3\">\n\n                <TextView\n                    android:id=\"@+id/textView\"\n                    android:layout_width=\"wrap_content\"\n                    android:layout_height=\"wrap_content\"\n                    android:fontFamily=\"@font/kokn\"\n                    android:text=\"ملاحظة\"\n                    android:textColor=\"@color/white\"\n                    android:textStyle=\"bold\"\n                    android:paddingLeft=\"8dp\"\n                    android:paddingRight=\"8dp\"\n                    android:paddingTop=\"4dp\"\n                    android:background=\"@drawable/note_redius_bg\"\n                    app:layout_constraintRight_toRightOf=\"parent\"\n                    app:layout_constraintTop_toTopOf=\"parent\" />\n\n                <TextView\n                    android:layout_width=\"wrap_content\"\n                    android:layout_height=\"wrap_content\"\n                    android:layout_marginTop=\"4dp\"\n                    android:text=\"@{Html.fromHtml(String.format(data.notes))}\"\n                    android:textColor=\"@color/white\"\n                    app:layout_constraintLeft_toLeftOf=\"parent\"\n                    app:layout_constraintRight_toRightOf=\"parent\"\n                    app:layout_constraintTop_toBottomOf=\"@+id/textView\" />\n\n                <TextView\n                    android:id=\"@+id/edited\"\n                    style=\"@style/StockTextStyle\"\n                    android:layout_width=\"wrap_content\"\n                    android:layout_height=\"wrap_content\"\n                    android:layout_marginLeft=\"32dp\"\n                    android:layout_marginTop=\"4dp\"\n                    android:textColor=\"@color/white\"\n                    app:datetext=\"@{data.modified}\"\n                    app:layout_constraintLeft_toLeftOf=\"parent\"\n                    app:layout_constraintTop_toTopOf=\"parent\" />\n\n                <TextView\n                    android:id=\"@+id/edited_txt\"\n                    style=\"@style/StockTextStyle\"\n                    android:layout_width=\"wrap_content\"\n                    android:layout_height=\"wrap_content\"\n                    android:layout_marginLeft=\"8dp\"\n                    android:layout_marginTop=\"4dp\"\n                    android:text=\"تعديل في\"\n                    android:textColor=\"@color/white\"\n                    app:layout_constraintLeft_toRightOf=\"@+id/edited\"\n                    app:layout_constraintTop_toTopOf=\"parent\" />\n            </androidx.constraintlayout.widget.ConstraintLayout>\n\n        </androidx.constraintlayout.widget.ConstraintLayout>\n        <androidx.cardview.widget.CardView\n            android:id=\"@+id/blurviewlayout\"\n\n            android:layout_width=\"match_parent\"\n            android:layout_height=\"180dp\"\n            android:layout_marginStart=\"16dp\"\n            android:layout_marginTop=\"16dp\"\n            android:layout_marginEnd=\"16dp\"\napp:cardBackgroundColor=\"@color/trans_success_stroke_color\"\n            app:layout_constraintBottom_toBottomOf=\"parent\"\n            app:layout_constraintRight_toRightOf=\"parent\"\n            app:layout_constraintLeft_toLeftOf=\"parent\"\n            app:layout_constraintTop_toTopOf=\"parent\"\n            app:cardCornerRadius=\"25dp\"\n            >\n        <com.github.mmin18.widget.RealtimeBlurView\n            android:id=\"@+id/blurview\"\n            android:layout_width=\"match_parent\"\n            android:layout_height=\"match_parent\"\n\n            app:layout_constraintBottom_toBottomOf=\"parent\"\n            app:layout_constraintRight_toRightOf=\"parent\"\n            app:layout_constraintLeft_toLeftOf=\"parent\"\n            app:layout_constraintTop_toTopOf=\"parent\"\n            app:realtimeBlurRadius=\"10dp\"\n            app:realtimeOverlayColor=\"#8000\"\n\n            >\n\n\n        </com.github.mmin18.widget.RealtimeBlurView>\n            <androidx.appcompat.widget.AppCompatImageView\n                android:id=\"@+id/vipicon\"\n                android:layout_width=\"150dp\"\n                android:layout_height=\"150dp\"\n                app:srcCompat=\"@drawable/vip\"\n               android:layout_gravity=\"center\"\n                >\n\n            </androidx.appcompat.widget.AppCompatImageView>\n            <androidx.appcompat.widget.AppCompatImageView\n                android:id=\"@+id/closedicon\"\n                android:layout_width=\"150dp\"\n                android:layout_height=\"150dp\"\n                app:srcCompat=\"@drawable/closed\"\n                android:layout_gravity=\"center\"\n                android:visibility=\"gone\"\n                >\n\n            </androidx.appcompat.widget.AppCompatImageView>\n        </androidx.cardview.widget.CardView>\n\n    </androidx.constraintlayout.widget.ConstraintLayout>\n</layout>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/res/layout/recommendations_items.xml	(revision 073aa8ae0b33f5e0006616df6f16c3ca98ed023e)
++++ app/src/main/res/layout/recommendations_items.xml	(date 1629235095000)
+@@ -33,11 +33,13 @@
+         <androidx.constraintlayout.widget.ConstraintLayout
+             android:id="@+id/constraintLayout"
+             android:layout_width="match_parent"
+-            android:layout_height="180dp"
++            android:layout_height="200dp"
+             android:layout_marginStart="16dp"
+             android:layout_marginTop="16dp"
+             android:layout_marginEnd="16dp"
+-            android:background="@drawable/gradint_bk"
++            android:onClick="@{() -> listener.SwitchToEditFragment(Context,data)}">
++
++        android:background="@drawable/gradint_bk"
+             app:layout_constraintBottom_toBottomOf="parent"
+             app:layout_constraintRight_toRightOf="parent"
+             app:layout_constraintLeft_toLeftOf="parent"
+@@ -88,6 +90,7 @@
+                     app:layout_constraintRight_toRightOf="parent"
+                     app:layout_constraintGuide_percent="0.23" />
+                 <ImageView
++                    android:id="@+id/arrow"
+                     android:layout_width="60dp"
+                     android:layout_height="wrap_content"
+                     app:layout_constraintTop_toTopOf="parent"
+@@ -113,17 +116,26 @@
+                     android:layout_width="wrap_content"
+                     android:layout_height="wrap_content"
+                     android:orientation="vertical"
+-                    app:layout_constraintGuide_percent="0.35" />
+-                <TextView
+-                    android:id="@+id/tb"
+-                    android:layout_width="wrap_content"
+-                    android:layout_height="wrap_content"
+-                    android:text="TP"
+-                    android:fontFamily="@font/kokn"
+-                    android:textColor="@color/lightgreen"
+-                    android:textSize="20dp"
+-                    app:layout_constraintLeft_toLeftOf="@id/guide4"
+-                    app:layout_constraintTop_toTopOf="parent"/>
++                    app:layout_constraintGuide_percent="0.5" />
++                <androidx.constraintlayout.widget.ConstraintLayout
++                    android:id="@+id/centerlayout"
++                    android:layout_width="wrap_content"
++                    android:layout_height="wrap_content"
++                    app:layout_constraintLeft_toLeftOf="parent"
++                    app:layout_constraintRight_toRightOf="parent"
++                    app:layout_constraintTop_toTopOf="parent"
++                    >
++
++                    <TextView
++                        android:id="@+id/tb"
++                        android:layout_width="wrap_content"
++                        android:layout_height="wrap_content"
++                        android:fontFamily="@font/kokn"
++                        android:text="TP"
++                        android:textColor="@color/lightgreen"
++                        android:textSize="20dp"
++                        app:layout_constraintLeft_toLeftOf="@id/centerlayout"
++                        app:layout_constraintTop_toTopOf="parent" />
+ 
+                 <TextView
+                     android:id="@+id/tb_enter"
+@@ -147,7 +159,7 @@
+                     android:textColor="@color/lightgreen"
+                     android:textSize="20dp"
+                     android:textStyle="bold"
+-                    app:layout_constraintLeft_toLeftOf="@id/guide4"
++                    app:layout_constraintLeft_toLeftOf="@id/centerlayout"
+                     app:layout_constraintTop_toBottomOf="@+id/tb" />
+ 
+                 <TextView
+@@ -161,6 +173,7 @@
+                     android:textStyle="bold"
+                     app:layout_constraintLeft_toRightOf="@id/sl"
+                     app:layout_constraintTop_toBottomOf="@+id/tb" />
++                </androidx.constraintlayout.widget.ConstraintLayout>
+ 
+                 <androidx.constraintlayout.widget.Guideline
+                     android:id="@+id/guide6"
+@@ -192,20 +205,22 @@
+                     app:layout_constraintBottom_toBottomOf="parent"
+                     app:layout_constraintLeft_toRightOf="@id/guide6" />
+ 
++
+             </androidx.constraintlayout.widget.ConstraintLayout>
+ 
+ 
+ 
+             <androidx.constraintlayout.widget.ConstraintLayout
++                android:id="@+id/noteslayout"
+                 android:layout_width="0dp"
+                 android:layout_height="0dp"
+                 android:layout_marginStart="8dp"
+                 android:layout_marginEnd="8dp"
+                 android:layout_marginBottom="8dp"
+                 android:background="@drawable/light_violet_reduisbackground"
+-                app:layout_constraintBottom_toBottomOf="parent"
+                 app:layout_constraintRight_toRightOf="parent"
+                 app:layout_constraintLeft_toLeftOf="parent"
++                app:layout_constraintBottom_toTopOf="@id/editdate"
+                 app:layout_constraintTop_toBottomOf="@id/guide3">
+ 
+                 <TextView
+@@ -224,6 +239,7 @@
+                     app:layout_constraintTop_toTopOf="parent" />
+ 
+                 <TextView
++                    android:id="@+id/htmltext"
+                     android:layout_width="wrap_content"
+                     android:layout_height="wrap_content"
+                     android:layout_marginTop="4dp"
+@@ -233,41 +249,32 @@
+                     app:layout_constraintRight_toRightOf="parent"
+                     app:layout_constraintTop_toBottomOf="@+id/textView" />
+ 
+-                <TextView
+-                    android:id="@+id/edited"
+-                    style="@style/StockTextStyle"
+-                    android:layout_width="wrap_content"
+-                    android:layout_height="wrap_content"
+-                    android:layout_marginLeft="32dp"
+-                    android:layout_marginTop="4dp"
+-                    android:textColor="@color/white"
+-                    app:datetext="@{data.modified}"
+-                    app:layout_constraintLeft_toLeftOf="parent"
+-                    app:layout_constraintTop_toTopOf="parent" />
+-
+-                <TextView
+-                    android:id="@+id/edited_txt"
+-                    style="@style/StockTextStyle"
+-                    android:layout_width="wrap_content"
+-                    android:layout_height="wrap_content"
+-                    android:layout_marginLeft="8dp"
+-                    android:layout_marginTop="4dp"
+-                    android:text="تعديل في"
+-                    android:textColor="@color/white"
+-                    app:layout_constraintLeft_toRightOf="@+id/edited"
+-                    app:layout_constraintTop_toTopOf="parent" />
+-            </androidx.constraintlayout.widget.ConstraintLayout>
+-
++
++            </androidx.constraintlayout.widget.ConstraintLayout>
++            <TextView
++                android:id="@+id/editdate"
++                android:layout_width="wrap_content"
++                android:layout_height="wrap_content"
++                android:fontFamily="@font/kokn"
++                android:layout_marginEnd="15dp"
++                android:text=""
++                android:visibility="gone"
++                android:layout_marginBottom="5dp"
++                android:textColor="@color/red"
++                app:layout_constraintRight_toRightOf="parent"
++                app:layout_constraintBottom_toBottomOf="parent"
++                app:layout_constraintTop_toBottomOf="@id/noteslayout"
++               />
+         </androidx.constraintlayout.widget.ConstraintLayout>
+         <androidx.cardview.widget.CardView
+             android:id="@+id/blurviewlayout"
+ 
+             android:layout_width="match_parent"
+-            android:layout_height="180dp"
++            android:layout_height="200dp"
+             android:layout_marginStart="16dp"
+             android:layout_marginTop="16dp"
+             android:layout_marginEnd="16dp"
+-app:cardBackgroundColor="@color/trans_success_stroke_color"
++            app:cardBackgroundColor="@color/trans_success_stroke_color"
+             app:layout_constraintBottom_toBottomOf="parent"
+             app:layout_constraintRight_toRightOf="parent"
+             app:layout_constraintLeft_toLeftOf="parent"
+Index: app/src/main/java/com/example/tadawol/app/presentation/recommendation_fragment/RecommendationFragment.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.tadawol.app.presentation.recommendation_fragment\n\nimport android.os.Bundle\nimport android.view.LayoutInflater\nimport android.view.View\nimport android.view.ViewGroup\nimport androidx.databinding.DataBindingUtil\nimport androidx.fragment.app.Fragment\nimport androidx.lifecycle.Observer\nimport androidx.lifecycle.ViewModelProviders\nimport androidx.recyclerview.widget.LinearLayoutManager\nimport androidx.recyclerview.widget.RecyclerView\nimport com.example.tadawol.R\nimport com.example.tadawol.app.Publicusecase.showToastBasedOnThrowable\nimport com.example.tadawol.app.models.Trade\nimport com.example.tadawol.app.presentation.viewmodel.MainViewModel\nimport com.example.tadawol.databinding.RecommendationsFragmentBinding\nimport kotlinx.android.synthetic.main.recommendations_fragment.*\nimport java.util.*\nimport kotlin.collections.ArrayList\n\n\nopen class RecommendationFragment : Fragment(){\n    val viewModel: MainViewModel by lazy {\n        ViewModelProviders.of(requireActivity()).get(MainViewModel::class.java)\n    }\n    lateinit var MainAdapter: Recommendations_Adapter\n\n    open  var list : ArrayList<Trade> ? = null\n    internal var page = 1\n\n\n    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {\n\n        val view: RecommendationsFragmentBinding =\n            DataBindingUtil.inflate(inflater,\n              R.layout.recommendations_fragment, container,false)\n           page = 1\n         getdata(view)\n        viewModel.updateActionBarTitle(\"التوصيات\")\n        //attaches LinearLayoutManager with RecyclerView\n\n\n\n\n\n    return view.root\n    }\n\n    override fun onCreate(savedInstanceState: Bundle?) {\n        super.onCreate(savedInstanceState)\n\n\n        viewModel.loadingLivedat.observe(this,\n            Observer { loading -> progress.setVisibility(if (loading!!) View.VISIBLE else View.GONE) })\n\n        viewModel.TradesResponseLD?.observe(this , Observer { it ->\n            if (page == 1) {\n                list = ArrayList(it.trades)\n                if (list!!.size>0) {\n                    MainAdapter =    it?.let { it1 -> Recommendations_Adapter(viewModel,requireActivity(), list!!) }!!\n                    recyler.layoutManager = LinearLayoutManager(context)\n                    recyler.adapter = MainAdapter\n                    stoploading()\n\n                }\n            } else{\n                list!!.addAll(it.trades)\n                MainAdapter.notifyDataSetChanged()\n                recyler.scrollToPosition(MainAdapter.getItemCount() - 9)\n                stoploading()\n\n            }\n            //attaches scrollListener with RecyclerView\n        })\n\n\n    }\n    override fun onResume() {\n        super.onResume()\n         shimmer_view_container.startShimmerAnimation()\n    }\n\n    open fun getdata(view: RecommendationsFragmentBinding) {\n        viewModel.GetTradesData(page)\n        view. recyler.addOnScrollListener(object : RecyclerView.OnScrollListener() {\n            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {\n                super.onScrolled(recyclerView, dx, dy)\n                val lastVisibleItem =\n                    (Objects.requireNonNull(recyclerView.layoutManager) as LinearLayoutManager).findLastCompletelyVisibleItemPosition()\n                if (lastVisibleItem == MainAdapter.getItemCount() -1) {\n                    page++\n                    viewModel.GetTradesData(page)\n\n                }\n            }\n        })\n    }\n    override fun onPause() {\n        shimmer_view_container.stopShimmerAnimation()\n        super.onPause()\n    }\n    fun stoploading() {\n        shimmer_view_container?.setVisibility(View.GONE)\n        shimmer_view_container?.stopShimmerAnimation()\n\n    }\n\n\n\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/example/tadawol/app/presentation/recommendation_fragment/RecommendationFragment.kt	(revision 073aa8ae0b33f5e0006616df6f16c3ca98ed023e)
++++ app/src/main/java/com/example/tadawol/app/presentation/recommendation_fragment/RecommendationFragment.kt	(date 1629236749000)
+@@ -11,6 +11,7 @@
+ import androidx.recyclerview.widget.LinearLayoutManager
+ import androidx.recyclerview.widget.RecyclerView
+ import com.example.tadawol.R
++import com.example.tadawol.app.Publicusecase.ERROR_MotionToast
+ import com.example.tadawol.app.Publicusecase.showToastBasedOnThrowable
+ import com.example.tadawol.app.models.Trade
+ import com.example.tadawol.app.presentation.viewmodel.MainViewModel
+@@ -57,12 +58,19 @@
+         viewModel.TradesResponseLD?.observe(this , Observer { it ->
+             if (page == 1) {
+                 list = ArrayList(it.trades)
++
+                 if (list!!.size>0) {
+                     MainAdapter =    it?.let { it1 -> Recommendations_Adapter(viewModel,requireActivity(), list!!) }!!
+                     recyler.layoutManager = LinearLayoutManager(context)
+                     recyler.adapter = MainAdapter
+                     stoploading()
+ 
++                }else {
++
++
++                    if (list.isNullOrEmpty()){
++                        ERROR_MotionToast("لا يوجد توصيات", activity!!)
++                    }
+                 }
+             } else{
+                 list!!.addAll(it.trades)
+Index: app/src/main/java/com/example/tadawol/app/presentation/recommendation_fragment/Recommendations_Adapter.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.tadawol.app.presentation.recommendation_fragment\n\nimport android.content.Context\nimport android.graphics.Color\nimport android.view.LayoutInflater\nimport android.view.View\nimport android.view.ViewGroup\nimport androidx.databinding.DataBindingUtil\nimport androidx.recyclerview.widget.RecyclerView\nimport com.example.tadawol.R\nimport com.example.tadawol.app.MainActivity\nimport com.example.tadawol.app.models.Trade\nimport com.example.tadawol.app.presentation.ClickHandler\nimport com.example.tadawol.app.presentation.viewmodel.MainViewModel\nimport com.example.tadawol.databinding.RecommendationsItemsBinding\nimport java.lang.Exception\n\n\nclass Recommendations_Adapter (var viewModel: MainViewModel, var context : Context?, var data:List<Trade>) : RecyclerView.Adapter<CustomViewHolder>() {\n    override fun getItemCount(): Int {\n        return  data.size\n    }\n\n    override fun onBindViewHolder(p0: CustomViewHolder, p1: Int) {\n        p0.bind(viewModel,context,data.get(p1))\n        if (data.get(p1).vips == \"1\"){\n\n        p0.binding.blurviewlayout.visibility = View.VISIBLE\n         p0.binding.vipicon.visibility = View.VISIBLE\n        }else{\n            p0.binding.blurviewlayout.visibility = View.GONE\n            p0.binding.vipicon.visibility = View.GONE\n\n        }\n        if (data.get(p1).close_date!! == \"1\"){\n            p0.binding.vipicon.visibility = View.GONE\n            p0.binding.blurviewlayout.visibility = View.VISIBLE\n            p0.binding.closedicon.visibility = View.VISIBLE\n        }\n\n        try {\n            if (data.get(p1).created!! < data.get(p1).modified!!){\n                p0.binding.edited.visibility = View.VISIBLE\n                p0.binding.editedTxt.visibility = View.VISIBLE\n\n            }else{\n                p0.binding.edited.visibility = View.GONE\n                p0.binding.editedTxt.visibility = View.GONE\n            }\n        }catch (e : Exception){\n\n        }\n\n\n    }\n\n    override fun onCreateViewHolder(p0: ViewGroup, p1: Int): CustomViewHolder {\n        val  binding: RecommendationsItemsBinding = DataBindingUtil.inflate (LayoutInflater.from(p0.context),\n            R.layout.recommendations_items,p0,false)\n\n        return   CustomViewHolder(binding)\n\n    }\n\n\n}\n\n\nclass CustomViewHolder (\n    public val binding:RecommendationsItemsBinding\n) : RecyclerView.ViewHolder(binding.root){\n\n    fun bind(viewModel: MainViewModel, context: Context?, data:Trade) {\n\n        binding.listener = ClickHandler()\n        binding.data = data\n        binding.context = context as MainActivity?\n        binding.viewmodel = viewModel\n    }\n\n\n}\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/example/tadawol/app/presentation/recommendation_fragment/Recommendations_Adapter.kt	(revision 073aa8ae0b33f5e0006616df6f16c3ca98ed023e)
++++ app/src/main/java/com/example/tadawol/app/presentation/recommendation_fragment/Recommendations_Adapter.kt	(date 1629217136000)
+@@ -1,7 +1,6 @@
+ package com.example.tadawol.app.presentation.recommendation_fragment
+ 
+ import android.content.Context
+-import android.graphics.Color
+ import android.view.LayoutInflater
+ import android.view.View
+ import android.view.ViewGroup
+@@ -13,13 +12,21 @@
+ import com.example.tadawol.app.presentation.ClickHandler
+ import com.example.tadawol.app.presentation.viewmodel.MainViewModel
+ import com.example.tadawol.databinding.RecommendationsItemsBinding
+-import java.lang.Exception
++import java.lang.Long
++import java.text.SimpleDateFormat
++import java.util.*
+ 
+ 
+ class Recommendations_Adapter (var viewModel: MainViewModel, var context : Context?, var data:List<Trade>) : RecyclerView.Adapter<CustomViewHolder>() {
+     override fun getItemCount(): Int {
++
+         return  data.size
+     }
++    companion object
++    {
++        private const val VIEW_TYPE_DATA = 0;
++        private const val VIEW_TYPE_PROGRESS = 1;
++    }
+ 
+     override fun onBindViewHolder(p0: CustomViewHolder, p1: Int) {
+         p0.bind(viewModel,context,data.get(p1))
+@@ -34,26 +41,36 @@
+         }
+         if (data.get(p1).close_date!! == "1"){
+             p0.binding.vipicon.visibility = View.GONE
++
+             p0.binding.blurviewlayout.visibility = View.VISIBLE
+             p0.binding.closedicon.visibility = View.VISIBLE
+         }
++        if(getDataDiff(data.get(p1))){
+ 
+-        try {
+-            if (data.get(p1).created!! < data.get(p1).modified!!){
+-                p0.binding.edited.visibility = View.VISIBLE
+-                p0.binding.editedTxt.visibility = View.VISIBLE
++p0.binding.editdate.visibility = View.VISIBLE
++            val myFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss")
++            val dateObj: Date
++            dateObj = myFormat.parse( data.get(p1).modified)
+ 
+-            }else{
+-                p0.binding.edited.visibility = View.GONE
+-                p0.binding.editedTxt.visibility = View.GONE
+-            }
+-        }catch (e : Exception){
+-
+-        }
++            val timestamp = dateObj.getTime().toString()//  //Example -> in ms
++            val fromServer = SimpleDateFormat("yyyy-MM-dd HH:mm a",Locale("ar"))
++            val dateString = fromServer.format(Date(java.lang.Long.parseLong(timestamp)))
++            p0.binding.editdate.text = "تم التعديل في" + dateString
++        }
++    }
+ 
+ 
+-    }
++    fun getDataDiff(get: Trade):Boolean {
++        val myFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss")
++        val dateObj: Date
++        dateObj = myFormat.parse(get.created)
++       var  dateObjModified = myFormat.parse(get.modified)
++if (dateObjModified > dateObj ) {
+ 
++    return true;
++}
++return false;
++    }
+     override fun onCreateViewHolder(p0: ViewGroup, p1: Int): CustomViewHolder {
+         val  binding: RecommendationsItemsBinding = DataBindingUtil.inflate (LayoutInflater.from(p0.context),
+             R.layout.recommendations_items,p0,false)
+Index: app/src/main/java/com/example/tadawol/app/presentation/mytrades/Mytrades.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.tadawol.app.presentation.mytrades\n\nimport android.provider.Settings\nimport androidx.core.content.res.ResourcesCompat\nimport com.example.tadawol.R\nimport com.example.tadawol.app.MainActivity\nimport com.example.tadawol.app.Publicusecase.ERROR_MotionToast\nimport com.example.tadawol.app.Publicusecase.SUCCESS_MotionToast\nimport com.example.tadawol.app.presentation.recommendation_fragment.RecommendationFragment\nimport com.example.tadawol.databinding.RecommendationsFragmentBinding\nimport www.sanju.motiontoast.MotionToast\n\nclass Mytrades : RecommendationFragment() {\n\n override fun getdata(view: RecommendationsFragmentBinding) {\n     viewModel.GetTradesDataForUser(page)\n\n     if (list.isNullOrEmpty()){\n         ERROR_MotionToast(\"لا يوجد توصيات\", context!!)\n     }\n }\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/example/tadawol/app/presentation/mytrades/Mytrades.kt	(revision 073aa8ae0b33f5e0006616df6f16c3ca98ed023e)
++++ app/src/main/java/com/example/tadawol/app/presentation/mytrades/Mytrades.kt	(date 1629236749000)
+@@ -15,8 +15,5 @@
+  override fun getdata(view: RecommendationsFragmentBinding) {
+      viewModel.GetTradesDataForUser(page)
+ 
+-     if (list.isNullOrEmpty()){
+-         ERROR_MotionToast("لا يوجد توصيات", context!!)
+-     }
+  }
+ }
+\ No newline at end of file
+Index: app/src/main/res/layout/news_fragment.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"utf-8\"?>\n<layout xmlns:android=\"http://schemas.android.com/apk/res/android\"\n    xmlns:app=\"http://schemas.android.com/apk/res-auto\"\n    xmlns:tools=\"http://schemas.android.com/tools\"\n    android:id=\"@+id/layout\">\n    <data>\n        <variable\n                name=\"Context\"\n                type=\"com.example.tadawol.app.MainActivity\"/>\n        <variable\n                name=\"listener\"\n                type=\"com.example.tadawol.app.presentation.ClickHandler\"/>\n       <variable\n                name=\"data\"\n                type=\"com.example.tadawol.app.models.New\"/>\n\n\n    </data>\n    <androidx.constraintlayout.widget.ConstraintLayout\n            android:layout_width=\"match_parent\"\n            android:layout_height=\"match_parent\"\n            android:background=\"#070d2d\">\n\n\n        <androidx.recyclerview.widget.RecyclerView\n            android:id=\"@+id/recyler\"\n            android:layout_width=\"match_parent\"\n            android:layout_height=\"0dp\"\n            app:layout_constraintBottom_toBottomOf=\"@+id/progress\"\n            app:layout_constraintHorizontal_bias=\"0.0\"\n            app:layout_constraintLeft_toLeftOf=\"parent\"\n            app:layout_constraintRight_toRightOf=\"parent\"\n            app:layout_constraintTop_toTopOf=\"parent\" />\n\n        <com.facebook.shimmer.ShimmerFrameLayout\n            android:id=\"@+id/shimmer_view_container\"\n            android:layout_width=\"match_parent\"\n            android:layout_height=\"0dp\"\n            android:orientation=\"vertical\"\n            app:duration=\"800\"\n            app:layout_constraintBottom_toTopOf=\"@+id/guide2\"\n            app:layout_constraintLeft_toLeftOf=\"parent\"\n            app:layout_constraintRight_toRightOf=\"parent\"\n            app:layout_constraintTop_toTopOf=\"parent\">\n\n            <!-- Adding 3 rows of placeholders -->\n            <LinearLayout\n                android:layout_width=\"match_parent\"\n                android:layout_height=\"wrap_content\"\n                android:orientation=\"vertical\">\n\n                <include layout=\"@layout/recipe_placeholder_item\" />\n\n                <include layout=\"@layout/recipe_placeholder_item\" />\n\n\n            </LinearLayout>\n\n        </com.facebook.shimmer.ShimmerFrameLayout>\n        <androidx.constraintlayout.widget.Guideline\n                android:id=\"@+id/guide2\"\n                android:layout_width=\"wrap_content\"\n                android:layout_height=\"wrap_content\"\n                android:orientation=\"horizontal\"\n                app:layout_constraintGuide_percent=\"0.85\" />\n\n\n\n\n        <FrameLayout\n            android:id=\"@+id/progress\"\n            android:layout_width=\"0dp\"\n            android:layout_height=\"0dp\"\n            app:layout_constraintTop_toTopOf=\"parent\"\n            app:layout_constraintBottom_toBottomOf=\"parent\"\n            app:layout_constraintEnd_toEndOf=\"parent\"\n            app:layout_constraintStart_toStartOf=\"parent\"\n            >\n\n            <ProgressBar\n                android:layout_width=\"wrap_content\"\n                android:layout_height=\"wrap_content\"\n                android:layout_gravity=\"center\" />\n\n        </FrameLayout>\n\n    </androidx.constraintlayout.widget.ConstraintLayout>\n</layout>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/res/layout/news_fragment.xml	(revision 073aa8ae0b33f5e0006616df6f16c3ca98ed023e)
++++ app/src/main/res/layout/news_fragment.xml	(date 1629233566000)
+@@ -26,7 +26,7 @@
+             android:id="@+id/recyler"
+             android:layout_width="match_parent"
+             android:layout_height="0dp"
+-            app:layout_constraintBottom_toBottomOf="@+id/progress"
++            app:layout_constraintBottom_toBottomOf="parent"
+             app:layout_constraintHorizontal_bias="0.0"
+             app:layout_constraintLeft_toLeftOf="parent"
+             app:layout_constraintRight_toRightOf="parent"
+Index: app/src/main/res/layout/edit_trades_fragment.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"utf-8\"?>\n<layout xmlns:android=\"http://schemas.android.com/apk/res/android\"\n    xmlns:app=\"http://schemas.android.com/apk/res-auto\"\n    xmlns:tools=\"http://schemas.android.com/tools\"\n    android:id=\"@+id/layout\">\n    <data>\n        <variable\n                name=\"Context\"\n                type=\"com.example.tadawol.app.MainActivity\"/>\n        <variable\n                name=\"listener\"\n                type=\"com.example.tadawol.app.presentation.ClickHandler\"/>\n       <!-- <variable\n                name=\"data\"\n                type=\"com.example.tadawol.presentaion.CompanyDatum\"/>\n    -->\n\n    </data>\n    <androidx.constraintlayout.widget.ConstraintLayout\n            android:layout_width=\"match_parent\"\n            android:layout_height=\"match_parent\"\n            android:background=\"#070d2d\">\n\n        <androidx.constraintlayout.widget.Guideline\n            android:id=\"@+id/guide1\"\n            android:layout_width=\"wrap_content\"\n            android:layout_height=\"wrap_content\"\n            android:orientation=\"horizontal\"\n            app:layout_constraintGuide_percent=\"0.1\" />\n\n        <androidx.constraintlayout.widget.Guideline\n                android:id=\"@+id/guide2\"\n                android:layout_width=\"wrap_content\"\n                android:layout_height=\"wrap_content\"\n                android:orientation=\"horizontal\"\n                app:layout_constraintGuide_percent=\"0.28\" />\n        <androidx.constraintlayout.widget.ConstraintLayout\n            android:id=\"@+id/chose_order\"\n            android:layout_width=\"match_parent\"\n            android:layout_height=\"wrap_content\"\n            android:layout_alignParentStart=\"true\"\n            android:layout_centerVertical=\"true\"\n            android:layout_marginStart=\"64dp\"\n            android:layout_marginTop=\"24dp\"\n            android:layout_marginEnd=\"64dp\"\n            android:background=\"@drawable/linear_background\"\n            android:padding=\"11dp\"\n            app:layout_constraintRight_toRightOf=\"parent\"\n            app:layout_constraintLeft_toLeftOf=\"parent\"\n            app:layout_constraintTop_toTopOf=\"parent\">\n\n            <Spinner\n                android:id=\"@+id/currency_spinner\"\n                android:layout_width=\"wrap_content\"\n                android:layout_height=\"wrap_content\"\n                android:layout_centerVertical=\"true\"\n                android:layout_marginLeft=\"16dp\"\n                android:background=\"@android:color/transparent\"\n                android:gravity=\"left\"\n                android:spinnerMode=\"dialog\"\n                app:layout_constraintLeft_toLeftOf=\"parent\"\n                app:layout_constraintTop_toTopOf=\"parent\" />\n\n            <TextView\n                android:layout_width=\"wrap_content\"\n                android:layout_height=\"wrap_content\"\n                android:textStyle=\"bold\"\n                app:layout_constraintBottom_toBottomOf=\"parent\"\n                app:layout_constraintRight_toRightOf=\"parent\"\n                app:layout_constraintTop_toTopOf=\"parent\" />\n\n        </androidx.constraintlayout.widget.ConstraintLayout>\n\n\n        <EditText\n            android:id=\"@+id/enter_str\"\n            android:layout_width=\"match_parent\"\n            android:layout_height=\"wrap_content\"\n            style=\"@style/TabLayoutTextStyle\"\n            android:layout_marginStart=\"24dp\"\n            android:layout_marginTop=\"32dp\"\n            android:layout_marginEnd=\"24dp\"\n            android:background=\"@drawable/clear_reduisbackground\"\n            android:hint=\"enter\"\n            android:padding=\"16dp\"\n            app:layout_constraintEnd_toEndOf=\"parent\"\n            app:layout_constraintStart_toStartOf=\"parent\"\n            app:layout_constraintTop_toTopOf=\"@+id/guide1\" />\n\n        <EditText\n            android:id=\"@+id/stop_profit\"\n            android:layout_width=\"match_parent\"\n            android:layout_height=\"wrap_content\"\n            style=\"@style/TabLayoutTextStyle\"\n            android:layout_marginStart=\"24dp\"\n            android:layout_marginTop=\"16dp\"\n            android:layout_marginEnd=\"24dp\"\n            android:background=\"@drawable/clear_reduisbackground\"\n            android:hint=\"stop_profit \"\n            android:padding=\"16dp\"\n            app:layout_constraintEnd_toEndOf=\"parent\"\n            app:layout_constraintStart_toStartOf=\"parent\"\n            app:layout_constraintTop_toBottomOf=\"@+id/enter_str\" />\n        <!-- android:theme=\"@style/etTheme\" -->\n\n        <androidx.appcompat.widget.AppCompatEditText\n            android:id=\"@+id/stop_loss\"\n            android:layout_width=\"0dp\"\n            android:layout_height=\"wrap_content\"\n            style=\"@style/TabLayoutTextStyle\"\n\n            android:layout_marginStart=\"24dp\"\n            android:layout_marginTop=\"16dp\"\n            android:layout_marginEnd=\"24dp\"\n            android:background=\"@drawable/clear_reduisbackground\"\n            android:hint=\"stop_loss \"\n            android:padding=\"16dp\"\n            android:textColorHint=\"@color/white\"\n            android:textSize=\"16dp\"\n            app:layout_constraintEnd_toEndOf=\"parent\"\n            app:layout_constraintStart_toStartOf=\"parent\"\n            app:layout_constraintTop_toBottomOf=\"@+id/stop_profit\" />\n\n        <androidx.appcompat.widget.AppCompatEditText\n            android:id=\"@+id/trade_status\"\n            android:layout_width=\"0dp\"\n            android:layout_height=\"wrap_content\"\n            style=\"@style/TabLayoutTextStyle\"\n            android:layout_marginStart=\"24dp\"\n            android:layout_marginTop=\"16dp\"\n            android:layout_marginEnd=\"24dp\"\n            android:background=\"@drawable/clear_reduisbackground\"\n            android:gravity=\"center\"\n            android:hint=\"trade_status \"\n            android:padding=\"16dp\"\n            app:layout_constraintEnd_toEndOf=\"parent\"\n            app:layout_constraintHorizontal_bias=\"0.504\"\n            app:layout_constraintStart_toStartOf=\"parent\"\n            app:layout_constraintTop_toBottomOf=\"@+id/stop_loss\" />\n\n        <androidx.appcompat.widget.AppCompatEditText\n            android:id=\"@+id/note\"\n            android:layout_width=\"0dp\"\n            style=\"@style/TabLayoutTextStyle\"\n\n            android:layout_height=\"wrap_content\"\n            android:layout_marginStart=\"24dp\"\n            android:layout_marginTop=\"16dp\"\n            android:layout_marginEnd=\"24dp\"\n            android:background=\"@drawable/clear_reduisbackground\"\n            android:hint=\"اضافة ملاحظة\"\n            android:padding=\"16dp\"\n            app:layout_constraintEnd_toEndOf=\"parent\"\n            app:layout_constraintHorizontal_bias=\"0.504\"\n            app:layout_constraintStart_toStartOf=\"parent\"\n            app:layout_constraintTop_toBottomOf=\"@+id/trade_status\" />\n\n        <androidx.appcompat.widget.AppCompatEditText\n            android:id=\"@+id/vips\"\n            android:layout_width=\"0dp\"\n            android:layout_height=\"wrap_content\"\n            style=\"@style/TabLayoutTextStyle\"\n            android:layout_marginStart=\"24dp\"\n            android:layout_marginTop=\"16dp\"\n            android:layout_marginEnd=\"24dp\"\n            android:text=\"VIP\"\n            android:background=\"@drawable/clear_reduisbackground\"\n            android:padding=\"16dp\"\n            app:layout_constraintEnd_toEndOf=\"parent\"\n            app:layout_constraintStart_toStartOf=\"parent\"\n            app:layout_constraintTop_toBottomOf=\"@+id/note\" />\n        <androidx.appcompat.widget.SwitchCompat\n            android:id=\"@+id/switch_button\"\n            android:layout_width=\"wrap_content\"\n            android:layout_height=\"wrap_content\"\n            android:layout_margin=\"25dp\"\n            app:layout_constraintEnd_toEndOf=\"parent\"\n            app:layout_constraintStart_toStartOf=\"parent\"\n            app:layout_constraintTop_toBottomOf=\"@+id/vips\"\n            />\n        <androidx.appcompat.widget.AppCompatButton\n            android:id=\"@+id/btnLogin\"\n            android:layout_width=\"0dp\"\n            android:layout_height=\"wrap_content\"\n            android:layout_marginTop=\"16dp\"\n            android:background=\"@drawable/green_linear_background\"\n            android:fontFamily=\"@font/kokn\"\n            android:paddingBottom=\"10dp\"\n            android:text=\" تعديل \"\n            android:textColor=\"@color/white\"\n            android:textSize=\"24sp\"\n            app:layout_constraintEnd_toEndOf=\"parent\"\n            app:layout_constraintStart_toStartOf=\"parent\"\n            app:layout_constraintTop_toBottomOf=\"@+id/switch_button\"\n            app:layout_constraintWidth_percent=\"0.5\" />\n\n\n        <androidx.appcompat.widget.AppCompatImageView\n                android:id=\"@+id/version\"\n                android:layout_width=\"wrap_content\"\n                android:layout_height=\"wrap_content\"\n                android:layout_marginBottom=\"24dp\"\n                android:fontFamily=\"@font/fonts\"\n                android:scaleType=\"fitXY\"\n                android:textColor=\"#FFFFFF\"\n                app:layout_constraintBottom_toBottomOf=\"parent\"\n                app:layout_constraintEnd_toEndOf=\"parent\"\n                app:layout_constraintStart_toStartOf=\"parent\" />\n    </androidx.constraintlayout.widget.ConstraintLayout>\n</layout>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/res/layout/edit_trades_fragment.xml	(revision 073aa8ae0b33f5e0006616df6f16c3ca98ed023e)
++++ app/src/main/res/layout/edit_trades_fragment.xml	(date 1629236381000)
+@@ -82,7 +82,9 @@
+             android:layout_marginEnd="24dp"
+             android:background="@drawable/clear_reduisbackground"
+             android:hint="enter"
++            android:inputType="numberDecimal"
+             android:padding="16dp"
++            android:textColor="@color/white"
+             app:layout_constraintEnd_toEndOf="parent"
+             app:layout_constraintStart_toStartOf="parent"
+             app:layout_constraintTop_toTopOf="@+id/guide1" />
+@@ -97,7 +99,9 @@
+             android:layout_marginEnd="24dp"
+             android:background="@drawable/clear_reduisbackground"
+             android:hint="stop_profit "
++            android:inputType="numberDecimal"
+             android:padding="16dp"
++            android:textColor="@color/white"
+             app:layout_constraintEnd_toEndOf="parent"
+             app:layout_constraintStart_toStartOf="parent"
+             app:layout_constraintTop_toBottomOf="@+id/enter_str" />
+@@ -114,7 +118,9 @@
+             android:layout_marginEnd="24dp"
+             android:background="@drawable/clear_reduisbackground"
+             android:hint="stop_loss "
++            android:inputType="numberDecimal"
+             android:padding="16dp"
++            android:textColor="@color/white"
+             android:textColorHint="@color/white"
+             android:textSize="16dp"
+             app:layout_constraintEnd_toEndOf="parent"
+@@ -132,7 +138,9 @@
+             android:background="@drawable/clear_reduisbackground"
+             android:gravity="center"
+             android:hint="trade_status "
++            android:inputType="numberDecimal"
+             android:padding="16dp"
++            android:textColor="@color/white"
+             app:layout_constraintEnd_toEndOf="parent"
+             app:layout_constraintHorizontal_bias="0.504"
+             app:layout_constraintStart_toStartOf="parent"
+@@ -165,7 +173,9 @@
+             android:layout_marginEnd="24dp"
+             android:text="VIP"
+             android:background="@drawable/clear_reduisbackground"
++            android:inputType="numberDecimal"
+             android:padding="16dp"
++            android:textColor="@color/white"
+             app:layout_constraintEnd_toEndOf="parent"
+             app:layout_constraintStart_toStartOf="parent"
+             app:layout_constraintTop_toBottomOf="@+id/note" />
+Index: app/src/main/java/com/example/tadawol/app/MainActivity.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.tadawol.app\n\nimport android.os.Build\nimport androidx.appcompat.app.AppCompatActivity\nimport android.os.Bundle\nimport android.view.MenuItem\nimport android.view.View\nimport android.widget.Toast\nimport androidx.annotation.RequiresApi\nimport androidx.appcompat.app.ActionBarDrawerToggle\nimport androidx.core.view.GravityCompat\nimport androidx.databinding.DataBindingUtil\nimport androidx.fragment.app.FragmentTransaction\nimport androidx.lifecycle.ViewModelProviders\nimport com.example.tadawol.R\nimport com.example.tadawol.app.helper.PreferenceHelper\nimport com.example.tadawol.app.presentation.ClickHandler\nimport com.example.tadawol.app.presentation.ProfitFragment\nimport com.example.tadawol.app.presentation.add_edit_trades.AddTradesfragment\nimport com.example.tadawol.app.presentation.mytrades.Mytrades\nimport com.example.tadawol.app.presentation.recommendation_fragment.RecommendationFragment\nimport com.example.tadawol.app.presentation.upgrade_fragment.Upgrade_Fragment\nimport com.example.tadawol.app.presentation.user_setting.Setting_Fragment\nimport com.example.tadawol.app.presentation.viewmodel.MainViewModel\nimport com.example.tadawol.databinding.ActivityMainBinding\nimport com.google.android.material.navigation.NavigationView\nimport com.google.firebase.messaging.FirebaseMessaging\nimport kotlinx.android.synthetic.main.activity_main.*\nimport kotlinx.android.synthetic.main.app_bar_main.*\n\n\nclass MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener  {\n    @RequiresApi(Build.VERSION_CODES.LOLLIPOP)\n    private lateinit var viewModel: MainViewModel\n    var binding : ActivityMainBinding? = null\n\n    override fun onCreate(savedInstanceState: Bundle?) {\n        super.onCreate(savedInstanceState)\n        FirebaseMessaging.getInstance().subscribeToTopic(\"1\")\n\n        binding = DataBindingUtil.setContentView(this, R.layout.activity_main)\n\n        viewModel = ViewModelProviders.of(this).get(MainViewModel::class.java)\n        viewModel.updateActionBarTitle(\"الرئيسية\")\n\n         PreferenceHelper.getToken()\n\n        viewModel.main_title.observe(this, androidx.lifecycle.Observer {\n          binding!!.title.text = it\n        })\n      //  PreferenceHelper.getToken()\n        binding!!.context = this\n        binding!!.listener = ClickHandler()\n        binding!!.btnMenu.setOnClickListener{ v ->\n            (this).openCloseNavigationDrawer(v)\n        }\n        ///////// tool bar and drawerToggle\n        setSupportActionBar(toolBar)\n        val actionBar = supportActionBar\n        actionBar?.title = \"\"\n        val drawerToggle: ActionBarDrawerToggle =\n            object : ActionBarDrawerToggle(this, drawerLayout, toolBar, (R.string.open), (R.string.close)) {\n            }\n\n\n        val   addFragment = ProfitFragment()\n        supportFragmentManager.beginTransaction().setCustomAnimations(R.anim.ttb, 0, 0,0)\n            .replace(R.id.main_frame, addFragment)\n            .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)\n            .commit()\n\n\n        drawerToggle.isDrawerIndicatorEnabled = true\n        drawerLayout.addDrawerListener(drawerToggle)\n        drawerToggle.syncState()\n        nav_view.setNavigationItemSelectedListener(this)\n\n    }\n\n    override fun onNavigationItemSelected(menuItem: MenuItem): Boolean {\n\n        when (menuItem.itemId) {\n            R.id.upgrade -> {\n         val upgrade = Upgrade_Fragment()\n                supportFragmentManager.beginTransaction().setCustomAnimations(R.anim.ttb, 0, 0,0)\n                    .replace(R.id.main_frame, upgrade)\n                    .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)\n                    .commit()\n//\n\n            }\n            R.id.add_trades -> {\n             val   addFragment = AddTradesfragment()\n                supportFragmentManager.beginTransaction().setCustomAnimations(R.anim.ttb, 0, 0,0)\n                    .replace(R.id.main_frame, addFragment)\n                    .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)\n                    .commit()\n            }\n            R.id.my_trades -> {\n\n                val   setting_fragment = Mytrades()\n                supportFragmentManager.beginTransaction().setCustomAnimations(R.anim.ttb, 0, 0,0)\n                    .replace(R.id.main_frame, setting_fragment)\n                    .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)\n                    .commit()\n            }\n            R.id.more -> {\n\n                val   setting_fragment = Setting_Fragment()\n                supportFragmentManager.beginTransaction().setCustomAnimations(R.anim.ttb, 0, 0,0)\n                    .replace(R.id.main_frame, setting_fragment)\n                    .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)\n                    .commit()\n\n            }\n\n\n        }\n\n        drawerLayout.closeDrawer(GravityCompat.START)\n        return true\n    }\n\n    fun openCloseNavigationDrawer(view: View) {\n        if (drawerLayout.isDrawerOpen(GravityCompat.START)) {\n            drawerLayout.closeDrawer(GravityCompat.START)\n        } else {\n            drawerLayout.openDrawer(GravityCompat.START)\n        }\n    }\n\n\n\n\n\n}\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/example/tadawol/app/MainActivity.kt	(revision 073aa8ae0b33f5e0006616df6f16c3ca98ed023e)
++++ app/src/main/java/com/example/tadawol/app/MainActivity.kt	(date 1629235250000)
+@@ -18,6 +18,7 @@
+ import com.example.tadawol.app.presentation.ProfitFragment
+ import com.example.tadawol.app.presentation.add_edit_trades.AddTradesfragment
+ import com.example.tadawol.app.presentation.mytrades.Mytrades
++import com.example.tadawol.app.presentation.newsfragment.NewsFragment
+ import com.example.tadawol.app.presentation.recommendation_fragment.RecommendationFragment
+ import com.example.tadawol.app.presentation.upgrade_fragment.Upgrade_Fragment
+ import com.example.tadawol.app.presentation.user_setting.Setting_Fragment
+@@ -63,7 +64,7 @@
+             }
+ 
+ 
+-        val   addFragment = ProfitFragment()
++        val   addFragment = NewsFragment()
+         supportFragmentManager.beginTransaction().setCustomAnimations(R.anim.ttb, 0, 0,0)
+             .replace(R.id.main_frame, addFragment)
+             .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+Index: app/src/main/java/com/example/tadawol/app/presentation/add_edit_trades/AddTradesfragment.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.tadawol.app.presentation.add_edit_trades\n\nimport android.os.Bundle\nimport android.view.LayoutInflater\nimport android.view.View\nimport android.view.ViewGroup\nimport android.widget.AdapterView\nimport android.widget.ArrayAdapter\nimport android.widget.Spinner\nimport android.widget.Toast\nimport androidx.databinding.DataBindingUtil\nimport androidx.fragment.app.Fragment\nimport androidx.lifecycle.Observer\nimport androidx.lifecycle.ViewModelProviders\nimport com.example.tadawol.R\nimport com.example.tadawol.app.models.Data\nimport com.example.tadawol.app.presentation.viewmodel.MainViewModel\nimport com.example.tadawol.databinding.AddTradesFragmentBinding\nimport com.example.tadawol.databinding.RegisterFragmentBinding\nimport com.example.tadawol.databinding.SignInFragmentBinding\n\nclass AddTradesfragment : Fragment(){\n    val viewModel: MainViewModel by lazy {\n        ViewModelProviders.of(this).get(MainViewModel::class.java)\n    }\n    lateinit  var spinner: Spinner\n    var CompanyList:List<Data>? = null\nvar currency_id : Int ? = null\n    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {\n        var view:AddTradesFragmentBinding =\n            DataBindingUtil.inflate(inflater,\n              R.layout.add_trades_fragment, container,false)\n\n        spinner = view.currencySpinner\n\nviewModel.GetCurrenciesData()\n        viewModel.CurrenciesResponseLD?.observe(this, Observer {\n            spinner.adapter = activity?.applicationContext?.\n            let { it1 -> ArrayAdapter(it1, R.layout.spinner, it.map { it.name }) }\n            CompanyList  = it\n        })\n\n        spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {\n            override fun onNothingSelected(parent: AdapterView<*>?) {\n\n            }\n            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {\n                val arrayadapter =  CompanyList!!.get(position)\n               var id = arrayadapter.id\n                currency_id = id\n\n            }\n        }\n        view.btnLogin.setOnClickListener {\n//            if (view.etUsername.length() < 4 || view.etPassword.length() < 8 ) {\n//                Toast.makeText(context, \"يجب ان لا يقل الاسم عن 4 حروف وكلمة المرور 8 حروف \", Toast.LENGTH_SHORT).show()\n//            }else{\n\n            val  enterstr : Float = view.enterStr.text.toString().toFloat()\n            val  stop_profit : Double = view.stopProfit.text.toString().toDouble()\n            val  stop_loss : Double = view.stopLoss.text.toString().toDouble()\n            val  note : String = view.note.text.toString()\n\n\n            viewModel.Add_Trades(currency_id!!,enterstr,stop_profit,stop_loss,note)\n\n\n\n        }\n   //     }\n\n\n\n    return view.root\n    }\n\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/example/tadawol/app/presentation/add_edit_trades/AddTradesfragment.kt	(revision 073aa8ae0b33f5e0006616df6f16c3ca98ed023e)
++++ app/src/main/java/com/example/tadawol/app/presentation/add_edit_trades/AddTradesfragment.kt	(date 1629234098000)
+@@ -8,16 +8,20 @@
+ import android.widget.ArrayAdapter
+ import android.widget.Spinner
+ import android.widget.Toast
++import androidx.core.content.res.ResourcesCompat
+ import androidx.databinding.DataBindingUtil
+ import androidx.fragment.app.Fragment
++import androidx.fragment.app.FragmentTransaction
+ import androidx.lifecycle.Observer
+ import androidx.lifecycle.ViewModelProviders
+ import com.example.tadawol.R
+ import com.example.tadawol.app.models.Data
++import com.example.tadawol.app.presentation.mytrades.Mytrades
+ import com.example.tadawol.app.presentation.viewmodel.MainViewModel
+ import com.example.tadawol.databinding.AddTradesFragmentBinding
+ import com.example.tadawol.databinding.RegisterFragmentBinding
+ import com.example.tadawol.databinding.SignInFragmentBinding
++import www.sanju.motiontoast.MotionToast
+ 
+ class AddTradesfragment : Fragment(){
+     val viewModel: MainViewModel by lazy {
+@@ -65,6 +69,40 @@
+             viewModel.Add_Trades(currency_id!!,enterstr,stop_profit,stop_loss,note)
+ 
+ 
++            viewModel.AddTradesResponseLD?.observe(this, Observer {
++                if (it.success)
++                {
++                    MotionToast.createColorToast(activity!!, "Hurray success 😍", "تمت الاضافة ",
++                        MotionToast.TOAST_SUCCESS,
++                        MotionToast.GRAVITY_TOP,
++                        MotionToast.LONG_DURATION,
++                        ResourcesCompat.getFont(activity!!, R.font.helvetica_regular))
++
++                    val   setting_fragment = Mytrades()
++                    activity!!.supportFragmentManager.beginTransaction().setCustomAnimations(R.anim.ttb, 0, 0,0)
++                        .replace(R.id.main_frame, setting_fragment)
++                        .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
++                        .commit()
++                }
++                else
++                {
++                    MotionToast.createColorToast(activity!!, "Hurray success 😍", "أكمل البيانات",
++                        MotionToast.TOAST_ERROR,
++                        MotionToast.GRAVITY_TOP,
++                        MotionToast.LONG_DURATION,
++                        ResourcesCompat.getFont(activity!!, R.font.helvetica_regular))            }
++            })
++
++            viewModel.errorLivedat.observe(this,
++                Observer {
++                    MotionToast.createColorToast(activity!!,
++                        "Hurray success 😍",
++                        it,
++                        MotionToast.TOAST_ERROR,
++                        MotionToast.GRAVITY_TOP,
++                        MotionToast.LONG_DURATION,
++                        ResourcesCompat.getFont(activity!!, R.font.helvetica_regular))
++                })
+ 
+         }
+    //     }
+Index: app/src/main/java/com/example/tadawol/app/Publicusecase/Publicusecases.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.tadawol.app.Publicusecase\n\nimport android.app.Activity\nimport android.content.Context\nimport android.content.Intent\nimport android.graphics.*\nimport android.graphics.drawable.BitmapDrawable\nimport android.net.ConnectivityManager\nimport android.net.Uri\nimport android.os.Build\nimport androidx.annotation.RequiresApi\nimport androidx.core.content.ContextCompat\nimport androidx.viewpager.widget.ViewPager\nimport android.view.View\nimport android.view.WindowManager\nimport android.widget.ImageView\nimport android.widget.Toast\nimport androidx.core.content.ContextCompat.startActivity\nimport androidx.core.content.res.ResourcesCompat\nimport com.bumptech.glide.Glide\nimport com.example.tadawol.R\nimport com.example.tadawol.app.MainActivity\nimport com.example.tadawol.app.data_layer.ApiClient\nimport com.example.tadawol.app.helper.PreferenceHelper\nimport com.example.tadawol.app.presentation.login_activity.Login\n\nimport okhttp3.MultipartBody\nimport okhttp3.RequestBody\nimport www.sanju.motiontoast.MotionToast\nimport java.io.IOException\nimport java.lang.Long\nimport java.net.SocketTimeoutException\nimport java.net.UnknownHostException\nimport java.text.ParseException\nimport java.text.SimpleDateFormat\nimport java.util.*\n\n\n\n\n@RequiresApi(Build.VERSION_CODES.LOLLIPOP)\nfun changecolor(context: Activity) {\n    val window = context.getWindow()\n    window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)\n    window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)\n//    window.setStatusBarColor(ContextCompat.getColor(context, R.color.colorPrimary))\n}\n\nfun showToastBasedOnThrowable(context: Context?,throwable: Throwable?)\n{\n    var messege = \"error occure\"\n    when (throwable) {\n        is IOException -> messege=\"Something Went Wrong\"\n        is UnknownHostException ->messege= \"No internet connectivity\"\n        is SocketTimeoutException ->messege= \"Slow Internet connectivity\"\n        else -> throwable?.message\n    }\n\n    Toast.makeText(context,messege,Toast.LENGTH_SHORT).show()\n}\n\n\n\nval Context.isConnected: Boolean\n    get() {\n        return (getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager)\n                .activeNetworkInfo?.isConnected == true\n    }\n\n fun createPartFromString(descriptionString: String?): RequestBody? {\n     if (descriptionString!=null)\n    return RequestBody.create(\n            MultipartBody.FORM, descriptionString)\n\n     else\n         return null\n}\n\nfun getBitmap(context: Context?): Bitmap {\n\n    val mbitmap = (context?.getResources()?.getDrawable(R.drawable.drawer_icon) as BitmapDrawable).bitmap\n    val imageRounded = Bitmap.createBitmap(mbitmap.width, mbitmap.height, mbitmap.config)\n    val canvas = Canvas(imageRounded)\n    val mpaint = Paint()\n    mpaint.isAntiAlias = true\n    mpaint.shader = BitmapShader(mbitmap, Shader.TileMode.CLAMP, Shader.TileMode.CLAMP)\n    canvas.drawRoundRect(\n        RectF(0f, 0f, mbitmap.width.toFloat(), mbitmap.height.toFloat()),\n        20f,\n        20f,\n        mpaint\n    )// Round Image Corner 100 100 100 100\n    return imageRounded\n\n}\n\n\n    fun call(context: Context,number: String) {\n        val dialIntent = Intent(Intent.ACTION_DIAL)\n        dialIntent.data = Uri.parse(\"tel:\" + number)\n          context.startActivity(dialIntent)\n    }\n\n\n\nfun setupviewPager(viewPager: ViewPager) {\n    viewPager.setPageTransformer(true) { view, position ->\n        view.translationX = -position * view.width\n        if (Math.abs(position) < 0.5) {\n            view.visibility = View.VISIBLE\n            view.scaleX = 1 - Math.abs(position)\n            view.scaleY = 1 - Math.abs(position)\n        } else if (Math.abs(position) > 0.5) {\n            view.visibility = View.GONE\n        }\n    }\n}\n\n fun getTime(date: String): String? {\n    val sdf = SimpleDateFormat(\"yyyy-MM-dd'T'HH:mm:ss\")\n    try {\n        val dateObj = sdf.parse(date)\n        val timestamp = dateObj.time.toString()//  //Example -> in ms\n        val formatter = SimpleDateFormat(\"hh:mm aa\")\n        return formatter.format(Date(Long.parseLong(timestamp)))\n    } catch (e: ParseException) {\n        e.printStackTrace()\n    }\n\n    return null\n}\n\n\n\n fun checkUserLogin(context: Context): Boolean {\n     if (!PreferenceHelper.getToken().isNullOrEmpty())\n    return true\n     else\n     {\n         Toast.makeText(context,\"يجب تسجيل الدخول اولا \",Toast.LENGTH_SHORT).show()\n         return  false\n     }\n}\n/// open whats app\nfun openWhatsApp(smsNumber: String, context: Context) {\n\n    val sendIntent = Intent(Intent.ACTION_SEND)\n    sendIntent.type = \"text/plain\"\n    sendIntent.putExtra(Intent.EXTRA_TEXT,\"أرسل استفسارك...\")\n    sendIntent.putExtra(\"jid\", \"$smsNumber@s.whatsapp.net\") //phone number without \"+\" prefix\n    sendIntent.setPackage(\"com.whatsapp\")\n    if (sendIntent.resolveActivity(context.packageManager) == null) {\n        Toast.makeText(context, \"Error/n\", Toast.LENGTH_SHORT).show()\n        return\n    }\n    context.startActivity(sendIntent)\n}\n\n//open  Facebook\nfun openFacebook(context: Context) {\n\n    val openURL = Intent(android.content.Intent.ACTION_VIEW)\n    openURL.data = Uri.parse(\"https://www.facebook.com/IRAQKMCO\")\n    context.startActivity(openURL)\n}\n\n/// open Url\nfun openUrl(context: Context) {\n\n    val openURL = Intent(android.content.Intent.ACTION_VIEW)\n     openURL.data = Uri.parse(\"https://www.al-fateh-iq.com/\")\n    context.startActivity(openURL)\n}\n///////// ERROR_MotionToast\nfun ERROR_MotionToast(massage : String,context: Context){\n    MotionToast.createColorToast(context as Login,\n        \"Error\",\n        massage,\n        MotionToast.TOAST_ERROR,\n        MotionToast.GRAVITY_BOTTOM,\n        MotionToast.LONG_DURATION,\n        ResourcesCompat.getFont(context, R.font.helvetica_regular))\n}\n\n///TOAST_SUCCESS_MotionToast\nfun SUCCESS_MotionToast(massage : String,context: Context){\n    MotionToast.createColorToast(context as Login,\n        \"Hurray success \uD83D\uDE0D\",\n        massage,\n        MotionToast.TOAST_SUCCESS,\n        MotionToast.GRAVITY_BOTTOM,\n        MotionToast.LONG_DURATION,\n        ResourcesCompat.getFont(context, R.font.helvetica_regular))\n}\n/// for main activity\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/example/tadawol/app/Publicusecase/Publicusecases.kt	(revision 073aa8ae0b33f5e0006616df6f16c3ca98ed023e)
++++ app/src/main/java/com/example/tadawol/app/Publicusecase/Publicusecases.kt	(date 1629216378000)
+@@ -26,6 +26,7 @@
+ 
+ import okhttp3.MultipartBody
+ import okhttp3.RequestBody
++import org.jetbrains.anko.activityManager
+ import www.sanju.motiontoast.MotionToast
+ import java.io.IOException
+ import java.lang.Long
+@@ -172,8 +173,8 @@
+     context.startActivity(openURL)
+ }
+ ///////// ERROR_MotionToast
+-fun ERROR_MotionToast(massage : String,context: Context){
+-    MotionToast.createColorToast(context as Login,
++fun ERROR_MotionToast(massage : String,context: Activity){
++    MotionToast.createColorToast(context,
+         "Error",
+         massage,
+         MotionToast.TOAST_ERROR,
+@@ -183,8 +184,8 @@
+ }
+ 
+ ///TOAST_SUCCESS_MotionToast
+-fun SUCCESS_MotionToast(massage : String,context: Context){
+-    MotionToast.createColorToast(context as Login,
++fun SUCCESS_MotionToast(massage : String,context: Activity){
++    MotionToast.createColorToast(context,
+         "Hurray success 😍",
+         massage,
+         MotionToast.TOAST_SUCCESS,
+Index: app/src/main/java/com/example/tadawol/app/DataRepo/DataRepo.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.tadawol.app.DataRepo\n\nimport android.annotation.SuppressLint\nimport androidx.lifecycle.MutableLiveData\n\nimport com.example.tadawol.app.data_layer.APIServices\nimport com.example.tadawol.app.data_layer.ApiClient\nimport com.example.tadawol.app.helper.PreferenceHelper\nimport com.example.tadawol.app.models.*\nimport io.reactivex.BackpressureStrategy\nimport io.reactivex.Observable\n\n\nimport io.reactivex.android.schedulers.AndroidSchedulers\nimport io.reactivex.schedulers.Schedulers\nimport java.util.concurrent.TimeUnit\n\n\nclass DataRepo {\n\n\n    ////////////Login\n    @SuppressLint(\"CheckResult\")\n    fun userlogin(\n        username: String,\n        password: String,\n        livedata: MutableLiveData<LoginData>?,\n        errorLiveData: MutableLiveData<String>,\n        loadingLivedata: MutableLiveData<Boolean>\n    ) {\n        getServergetway().userlogin(username, password)\n            .subscribeOn(Schedulers.io())\n            .observeOn(AndroidSchedulers.mainThread())\n            .map { data -> data }\n            .subscribe(\n                { books ->\n\n                    livedata?.postValue(books.data)\n                    loadingLivedata.postValue(false)\n\n                },\n                {\n                    errorLiveData.postValue(it.toString());loadingLivedata.postValue(false)\n                }\n            )\n    }\n\n    ///userRegister\n    @SuppressLint(\"CheckResult\")\n    fun userRegister(\n        username: String,\n        mobile: String,\n        password: String,\n        livedata: MutableLiveData<RegisterModel>?,\n        errorLiveData: MutableLiveData<String>,\n        loadingLivedata: MutableLiveData<Boolean>\n    ) {\n        getServergetway().userRegister(username, mobile, password)\n            .subscribeOn(Schedulers.io())\n            .observeOn(AndroidSchedulers.mainThread())\n            .map { data -> data }\n            .subscribe(\n                { books ->\n\n                    livedata?.postValue(books)\n                    loadingLivedata.postValue(false)\n\n                },\n                {\n                    errorLiveData.postValue(it.toString());loadingLivedata.postValue(false)\n                }\n            )\n    }\n\n    @SuppressLint(\"CheckResult\")\n    fun GetTradesDataForUser(\n        page: Int,\n        livedata: MutableLiveData<MainTrades>?,\n        errorLiveData: MutableLiveData<String>,\n        loadingLivedata: MutableLiveData<Boolean>\n    ) {\n        getServergetway().MyTradesForUser(PreferenceHelper.getUserId(), page)\n            .subscribeOn(Schedulers.io())\n            .observeOn(AndroidSchedulers.mainThread())\n            .map { data -> data }\n            .subscribe(\n                { books ->\n\n                    livedata?.postValue(books)\n                    loadingLivedata.postValue(false)\n\n                },\n                {\n                    errorLiveData.postValue(it.toString());loadingLivedata.postValue(false)\n                }\n            )\n    }\n\n    ///// Get Tadawol  Page Data\n    @SuppressLint(\"CheckResult\")\n    fun GetTradesData(\n        page: Int,\n        livedata: MutableLiveData<MainTrades>?,\n        errorLiveData: MutableLiveData<String>,\n        loadingLivedata: MutableLiveData<Boolean>\n    ) {\n        getServergetway().MyTrades(page)\n            .subscribeOn(Schedulers.io())\n            .observeOn(AndroidSchedulers.mainThread())\n            .map { data -> data }\n            .subscribe(\n                { books ->\n\n                    livedata?.postValue(books)\n                    loadingLivedata.postValue(false)\n\n                },\n                {\n                    errorLiveData.postValue(it.toString());loadingLivedata.postValue(false)\n                }\n            )\n    }\n\n    @SuppressLint(\"CheckResult\")\n    fun GetProfitData(\n        livedata: MutableLiveData<Profit>?,\n        errorLiveData: MutableLiveData<String>,\n        loadingLivedata: MutableLiveData<Boolean>\n    ) {\n        getServergetway().MyProfit()\n            .subscribeOn(Schedulers.io())\n            .observeOn(AndroidSchedulers.mainThread())\n            .map { data -> data }\n            .subscribe(\n                { books ->\n\n                    livedata?.postValue(books)\n                    loadingLivedata.postValue(false)\n\n                },\n                {\n                    errorLiveData.postValue(it.toString());loadingLivedata.postValue(false)\n                }\n            )\n    }\n\n\n    ////Currencies\n    @SuppressLint(\"CheckResult\")\n    fun GetCurrenciesData(\n        livedata: MutableLiveData<List<Data>>?,\n        errorLiveData: MutableLiveData<String>,\n        loadingLivedata: MutableLiveData<Boolean>\n    ) {\n        getServergetway().Currencies()\n            .subscribeOn(Schedulers.io())\n            .observeOn(AndroidSchedulers.mainThread())\n            .map { data -> data }\n            .subscribe(\n                { books ->\n\n                    livedata?.postValue(books.data)\n                    loadingLivedata.postValue(false)\n\n                },\n                {\n                    errorLiveData.postValue(it.toString());loadingLivedata.postValue(false)\n                }\n            )\n    }\n\n    /////GetStockPrice\n    @SuppressLint(\"CheckResult\")\n    fun GetStockPrice(\n        livedata: MutableLiveData<List<Price>>?,\n        errorLiveData: MutableLiveData<String>,\n        loadingLivedata: MutableLiveData<Boolean>\n    ) {\n\n        getServergetway().GetStockPrice()\n            .subscribeOn(Schedulers.io())\n            .observeOn(AndroidSchedulers.mainThread())\n            .map { data -> data }\n            .subscribe(\n                { books ->\n\n                    livedata?.postValue(books.obj.prices)\n\n                    loadingLivedata.postValue(false)\n\n                },\n                {\n                    errorLiveData.postValue(it.toString());loadingLivedata.postValue(false)\n                }\n            )\n\n\n    }\n\n    ////MyNews\n    @SuppressLint(\"CheckResult\")\n\n    fun GetMyNewsData(\n        livedata: MutableLiveData<List<New>>?,\n        errorLiveData: MutableLiveData<String>,\n        loadingLivedata: MutableLiveData<Boolean>\n    ) {\n\n        getServergetway().MyNews()\n            .subscribeOn(Schedulers.io())\n            .observeOn(AndroidSchedulers.mainThread())\n            .map { data -> data }\n            .subscribe(\n                { books ->\n\n                    livedata?.postValue(books.news)\n                    loadingLivedata.postValue(false)\n\n                },\n                {\n                    errorLiveData.postValue(it.toString());loadingLivedata.postValue(false)\n                }\n            )\n    }\n\n    //////Add\n    @SuppressLint(\"CheckResult\")\n    fun Add(\n        currency_id: Int,\n        enter: Float,\n        stop_profit: Double,\n        stop_loss: Double,\n        notes: String,\n        livedata: MutableLiveData<Trade>?,\n        errorLiveData: MutableLiveData<String>,\n        loadingLivedata: MutableLiveData<Boolean>\n    ) {\n\n        getServergetway().Add_Trades(currency_id, enter, stop_profit, stop_loss, notes)\n\n            .subscribeOn(Schedulers.io())\n\n            .observeOn(AndroidSchedulers.mainThread())\n\n            .map { data -> data }\n\n            .subscribe(\n                { books ->\n                    livedata?.postValue(books)\n                    loadingLivedata.postValue(false)\n                },\n                {\n                    errorLiveData.postValue(it.toString());loadingLivedata.postValue(false)\n                }\n\n            )\n\n    }\n\n\n    ////Edit_Trades\n    @SuppressLint(\"CheckResult\")\n    fun Edit_Trades(\n        id: Int,\n        currency_id: Int,\n        enter: Float,\n        stop_profit: Double, stop_loss: Double,\n        trade_status: Int,\n        notes: String,\n        vips: String,\n        livedata: MutableLiveData<Trade>?,\n        errorLiveData: MutableLiveData<String>, loadingLivedata: MutableLiveData<Boolean>\n    ) {\n\n        getServergetway().Edit_Trades(\n            id,\n            currency_id,\n            enter,\n            stop_profit,\n            stop_loss,\n            trade_status,\n            notes,\n            vips\n        )\n            .subscribeOn(Schedulers.io())\n            .observeOn(AndroidSchedulers.mainThread())\n            .map { data -> data }\n            .subscribe(\n                { books ->\n                    livedata?.postValue(books)\n                    loadingLivedata.postValue(false)\n                },\n                {\n                    errorLiveData.postValue(it.toString());loadingLivedata.postValue(false)\n                }\n            )\n    }\n\n}\n\n\nfun getServergetway(): APIServices {\n    return ApiClient.client!!.create(APIServices::class.java)\n}\n\n\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/example/tadawol/app/DataRepo/DataRepo.kt	(revision 073aa8ae0b33f5e0006616df6f16c3ca98ed023e)
++++ app/src/main/java/com/example/tadawol/app/DataRepo/DataRepo.kt	(date 1629231614000)
+@@ -236,7 +236,7 @@
+         loadingLivedata: MutableLiveData<Boolean>
+     ) {
+ 
+-        getServergetway().Add_Trades(currency_id, enter, stop_profit, stop_loss, notes)
++        getServergetway().Add_Trades(currency_id, enter, stop_profit, stop_loss, notes,PreferenceHelper.getUserId().toString())
+ 
+             .subscribeOn(Schedulers.io())
+ 
+@@ -268,6 +268,7 @@
+         trade_status: Int,
+         notes: String,
+         vips: String,
++        switch:String,
+         livedata: MutableLiveData<Trade>?,
+         errorLiveData: MutableLiveData<String>, loadingLivedata: MutableLiveData<Boolean>
+     ) {
+@@ -280,7 +281,8 @@
+             stop_loss,
+             trade_status,
+             notes,
+-            vips
++            vips,
++            switch
+         )
+             .subscribeOn(Schedulers.io())
+             .observeOn(AndroidSchedulers.mainThread())
+Index: app/src/main/java/com/example/tadawol/app/data_layer/ApiService.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.tadawol.app.data_layer\n\n\nimport com.example.tadawol.app.models.*\nimport io.reactivex.Observable\nimport retrofit2.http.*\n\n\ninterface APIServices {\n\n    ///////// Login API\n    @FormUrlEncoded\n    @POST(\"api/users/token.json\")\n    abstract fun userlogin(\n        @Field(\"mobile\") username: String,\n        @Field(\"password\") password: String\n    ): Observable<LoginModel>\n\n    ///////// Login API\n    @FormUrlEncoded\n    @POST(\"api/users/add.json\")\n    abstract fun userRegister(\n        @Field(\"username\") username: String,\n        @Field(\"mobile\") mobile: String,\n        @Field(\"password\") mobpasswordile: String\n\n    ): Observable<RegisterModel>\n\n\n    ///// Get Trades\n    @GET(\"trades.json\")\n    fun MyTrades(@Query(\"page\") page: Int): Observable<MainTrades>\n\n    @GET(\"trades/getTradesByUserId/{id}.json\")\n    fun MyTradesForUser(\n        @Path(\"id\") id: Int, @Query(\"page\") page: Int,\n    ): Observable<MainTrades>\n\n\n    @GET(\"Trades/getprofitforuser.json\")\n    fun MyProfit(): Observable<Profit>\n\n    ///// Get News\n    @GET(\"news.json\")\n    fun MyNews(): Observable<NewsData>\n\n    ////// Currencies\n    @GET(\"Currencies.json\")\n    fun Currencies(): Observable<Currencies>\n\n    ////// Currencies\n    @GET(\"Trades/price.json\")\n    fun GetStockPrice(): Observable<StockPrices>\n\n\n    //// Add\n    @FormUrlEncoded\n    @POST(\"trades/add.json\")\n    abstract fun Add_Trades(\n        @Field(\"currency_id\") currency_id: Int,\n        @Field(\"enter\") enter: Float,\n        @Field(\"stop_profit\") stop_profit: Double,\n        @Field(\"stop_loss\") stop_loss: Double,\n        @Field(\"notes\") notes: String,\n\n\n        ): Observable<Trade>\n\n\n    /// Edit\n    @FormUrlEncoded\n    @POST(\"trades/edit/{id}.json\")\n    abstract fun Edit_Trades(\n        @Path(\"id\") id: Int,\n        @Field(\"currency_id\") currency_id: Int,\n        @Field(\"enter\") enter: Float,\n        @Field(\"stop_profit\") stop_profit: Double,\n        @Field(\"stop_loss\") stop_loss: Double,\n        @Field(\"trade_status\") trade_status: Int,\n        @Field(\"notes\") notes: String,\n        @Field(\"vips\") vips: String\n\n\n    ): Observable<Trade>\n}\n\n\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/example/tadawol/app/data_layer/ApiService.kt	(revision 073aa8ae0b33f5e0006616df6f16c3ca98ed023e)
++++ app/src/main/java/com/example/tadawol/app/data_layer/ApiService.kt	(date 1629231542000)
+@@ -62,6 +62,7 @@
+         @Field("stop_profit") stop_profit: Double,
+         @Field("stop_loss") stop_loss: Double,
+         @Field("notes") notes: String,
++        @Field("user_id") user_id: String,
+ 
+ 
+         ): Observable<Trade>
+@@ -78,7 +79,8 @@
+         @Field("stop_loss") stop_loss: Double,
+         @Field("trade_status") trade_status: Int,
+         @Field("notes") notes: String,
+-        @Field("vips") vips: String
++        @Field("vips") vips: String,
++        @Field("close_date") close_date: String
+ 
+ 
+     ): Observable<Trade>

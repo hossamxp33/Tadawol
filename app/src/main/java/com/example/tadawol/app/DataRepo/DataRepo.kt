@@ -143,6 +143,23 @@ class DataRepo {
                 }
             )
     }
+    @SuppressLint("CheckResult")
+    fun GetNotifications(livedata: MutableLiveData<List<Notification_Data>>?) {
+
+        getServergetway().GetNotifications() .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .map { data -> data }
+            .subscribe(
+                { books ->
+
+                    livedata?.postValue(books.data)
+
+                },
+                {
+                }
+            )
+
+    }
 
 
     ////Currencies
@@ -289,7 +306,7 @@ class DataRepo {
         loadingLivedata: MutableLiveData<Boolean>
     ) {
 
-        getServergetway().Add_Trades(currency_id, enter, stop_profit, stop_loss, notes)
+        getServergetway().Add_Trades(currency_id, enter, stop_profit, stop_loss, notes,PreferenceHelper.getUserId().toString())
 
             .subscribeOn(Schedulers.io())
 
@@ -320,7 +337,7 @@ class DataRepo {
         stop_profit: Double, stop_loss: Double,
         trade_status: Int,
         notes: String,
-        vips: String,
+        switch:String,
         livedata: MutableLiveData<Trade>?,
         errorLiveData: MutableLiveData<String>, loadingLivedata: MutableLiveData<Boolean>
     ) {
@@ -333,7 +350,8 @@ class DataRepo {
             stop_loss,
             trade_status,
             notes,
-            vips
+
+            switch
         )
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())

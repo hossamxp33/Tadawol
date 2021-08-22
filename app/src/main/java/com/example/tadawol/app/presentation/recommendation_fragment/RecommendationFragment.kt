@@ -11,6 +11,7 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.tadawol.R
+import com.example.tadawol.app.Publicusecase.ERROR_MotionToast
 import com.example.tadawol.app.Publicusecase.showToastBasedOnThrowable
 import com.example.tadawol.app.helper.PreferenceHelper
 import com.example.tadawol.app.models.Trade
@@ -59,12 +60,19 @@ open class RecommendationFragment : Fragment(){
             if (page == 1) {
                 PreferenceHelper.setIsActive(it.isactive)
                 list = ArrayList(it.trades)
+
                 if (list!!.size>0) {
                     MainAdapter =    it?.let { it1 -> Recommendations_Adapter(viewModel,requireActivity(), list!!) }!!
                     recyler.layoutManager = LinearLayoutManager(context)
                     recyler.adapter = MainAdapter
                     stoploading()
 
+                }else {
+
+
+                    if (list.isNullOrEmpty()){
+                        ERROR_MotionToast("لا يوجد توصيات", activity!!)
+                    }
                 }
             } else{
                 list!!.addAll(it.trades)

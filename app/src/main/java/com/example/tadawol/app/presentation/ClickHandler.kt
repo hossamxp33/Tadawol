@@ -54,6 +54,15 @@ class ClickHandler {
     }
 
 
+   // swtich TO Chart
+   fun SwitchToProfit(context: Context) {
+       val edit_fragment = ProfitFragment()
+
+       (context as MainActivity).supportFragmentManager.beginTransaction()
+           .replace(R.id.main_frame, edit_fragment).addToBackStack(null)
+           .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+           .commit()
+   }
     /////  Switch To News
     fun SwitchToNews(context: Context) {
 
@@ -88,7 +97,7 @@ class ClickHandler {
     ////////Switch To Edit Fragment
     fun SwitchToEditFragment(context: Context, data: Trade) {
 
-        if (data.close_date != "1") {
+        if (data.close_date != "1" && data.user_id == PreferenceHelper.getUserId()) {
             val bundle = Bundle()
 
             val edit_fragment = Edit_Trades_fragment()

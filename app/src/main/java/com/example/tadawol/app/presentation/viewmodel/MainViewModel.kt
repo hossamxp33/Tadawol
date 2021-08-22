@@ -62,12 +62,14 @@ catch (e :Exception){
 }
 
 
+
 class MainViewModel : ViewModel() {
 
     var DateRepoCompnay: DataRepo = DataRepo()
      var mCompositeDisposable = CompositeDisposable()
 
     var errorLivedat: MutableLiveData<String> = MutableLiveData()
+    var NotificationLD : MutableLiveData<List<Notification_Data>>? = null
 
     var loadingLivedat: MutableLiveData<Boolean> = MutableLiveData()
     var LoginResponseLD : MutableLiveData<LoginData>? = null
@@ -97,6 +99,7 @@ class MainViewModel : ViewModel() {
         ProfitResponseLd = MutableLiveData()
         SliderDataResponseLD= MutableLiveData()
         SubscriptionResponseLD= MutableLiveData()
+        NotificationLD = MutableLiveData()
     }
 
 ///userlogin
@@ -118,6 +121,10 @@ fun  Login(username:String,password:String){
                 errorLivedat,
                 loadingLivedat
             )
+
+    }
+    fun GetNotifications(){
+        DateRepoCompnay.GetNotifications(NotificationLD)
 
     }
     fun  GetTradesData(page:Int){
@@ -167,8 +174,8 @@ fun  Login(username:String,password:String){
 
 
 ///Edit_Trades
-fun Edit_Trades(id:Int,currency_id:Int,enter : Float,stop_profit: Double, stop_loss:Double ,trade_status : Int,notes: String,vips:String)
-{ if (validate(Trade(currency_id,enter,stop_profit,stop_loss, trade_status, notes, vips))) {
+fun Edit_Trades(id:Int,currency_id:Int,enter : Float,stop_profit: Double, stop_loss:Double ,trade_status : Int,notes: String,swtich:String)
+{ if (validate(Trade(currency_id,enter,stop_profit,stop_loss, trade_status, notes))) {
         DateRepoCompnay.Edit_Trades(
             id,
             currency_id,
@@ -177,7 +184,8 @@ fun Edit_Trades(id:Int,currency_id:Int,enter : Float,stop_profit: Double, stop_l
             stop_loss,
             trade_status,
             notes,
-            vips,
+
+            swtich ,
             AddTradesResponseLD,
             errorLivedat,
             loadingLivedat
