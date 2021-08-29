@@ -63,6 +63,9 @@ p0.binding.editdate.visibility = View.VISIBLE
             val fromServer = SimpleDateFormat("yyyy-MM-dd HH:mm a",Locale("ar"))
             val dateString = fromServer.format(Date(java.lang.Long.parseLong(timestamp)))
             p0.binding.editdate.text = "تم التعديل في" + dateString
+        }else {
+            p0.binding.editdate.visibility = View.GONE
+
         }
     }
 

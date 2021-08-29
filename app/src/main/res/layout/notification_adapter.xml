@@ -68,7 +68,7 @@
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="8dp"
                 android:fontFamily="@font/kokn"
-                android:text="@{data.created}"
+                app:datetext="@{data.created}"
                 android:textColor="@color/black"
                 android:textSize="14sp"
                 app:layout_constraintLeft_toLeftOf="parent"
