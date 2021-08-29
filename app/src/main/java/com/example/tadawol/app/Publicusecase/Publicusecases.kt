@@ -27,6 +27,7 @@ import com.example.tadawol.app.presentation.login_activity.Login
 
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
+import org.jetbrains.anko.activityManager
 import www.sanju.motiontoast.MotionToast
 import java.io.IOException
 import java.lang.Long
@@ -173,8 +174,8 @@ fun openUrl(context: Context) {
     context.startActivity(openURL)
 }
 ///////// ERROR_MotionToast
-fun ERROR_MotionToast(massage : String,context: Context){
-    MotionToast.createColorToast(context as Login,
+fun ERROR_MotionToast(massage : String,context: Activity){
+    MotionToast.createColorToast(context,
         "Error",
         massage,
         MotionToast.TOAST_ERROR,
@@ -184,8 +185,8 @@ fun ERROR_MotionToast(massage : String,context: Context){
 }
 
 ///TOAST_SUCCESS_MotionToast
-fun SUCCESS_MotionToast(massage : String,context: Context){
-    MotionToast.createColorToast(context as Login,
+fun SUCCESS_MotionToast(massage : String,context: Activity){
+    MotionToast.createColorToast(context,
         "Hurray success 😍",
         massage,
         MotionToast.TOAST_SUCCESS,

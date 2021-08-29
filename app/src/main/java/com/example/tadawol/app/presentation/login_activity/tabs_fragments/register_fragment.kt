@@ -59,21 +59,21 @@ class register_fragment : Fragment() {
             if (!(view.etUsername.text.isEmpty() || view.mobile.text.isEmpty())) {
                 if (it.success) {
 
-                    SUCCESS_MotionToast("تم التسجيل بنجاح",context!!)
+                    SUCCESS_MotionToast("تم التسجيل بنجاح",activity!!)
                     val homeIntent = Intent(context, MainActivity()::class.java)
                     (context as Login).startActivity(homeIntent)
                 } else {
-                    ERROR_MotionToast("الرجاء ادخال البيانات صحيحة",context!!)
+                    ERROR_MotionToast("الرجاء ادخال البيانات صحيحة",activity!!)
 
                 }
             } else {
-                ERROR_MotionToast("خطا",context!!)
+                ERROR_MotionToast("خطا",activity!!)
             }
 
         })
 
         viewModel.errorLivedat.observe(this, Observer {
-            ERROR_MotionToast("خطا",context!!)
+            ERROR_MotionToast("خطا",activity!!)
         })
 
         return view.root

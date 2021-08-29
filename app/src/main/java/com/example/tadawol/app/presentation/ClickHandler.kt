@@ -13,7 +13,6 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
 import com.example.tadawol.R
 import com.example.tadawol.app.MainActivity
-import com.example.tadawol.app.Publicusecase.ERROR_MotionToast
 import com.example.tadawol.app.Publicusecase.checkUserLogin
 import com.example.tadawol.app.helper.PreferenceHelper
 import com.example.tadawol.app.models.New
@@ -30,16 +29,19 @@ import kotlinx.android.synthetic.main.recipe_placeholder_item.*
 
 class ClickHandler {
 
+    /// Switch To Recommends
     fun SwitchToRecommends(context: Context) {
         SwitchFun(context as MainActivity, RecommendationFragment())
         SetDefaultColor(context)
         SelectedItemColor(context.binding!!.deal)
     }
+    /// Switch To Contact Us
 
     fun SwitchToContactUs(context: Context) {
         SwitchFun(context, Contact_Us_Fragment())
     }
 
+    /// Switch To Login
     fun SwitchToLogin(context: Context) {
 
         if (checkUserLogin(context)) {
@@ -52,6 +54,16 @@ class ClickHandler {
     }
 
 
+   // swtich TO Chart
+   fun SwitchToProfit(context: Context) {
+       val edit_fragment = ProfitFragment()
+
+       (context as MainActivity).supportFragmentManager.beginTransaction()
+           .replace(R.id.main_frame, edit_fragment).addToBackStack(null)
+           .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+           .commit()
+   }
+    /////  Switch To News
     fun SwitchToNews(context: Context) {
 
         SwitchFun(context as MainActivity, NewsFragment())
@@ -60,6 +72,7 @@ class ClickHandler {
 
     }
 
+    /////  Switch To News Details
     fun SwitchToNewsDetails(context: Context, data: New) {
 
         val bundle = Bundle()
@@ -72,15 +85,15 @@ class ClickHandler {
 
     }
 
+    //////  Switch To Stock Price Fragment
     fun SwitchToStockPriceFragment(context: Context) {
 
         SwitchFun(context as MainActivity, StockPriceFragment())
         SetDefaultColor(context)
         SelectedItemColor(context.binding!!.company)
 
-
     }
-
+    //////  Switch To Chart Fragment
     fun SwitchToChartFragment(context: Context) {
 
         SwitchFun(context as MainActivity, ProfitFragment())
@@ -88,10 +101,10 @@ class ClickHandler {
         SelectedItemColor(context.binding!!.company)
 
     }
-
+    ////////Switch To Edit Fragment
     fun SwitchToEditFragment(context: Context, data: Trade) {
 
-        if (data.close_date != "1") {
+        if (data.close_date != "1" && data.user_id == PreferenceHelper.getUserId()) {
             val bundle = Bundle()
 
             val edit_fragment = Edit_Trades_fragment()
@@ -106,8 +119,6 @@ class ClickHandler {
                 .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
                 .commit()
 
-        }else{
-            ERROR_MotionToast("closed",context)
         }
     }
 /// make call

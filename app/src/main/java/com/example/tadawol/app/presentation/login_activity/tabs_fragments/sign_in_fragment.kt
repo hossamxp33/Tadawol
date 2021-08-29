@@ -54,21 +54,21 @@ class sign_in_fragment : Fragment(){
 
                 if (!(view.etUsername.text.isEmpty()))
                 {
-                    SUCCESS_MotionToast ("تم تسجيل الدخول",context!!)
+                    SUCCESS_MotionToast ("تم تسجيل الدخول",activity!!)
 
                     val homeIntent = Intent(context,MainActivity()::class.java)
                     (context as Login).startActivity(homeIntent)
 
              }
             }else{
-                ERROR_MotionToast("Error in data",context!!)
+                ERROR_MotionToast("Error in data",activity!!)
             }
 
 
         })
 
         viewModel.errorLivedat.observe(this, Observer {
-            ERROR_MotionToast("Error in data",context!!)
+            ERROR_MotionToast("Error in data",activity!!)
         })
         return view.root
     }

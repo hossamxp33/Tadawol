@@ -11,11 +11,13 @@ import android.widget.Toast
 import androidx.core.content.res.ResourcesCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentTransaction
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.example.tadawol.R
 import com.example.tadawol.app.models.Data
 import com.example.tadawol.app.models.Trade
+import com.example.tadawol.app.presentation.mytrades.Mytrades
 import com.example.tadawol.app.presentation.viewmodel.MainViewModel
 import com.example.tadawol.databinding.AddTradesFragmentBinding
 import com.example.tadawol.databinding.EditTradesFragmentBinding
@@ -65,7 +67,7 @@ var currency_id : Int ? = null
         view.stopLoss.setText(trade_Data?.stop_loss.toString())
         view.tradeStatus.setText(trade_Data?.trade_status.toString())
         view.note.setText(trade_Data?.notes)
-        view.vips.setText(trade_Data?.vips)
+      //  view.vips.setText(trade_Data?.vips)
 
 
 //// Edit Button .. send data
@@ -76,9 +78,15 @@ var currency_id : Int ? = null
         val  stop_loss : Double = view.stopLoss.text.toString().toDouble()
         val  trade_status : Int = view.tradeStatus.text.toString().toInt()
         val  note : String = view.note.text.toString()
-        val  vip : String = view.vips.text.toString()
+          var   switchvalue = String()
+ if(view.switchButton.isChecked == true)
+ {
+      switchvalue = "1"
 
-    viewModel.Edit_Trades(trade_id!!,currency_id!!,enterstr,stop_profit,stop_loss,trade_status,note,vip)
+ }else {
+      switchvalue = "0"
+ }
+    viewModel.Edit_Trades(trade_id!!,currency_id!!,enterstr,stop_profit,stop_loss,trade_status,note,switchvalue)
     }catch (e : Exception)
     {
     Toast.makeText(context, "أكمل البيانات", Toast.LENGTH_SHORT).show()
@@ -88,7 +96,17 @@ var currency_id : Int ? = null
         viewModel.AddTradesResponseLD?.observe(this, Observer {
             if (it.success)
             {
+                MotionToast.createColorToast(activity!!, "Hurray success 😍", "تم التعديل",
+                    MotionToast.TOAST_SUCCESS,
+                    MotionToast.GRAVITY_TOP,
+                    MotionToast.LONG_DURATION,
+                    ResourcesCompat.getFont(activity!!, R.font.helvetica_regular))
 
+                val   setting_fragment = Mytrades()
+                activity!!.supportFragmentManager.beginTransaction().setCustomAnimations(R.anim.ttb, 0, 0,0)
+                    .replace(R.id.main_frame, setting_fragment)
+                    .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+                    .commit()
             }
             else
             {
